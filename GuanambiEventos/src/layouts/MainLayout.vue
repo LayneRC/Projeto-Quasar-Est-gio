@@ -1,0 +1,148 @@
+<template>
+  <q-layout view="lHh Lpr lFf">
+    <q-header elevated>
+      <q-toolbar class="bg-grey-1 shadow-2">
+        <q-btn class="text-deep-orange-9"
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="drawer = !drawer"
+        />
+
+        <q-space />
+        <q-toolbar-title class=" text-deep-orange-9 app-font-bold">
+          SECEL
+        </q-toolbar-title>
+        <q-space />
+
+      </q-toolbar> 
+    </q-header>
+
+    <q-drawer
+        v-model="drawer"
+        show-if-above
+        :width="250"
+        :breakpoint="400"
+      >
+        <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
+          <q-list padding>
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon color="grey-9" name="las la-user-alt" />
+              </q-item-section>
+
+              <q-item-section class="text-grey-9">
+                Meu Perfil
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon color="grey-9" name="las la-cog" />
+              </q-item-section>
+
+              <q-item-section class="text-grey-9">
+                Configurações
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon color="grey-9" name="las la-door-open" />
+              </q-item-section>
+
+              <q-item-section class="text-grey-9">
+                Sair
+              </q-item-section>
+            </q-item>
+
+          </q-list>
+        </q-scroll-area>
+
+        <div class="absolute-top" style="height: 150px">
+          <div class="absolute-bottom bg-transparent">
+            <q-avatar size="56px" class="q-mb-sm  q-ml-md">
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            </q-avatar>
+            <div class="text-weight-bold  q-ml-md text-grey-9">Razvan Stoenescu</div>
+            <div class=" q-ml-md q-mb-sm text-grey-8">@rstoenescu</div>
+            <q-separator color="grey-7"/>
+          </div>
+          
+        </div>
+
+        <div class="absolute-bottom text-right q-mr-sm q-mb-sm text-grey-7">v 1.0</div>
+      </q-drawer>
+      
+
+    <q-page-container class="bg-grey-2 app-font-light">
+      <router-view />
+    </q-page-container>
+
+    <q-footer>
+        <q-tabs
+          no-caps
+          dense
+          align="justify"
+          v-model="selectedTab"
+          switch-indicator
+          indicator-color="deep-orange-9"
+          active-color="deep-orange-9"
+          :breakpoint="0"
+          class="bg-white app-font-bold text-grey-5 shadow-2"
+          >
+          <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/"/>
+          <q-route-tab name="meusEventos" icon="las la-calendar-alt" label="Meus Eventos" to=""/>
+          <q-route-tab name="favoritos" icon="lar la-heart" label="Favoritos" to=""/>
+          
+        </q-tabs>
+    </q-footer>
+  </q-layout>
+</template>
+
+<script>
+
+export default {
+  name: 'MainLayout',
+
+  
+  data () {
+    return {
+      drawer: false,
+      tab: 'home'
+      
+    }
+  }
+}
+</script>
+
+<style>
+
+.q-tab__indicator{
+  height: 1px !important;
+  border-radius: 0px;
+}
+
+.q-tab__content {
+  z-index: 0;
+  position: relative;
+  margin-top: 0px;
+}
+
+.q-tabs {
+  background: white !important;
+  border-radius: 0px;
+  font-weight: bold !important;
+}
+
+.tab-panels {
+  border-radius: 0px !important;
+}
+
+.q-tab-panel {
+  margin-top: 0x !important;
+}
+
+</style>
