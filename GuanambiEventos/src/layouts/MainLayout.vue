@@ -62,13 +62,16 @@
         </q-scroll-area>
 
         <div class="absolute-top" style="height: 150px">
-          <div class="absolute-bottom bg-transparent">
-            <q-avatar size="56px" class="q-mb-sm  q-ml-md">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
-            <div class="text-weight-bold  q-ml-md text-grey-9">Razvan Stoenescu</div>
-            <div class=" q-ml-md q-mb-sm text-grey-8">@rstoenescu</div>
-            <q-separator color="grey-7"/>
+          <div class="absolute-bottom text-center bg-transparent">
+            <div>
+              <q-avatar size="80px" class="q-mb-sm">
+                <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              </q-avatar>
+              <div class="text-weight-bold text-grey-9">Razvan Stoenescu</div>
+              <div class=" q-mb-sm text-grey-8">@rstoenescu</div>
+            </div>
+            
+            <q-separator inset color="deep-orange-9"/>
           </div>
           
         </div>
@@ -91,11 +94,11 @@
           indicator-color="deep-orange-9"
           active-color="deep-orange-9"
           :breakpoint="0"
-          class="bg-white app-font-bold text-grey-5 shadow-2"
+          class="bg-white app-font-bold text-grey-7 shadow-2"
           >
           <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/"/>
           <q-route-tab name="meusEventos" icon="las la-calendar-alt" label="Meus Eventos" to=""/>
-          <q-route-tab name="favoritos" icon="lar la-heart" label="Favoritos" to=""/>
+          <q-route-tab clickable exact name="favoritos" icon="lar la-heart" label="Favoritos" to="/favorites"/>
           
         </q-tabs>
     </q-footer>

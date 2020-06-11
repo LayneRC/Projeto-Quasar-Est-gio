@@ -1,36 +1,36 @@
 <template>
   <q-page>
     <div class="row justify-around q-mt-md">
-      <div clickable @click="dialogList = true">
+      <div clickable @click="$router.push('/list/all')">
         <div
           class="flex inline shadow-box flex-center bg-deep-orange-9"
           :class="`shadow-5`">
           <q-icon name="las la-bars" size="30px" color="white"/>
         </div>
 
-        <div class="text-center text-bold q-mt-sm" style="font-size: 12px">Todos</div>
+        <div class="text-center app-font-light q-mt-sm" style="font-size: 12px">Todos</div>
 
       </div>
       
-      <div>
+      <div clickable @click="$router.push('/list/day')">
         <div
           class="flex inline shadow-box flex-center bg-deep-orange-9"
           :class="`shadow-5`">
           <q-icon name="las la-calendar-check" size="35px" color="white"/>
         </div>
 
-        <div class="text-center text-bold q-mt-sm" style="font-size: 12px">Dia</div>
+        <div class="text-center app-font-light q-mt-sm" style="font-size: 12px">Dia</div>
 
       </div>
       
-      <div>
+      <div clickable @click="$router.push('/list/month')">
         <div
           class="flex inline shadow-box flex-center bg-deep-orange-9"
           :class="`shadow-5`">
           <q-icon name="lar la-calendar-alt" size="35px" color="white"/>
         </div>
 
-        <div class="text-center text-bold q-mt-sm" style="font-size: 12px">Mês</div>
+        <div class="text-center app-font-light q-mt-sm" style="font-size: 12px">Mês</div>
 
       </div>
       
@@ -50,7 +50,7 @@
         
         <div class="row q-gutter-md no-wrap q-px-md">
 
-          <div>
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'academico'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -58,11 +58,11 @@
               </q-card-section>
             </q-card>
 
-            <div class="text-center q-mt-sm" style="font-size: 12px">Acadêmico</div>
+            <div class="text-center q-mt-sm app-font-light" style="font-size: 12px">Acadêmico</div>
 
           </div>
 
-          <div>
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'artesVisuais'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center ">
@@ -74,7 +74,7 @@
 
           </div>
 
-          <div>
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'competicoes'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -86,7 +86,7 @@
 
           </div>
 
-          <div>
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'esportes'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -98,7 +98,7 @@
 
           </div>
 
-          <div>
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'exposicoes'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -110,7 +110,7 @@
 
           </div>
 
-          <div>
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'festasShows'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -123,7 +123,7 @@
           </div>
 
 
-          <div>
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'online'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -135,7 +135,7 @@
 
           </div>
 
-           <div>
+           <div clickable @click="$router.push({name: 'allName', params: {categorie: 'palestras'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -147,7 +147,7 @@
 
           </div>
 
-          <div>
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'religiosos'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -159,7 +159,7 @@
 
           </div>
 
-          <div>
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'teatroEspetaculos'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -180,9 +180,6 @@
     <div class="row q-pl-md q-pr-md q-mt-lg q-mb-md">
       <div class="col-8 categorias app-font-bold text-grey-9">
         Destaques
-      </div>
-      <div class="col-4  categoria-all text-right">
-        Ver tudo
       </div>
 
     </div>
@@ -205,15 +202,15 @@
             <q-card-section class=" items-center row">
               <div class="row q-mt-sm q-ml-sm col-auto">
                 <q-icon name="las la-calendar" size="25px" color="grey-6" class="q-mt-xs"/>
-                <div class="q-ml-xs">
-                  <div>01/01/2020</div>
+                <div class="q-ml-xs app-font-light">
+                  <div>seg, 10 jun 2020</div>
                   <div class="text-caption">12:00</div>
                 </div>
               </div>
               <q-space/>
               <div class="col-auto">
-                <q-btn flat round color="red" icon="lar la-heart" class="" />
-                <q-btn flat round color="primary" icon="share" class="action-share"/>
+                <q-icon color="red" name="lar la-heart" size="25px" class="q-mr-sm" />
+                <q-icon color="primary" size="25px" name="o_share" class="q-mr-sm"/>
               </div>
             </q-card-section> 
           </q-card>
@@ -228,9 +225,6 @@
       <div class="col-8 categorias app-font-bold text-grey-9">
         Vistos recentemente
       </div>
-      <div class="col-4  categoria-all text-right">
-        Ver tudo
-      </div>
 
     </div>
 
@@ -240,7 +234,7 @@
         
         <div class="row q-gutter-sm no-wrap q-px-md q-mb-md">
 
-         <q-card  v-for="n in 4" :key="n" class="my-card" style="width: 250px" @click="dialog = true">
+         <q-card  v-for="n in 4" :key="n" class="my-card" style="width: 250px" @click="dialogCard = true">
             <q-img
               :ratio="1.2"
               src="https://cdn.quasar.dev/img/parallax2.jpg"
@@ -253,15 +247,15 @@
             <q-card-section class=" items-center row">
               <div class="row q-mt-sm q-ml-sm col-auto">
                 <q-icon name="las la-calendar" size="25px" color="grey-6" class="q-mt-xs"/>
-                <div class="q-ml-xs">
-                  <div>01/01/2020</div>
+                <div class="q-ml-xs app-font-light">
+                  <div>seg, 10 jun 2020</div>
                   <div class="text-caption">12:00</div>
                 </div>
               </div>
               <q-space/>
               <div class="col-auto">
-                <q-btn flat round color="red" icon="lar la-heart" class="" />
-                <q-btn flat round color="primary" icon="share" class="action-share"/>
+                <q-icon color="red" name="lar la-heart" size="25px" class="q-mr-sm" />
+                <q-icon color="primary" size="25px" name="o_share" class="q-mr-sm"/>
               </div>
             </q-card-section> 
           </q-card>
@@ -279,128 +273,10 @@
       transition-show="scale"
       transition-hide="scale"
       >
-      <q-card class="bg-grey-1 text-white">
-        <q-bar class="bg-white q-pa-sm">
-          <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" v-close-popup>
-            <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
-          </q-btn>
-          <q-space/>
-
-          <q-btn flat round color="white" icon="lar la-heart" />
-          <q-btn flat round color="white" icon="share"/>
-                
-        </q-bar>
-
-        <q-scroll-area vertical style="height: 100vh" :thumb-style="{ opacity: 0 }">
-          <q-card-section >
-            <q-img class="img-dialog"
-              contain
-              src="https://cdn.quasar.dev/img/parallax2.jpg"
-              basic
-              >
-            </q-img> 
-
-            <div class="bg-white ">
-              <div class="text-grey-9 titulo app-font-bold q-pt-sm q-pl-md">
-                Nome Evento
-              </div>
-
-              <div class="row q-pl-md q-pt-sm">
-                <div class="text-grey-8 flex flex-center q-ml-sm">Categoria</div>
-              </div>
-
-              <div class="row q-pl-md q-pt-md">
-                <q-icon name="las la-calendar-day" size="30px" color="grey-8" class="q-mt-xs"/>
-                <div class="q-ml-sm">
-                  <div class="text-grey-8">dom, 07 jun 2020</div>
-                  <div class="text-grey-8">19:00</div>
-                </div>
-              </div>
-
-              <div class="row q-pl-md q-pt-sm">
-                <q-icon name="las la-map-marker" size="30px" color="grey-8"/>
-                <div class="text-grey-8 flex flex-center q-ml-sm">Localização</div>
-              </div>
-
-              <div class="row q-pl-md q-pt-sm q-pb-sm">
-                <q-icon name="las la-dollar-sign" size="30px" color="grey-8"/>
-                <div class="text-grey-8 flex flex-center q-ml-sm">Gratuito</div>
-              </div>
-            </div>
-      
-          </q-card-section>
-
-          <q-card-section >
-            <div class="bg-white q-mt-md">
-              <div class="text-grey-9 app-font-bold q-pt-sm q-pl-md">
-                Descrição
-              </div>
-
-              <div class="row q-pl-md q-pt-sm">
-                <div class="text-grey-8 flex flex-center q-mr-md text-justify">Lorem Ipsum is simply dummy text of the printing and 
-                  typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has 
-                  survived not only five centuries, but also the leap into electronic typesetting, remaining essentially 
-                  unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum 
-                  passages, and more recently with desktop publishing software like Aldus PageMaker including versions of 
-                  Lorem Ipsum.
-                </div>
-              </div>
-            </div>
-          </q-card-section>
-
-          <q-card-section >
-            <div class="bg-white q-mt-md">
-              <div class="text-grey-9 app-font-bold q-pt-sm q-pl-md">
-                Organizador
-              </div>
-
-              <div class="row q-pl-md q-pt-sm q-mb-md">
-                <div class="text-grey-8 flex flex-center q-mr-md q-mb-md text-justify">
-                  Nome do organizador
-                </div>
-              </div>
-            </div>
-          </q-card-section>
-        </q-scroll-area>  
-      </q-card>
+      <event-dialog/>
     </q-dialog>
 
-    <q-dialog
-      v-model="dialogList"
-      persistent
-      :maximized="maximizedToggleList"
-      transition-show="scale"
-      transition-hide="scale"
-      >
-      
-      <q-bar class="bg-white q-pa-sm text-white" style="height: 6vh">
-        <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" v-close-popup>
-          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
-        </q-btn>              
-      </q-bar>
-
-      <div class="bg-grey-1">
-        <q-tabs
-          v-model="tab"
-          dense
-          no-caps
-          indicator-color="deep-orange-9"
-          active-color="deep-orange-9"
-          class="bg-grey app-font-bold text-grey-9"
-          >
-          <q-tab clickable name="todos" color label="Todos" />
-          <q-tab clickable name="dia" label="Dia" />
-          <q-tab clickable name="mês" label="Mês" />
-        </q-tabs>
-      </div>
-
-      <q-scroll-area vertical style="height: 100vh" :thumb-style="{ opacity: 0 }">
-          
-      </q-scroll-area>  
-      
-    </q-dialog>
-
+   
 
   </q-page>
 </template>
@@ -409,20 +285,20 @@
 export default {
   name: 'PageIndex',
 
+  components: {
+    'event-dialog': require("components/EventDialog.vue").default
+  },
+
   data () {
     return {
+      tab: 'todos',
       dialogCard: false,
       maximizedToggleCard: true,
 
-      dialogList: false,
-      maximizedToggleList: true
     }
   },
 
   methods: {
-    list () {
-      this.$router.replace('/list')
-    },
     
   }
 }
@@ -457,10 +333,6 @@ export default {
   padding: 0 !important;
 }
 
-.action-share{
-  margin-left: 0px;
-
-}
 
 .titulo {
   font-size: 3vh;
@@ -481,9 +353,5 @@ export default {
   background: blue;
 }
 
-.div-actions-dialog {
-   transform: translateY(-20px) !important;
-   z-index: 2 !important;
-}
   
 </style>
