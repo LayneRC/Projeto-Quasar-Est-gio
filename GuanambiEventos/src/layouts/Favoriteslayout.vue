@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
+      
       <q-toolbar class="bg-white shadow-2">
         <q-btn class="text-deep-orange-9"
           flat
@@ -12,9 +13,9 @@
         />
 
         <q-space />
-        <q-toolbar-title class=" text-deep-orange-9 app-font-bold">
-          SECEL
-        </q-toolbar-title>
+        <q-space/> 
+        <div class="app-font-bold text-deep-orange-9" style="margin-left: -30px; font-size: 2.5vh">Favoritos</div>  
+        <q-space/>  
         <q-space />
 
       </q-toolbar> 
@@ -33,7 +34,7 @@
                 <q-icon color="grey-9" name="las la-user-alt" />
               </q-item-section>
 
-              <q-item-section class="text-grey-9" @click="$router.push('/myProfile')" >
+              <q-item-section class="text-grey-9" @click="$router.push('/myProfile')">
                 Meu Perfil
               </q-item-section>
             </q-item>
@@ -43,7 +44,7 @@
                 <q-icon color="grey-9" name="las la-cog" />
               </q-item-section>
 
-              <q-item-section class="text-grey-9" @click="$router.push('/settings')">
+              <q-item-section class="text-grey-9">
                 Configurações
               </q-item-section>
             </q-item>
@@ -53,7 +54,7 @@
                 <q-icon color="grey-9" name="las la-door-open" />
               </q-item-section>
 
-              <q-item-section class="text-grey-9" >
+              <q-item-section class="text-grey-9">
                 Sair
               </q-item-section>
             </q-item>

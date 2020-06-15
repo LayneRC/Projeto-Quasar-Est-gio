@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
 
-    <q-page-container class="bg-grey-2" >
+    <q-page-container class="bg-grey-1" >
       <transition
         enter-active-class="animated fast fadeIn"
         appear

@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
+      
       <q-toolbar class="bg-white shadow-2">
         <q-btn class="text-deep-orange-9"
           flat
@@ -12,12 +13,28 @@
         />
 
         <q-space />
-        <q-toolbar-title class=" text-deep-orange-9 app-font-bold">
-          SECEL
-        </q-toolbar-title>
+        <q-space/> 
+        <div class="app-font-bold text-deep-orange-9" style="margin-left: -30px; font-size: 2.5vh">Meus Eventos</div>  
+        <q-space/>  
         <q-space />
 
       </q-toolbar> 
+
+       <q-tabs
+          no-caps
+          dense
+          align="justify"
+          v-model="selectedTab"
+          switch-indicator
+          indicator-color="deep-orange-9"
+          active-color="deep-orange-9"
+          :breakpoint="0"
+          class="bg-white app-font-bold text-grey-7 shadow-1"
+          >
+          <q-route-tab clickable exact name="todos" label="Próximos" to="/myEvents/next"/>
+          <q-route-tab name="dia"  label="Passados" to="/myEvents/Past"/>
+          
+        </q-tabs>
     </q-header>
 
     <q-drawer
@@ -33,7 +50,7 @@
                 <q-icon color="grey-9" name="las la-user-alt" />
               </q-item-section>
 
-              <q-item-section class="text-grey-9" @click="$router.push('/myProfile')" >
+              <q-item-section class="text-grey-9" @click="$router.push('/myProfile')">
                 Meu Perfil
               </q-item-section>
             </q-item>
@@ -53,7 +70,7 @@
                 <q-icon color="grey-9" name="las la-door-open" />
               </q-item-section>
 
-              <q-item-section class="text-grey-9" >
+              <q-item-section class="text-grey-9">
                 Sair
               </q-item-section>
             </q-item>
@@ -82,6 +99,9 @@
 
     <q-page-container class="bg-grey-1 app-font-light">
       <router-view />
+      <q-page-sticky position="bottom-right" :offset="[18, 18]"  clickable @click="$router.push('/newEvent')">
+        <q-btn elevated fab icon="add" color="deep-orange-9" class="shadow-4"/>
+      </q-page-sticky>
     </q-page-container>
 
     <q-footer>
@@ -97,7 +117,7 @@
           class="bg-white app-font-bold text-grey-7 shadow-2"
           >
           <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/"/>
-          <q-route-tab name="meusEventos" icon="las la-calendar-alt" label="Meus Eventos" to="/myEvents/next"/>
+          <q-route-tab name="meusEventos" icon="las la-calendar-alt" label="Meus Eventos" to=""/>
           <q-route-tab clickable exact name="favoritos" icon="lar la-heart" label="Favoritos" to="/favorites"/>
           
         </q-tabs>

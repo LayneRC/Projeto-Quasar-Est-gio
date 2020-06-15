@@ -30,7 +30,7 @@
     
       
 
-    <q-page-container class="bg-grey-2 app-font-light">
+    <q-page-container class="bg-grey-1 app-font-light">
       <router-view />
     </q-page-container>
 

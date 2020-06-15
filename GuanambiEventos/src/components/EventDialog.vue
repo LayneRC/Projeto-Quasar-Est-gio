@@ -83,6 +83,18 @@
               </div>
             </div>
           </q-card-section> 
+
+          <q-card-section >
+            <div class="bg-white q-mt-md">
+              <div class="text-grey-9 app-font-bold q-pt-sm q-pl-md">
+                Localização
+              </div>
+
+              <div class="row q-pa-md">
+                <q-img src="/statics/imgs/map.jpg" />
+              </div>
+            </div>
+          </q-card-section> 
       </q-card>
 </template>
 
