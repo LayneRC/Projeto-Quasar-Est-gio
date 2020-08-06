@@ -53,7 +53,7 @@
                 <q-icon color="grey-9" name="las la-door-open" />
               </q-item-section>
 
-              <q-item-section class="text-grey-9" >
+              <q-item-section class="text-grey-9">
                 Sair
               </q-item-section>
             </q-item>
@@ -71,7 +71,6 @@
               <div class=" q-mb-sm text-grey-8">@rstoenescu</div>
             </div>
             
-            <q-separator inset color="deep-orange-9"/>
           </div>
           
         </div>
@@ -96,7 +95,7 @@
           :breakpoint="0"
           class="bg-white app-font-bold text-grey-7 shadow-2"
           >
-          <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/"/>
+          <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/index"/>
           <q-route-tab name="meusEventos" icon="las la-calendar-alt" label="Meus Eventos" to="/myEvents/next"/>
           <q-route-tab clickable exact name="favoritos" icon="lar la-heart" label="Favoritos" to="/favorites"/>
           
@@ -125,18 +124,18 @@ export default {
 
 .q-tab__indicator{
   height: 1px !important;
-  border-radius: 0px;
+  border-radius: 0px !important;
 }
 
 .q-tab__content {
-  z-index: 0;
-  position: relative;
-  margin-top: 0px;
+  z-index: 0 !important;
+  position: relative !important;
+  margin-top: 0px !important;
 }
 
 .q-tabs {
   background: white !important;
-  border-radius: 0px;
+  border-radius: 0px !important;
   font-weight: bold !important;
 }
 

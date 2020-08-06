@@ -14,7 +14,7 @@
 
 
         <div class="q-mt-xl">
-          <q-btn no-caps size="4vh" outline rounded color="deep-orange-9" class="q-py-lg btn-options" to="/">
+          <q-btn no-caps size="4vh" outline rounded color="deep-orange-9" class="q-py-lg btn-options" to="/index">
             <q-icon name="las la-calendar" size="40px" color="deep-orange-9"/>
             <div>Eventos</div>
           </q-btn>

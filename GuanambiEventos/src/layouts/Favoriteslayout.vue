@@ -44,7 +44,7 @@
                 <q-icon color="grey-9" name="las la-cog" />
               </q-item-section>
 
-              <q-item-section class="text-grey-9">
+              <q-item-section class="text-grey-9" @click="$router.push('/settings')">
                 Configurações
               </q-item-section>
             </q-item>
@@ -72,7 +72,6 @@
               <div class=" q-mb-sm text-grey-8">@rstoenescu</div>
             </div>
             
-            <q-separator inset color="deep-orange-9"/>
           </div>
           
         </div>
@@ -97,7 +96,7 @@
           :breakpoint="0"
           class="bg-white app-font-bold text-grey-7 shadow-2"
           >
-          <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/"/>
+          <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/index"/>
           <q-route-tab name="meusEventos" icon="las la-calendar-alt" label="Meus Eventos" to="/myEvents/next"/>
           <q-route-tab clickable exact name="favoritos" icon="lar la-heart" label="Favoritos" to="/favorites"/>
           

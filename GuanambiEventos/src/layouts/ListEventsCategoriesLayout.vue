@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header>
       <q-bar class="bg-white q-pa-sm text-white" style="height: 6vh">
-        <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" to="/">
+        <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" to="/index">
         </q-btn> 
         <q-space/> 
         <div class="app-font-bold text-deep-orange-9" style="margin-left: -30px">Eventos</div>  

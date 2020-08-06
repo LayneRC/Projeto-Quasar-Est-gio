@@ -1,5 +1,8 @@
 <template>
-  <q-page :class="animationOut" class="q-pa-xl  background-login">
+  <q-page :class="animationOut" :key="aux" class="q-pa-xl  background-login vertical-middle" >
+    <div>
+
+    
     <div class="text-center">
       <div class="logo-block">
       <q-icon name="img:statics/icons/calendar-white.svg" size="15vh" />
@@ -81,7 +84,7 @@
 
     </div>
 
-    
+    </div>
   </q-page>
 </template>
 
@@ -92,8 +95,13 @@ export default {
   data(){
     return {
       tab: 'login',
-      animationOut: ''
+      animationOut: '',
+      aux: 0
     }
+  },
+
+  mounted () {
+    
   },
 
   methods: {
@@ -108,24 +116,20 @@ export default {
 <style>
 
 .background-login{
-  background: rgb(224,62,12);
-  background: linear-gradient(180deg, rgba(224,62,12,1) 0%, rgba(246,115,75,1) 95%);
+  background: rgb(224,62,12) !important;
+  background: linear-gradient(180deg, rgba(224,62,12,1) 0%, rgba(246,115,75,1) 95%) !important;
 }
 
-.q-tab__indicator{
-  height: 36.5px !important;
-  border-radius: 30px;
-}
 
 .q-tab__content {
-  z-index: 1;
-  position: absolute;
-  margin-top: 4px;
+  z-index: 1 !important;
+  position: absolute !important;
+  margin-top: 4px !important;
 }
 
 .q-tabs {
   background: rgba(0, 0, 0, .4) !important;
-  border-radius: 30px;
+  border-radius: 30px !important;
   font-weight: bold !important;
 }
 
