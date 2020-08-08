@@ -28,44 +28,14 @@
           class="q-mt-md tab-panels q-pa-xs app-font-light"
         >
           <q-tab-panel name="login">
-            <q-input color="deep-orange-9" v-model="text" label="Email">
-              <template v-slot:prepend>
-                <q-icon name="lar la-envelope"/>
-              </template>
-            </q-input>
-            <q-input color="deep-orange-9 q-mt-sm q-mb-lg" v-model="text" label="Senha">
-              <template v-slot:prepend>
-                <q-icon name="las la-lock"/>
-              </template>
-            </q-input>
-            </q-tab-panel>
+            <login-register :tab="tab"/>
+          </q-tab-panel>
 
           <q-tab-panel name="register">
-            <q-input color="deep-orange-9" v-model="text" label="Nome">
-              <template v-slot:prepend>
-                <q-icon name="lar la-user" />
-              </template>
-            </q-input>
-            <q-input color="deep-orange-9 q-mt-sm " v-model="text" label="Email">
-              <template v-slot:prepend>
-                <q-icon name="lar la-envelope" />
-              </template>
-            </q-input>
-            <q-input color="deep-orange-9 q-mt-sm " v-model="text" label="Senha">
-              <template v-slot:prepend>
-                <q-icon name="las la-lock" />
-              </template>
-            </q-input>
-            <q-input color="deep-orange-9 q-mt-sm q-mb-lg" v-model="text" label="Confirmar senha">
-              <template v-slot:prepend>
-                <q-icon name="las la-lock" />
-              </template>
-            </q-input>
+            <login-register :tab="tab"/>
           </q-tab-panel>
-        </q-tab-panels>
 
-        <q-btn v-if="tab == 'login'" @click="logar" color="primary" label="Vamos lá" class="butao q-px-lg app-font-bold text-bold"/>
-        <q-btn v-if="tab == 'register'" color="primary" label="Registrar" class="butao q-px-lg app-font-bold text-bold"/>
+        </q-tab-panels>
 
         <div v-if="tab == 'login'" class="text-white app-font-light">Esqueceu a senha?</div>
         <div class="row Flex flex-center q-mt-sm">
@@ -100,14 +70,17 @@ export default {
     }
   },
 
+  components: {
+    'login-register' : require('components/LoginRegister.vue').default
+
+  },
+
   mounted () {
     
   },
 
   methods: {
-    logar () {
-      this.$router.replace('/options')
-    },
+    
     
   }
 }
@@ -131,22 +104,6 @@ export default {
   background: rgba(0, 0, 0, .4) !important;
   border-radius: 30px !important;
   font-weight: bold !important;
-}
-
-.tab-panels {
-  border-radius: 10px !important;
-}
-
-.q-tab-panel {
-  margin-top: -50x !important;
-}
-
-.butao {
-  top: 0;
-  transform: translateY(-18px);
-  background: rgb(180,53,14) !important;
-  background: linear-gradient(83deg, rgba(180,53,14,1) 6%, rgba(196,58,15,1) 39%, rgba(221,85,40,1) 95%) !important;
-
 }
 
 .q-separator {

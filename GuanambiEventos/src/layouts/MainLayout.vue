@@ -53,7 +53,7 @@
                 <q-icon color="grey-9" name="las la-door-open" />
               </q-item-section>
 
-              <q-item-section class="text-grey-9">
+              <q-item-section class="text-grey-9" @click="loggoutUser">
                 Sair
               </q-item-section>
             </q-item>
@@ -105,6 +105,8 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex'
+
 
 export default {
   name: 'MainLayout',
@@ -116,6 +118,10 @@ export default {
       tab: 'home'
       
     }
+  },
+
+  methods: {
+    ...mapActions('store', ['loggoutUser'])
   }
 }
 </script>
