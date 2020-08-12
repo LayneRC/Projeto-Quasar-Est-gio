@@ -2,11 +2,11 @@
   <q-page transition-show="slide-left">
     
     <div class="q-pa-sm q-gutter-sm">
-      <q-card  v-for="n in 4" :key="n" class="my-card q-pa-sm" flat bordered @click="dialogCard = true" >
+      <q-card  v-for="event in events" :key="event.eventID" class="my-card q-pa-sm" flat bordered @click="dialogCard = true" >
         <q-card-section horizontal>
           <q-img
             class="col-5"
-            src="https://cdn.quasar.dev/img/parallax2.jpg"
+            :src="event.eventImageLink"
             :ratio="1"
             style="border-radius: 3px"
             
@@ -14,13 +14,13 @@
 
           <q-card-section class=" q-ml-md">
             <div class="text-deep-orange-9  app-font-bold">
-              seg, 08 jun 2020 - 19:00
+              {{ event.eventStartDate }}
             </div>
             <div class="app-font-bold text-grey-9" style="font-size: 3vh">
-              Nome do evento
+              {{ event.eventName }}
             </div>
             <div class="app-font-light">
-              Localização
+              {{ event.eventLocal }}
             </div>
             <div class="row absolute-bottom reverse">
               <q-icon class="q-ml-md" name="o_share" size="27px" color="primary"/>
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'PageExample',
 
@@ -54,10 +56,16 @@ export default {
     'event-dialog': require("components/EventDialog.vue").default
   },
 
+  computed: {
+    ...mapGetters('store', ['events'])
+  },
+
   data () {
     return {
       dialogCard: false,
       maximizedToggleCard: true,
+
+      
 
     }
   },

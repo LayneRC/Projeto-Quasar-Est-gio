@@ -1,9 +1,51 @@
 import { LocalStorage, Loading } from 'quasar'
 import { firebaseAuth, db } from 'boot/firebase'
 import { showErrorMessage } from 'src/functions/function-show-error-message'
+import { firestoreAction } from 'vuexfire'
 
 const state = {
-    loggedIn: false
+    loggedIn: false,
+    events: {
+        'eventoid1':{
+            eventID: 'event1',
+            userID: 'usuarioid1',
+            createdAt:'03/04/1998',
+            dateAprov:'28/07/1997',
+            dateAprovTimestamp: '21/01/2000',
+            dateTimestamp: '03/04/1998',
+            eventCategories: ['Academico', 'Empresarial', 'Social'],
+            eventStartDate: '03/07/2019',
+            eventEndDate: '03/07/2019',
+            eventStart: '22:45',
+            eventEntrance:'Gratuito',
+            eventImageLink: 'https://getscopedm8katie.files.wordpress.com/2014/11/smiling-kitty.gif',
+            eventLocal: 'No lugar lá',
+            eventName: 'Evento Balada em casa',
+            nomeRealizador: 'Pessoa Bacana',
+            active: false,
+            canceled: true,
+        },
+
+        'eventoid2':{
+            eventID: 'event2',
+            userID: 'usuarioid1',
+            createdAt:'03/04/1998',
+            dateAprov:'28/07/1997',
+            dateAprovTimestamp: '21/01/2000',
+            dateTimestamp: '03/04/1998',
+            eventCategories: ['Academico', 'Empresarial', 'Social'],
+            eventStartDate: '03/07/2019',
+            eventEndDate: '03/07/2019',
+            eventStart: '22:45',
+            eventEntrance:'Gratuito',
+            eventImageLink: 'https://getscopedm8katie.files.wordpress.com/2014/11/smiling-kitty.gif',
+            eventLocal: 'No lugar lá',
+            eventName: 'alguma coisa coisa coisa',
+            nomeRealizador: 'Pessoa Bacana',
+            active: false,
+            canceled: true,
+        }
+    }
 
 }
 
@@ -94,11 +136,19 @@ const actions = {
                 this.$router.replace('/').catch(err => {})
             }
         })
-    }
+    },
+
+    bindEvents: firestoreAction(({ bindFirestoreRef }) => {
+        // return the promise returned by `bindFirestoreRef`
+        return bindFirestoreRef('events', db.collection('events'))
+    }),
 
 }
 
 const getters = {
+    events: (state) => {
+        return state.events
+    }
 
 }
 

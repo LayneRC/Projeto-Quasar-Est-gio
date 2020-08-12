@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import { vuexfireMutations } from 'vuexfire'
 import store from './store'
 
 Vue.use(Vuex)
@@ -16,6 +16,10 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
+    mutations: {
+      ...vuexfireMutations,
+    },
+
     modules: {
       store
     },
