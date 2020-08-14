@@ -6,7 +6,7 @@
         <q-card-section horizontal>
           <q-img
             class="col-5"
-            :src="event.eventImageLink"
+            :src="event.eventImage"
             :ratio="1"
             style="border-radius: 3px"
             
@@ -14,13 +14,13 @@
 
           <q-card-section class=" q-ml-md">
             <div class="text-deep-orange-9  app-font-bold">
-              {{ event.eventStartDate }}
+              {{ event.eventDatestart }}
             </div>
             <div class="app-font-bold text-grey-9" style="font-size: 3vh">
               {{ event.eventName }}
             </div>
             <div class="app-font-light">
-              {{ event.eventLocal }}
+              {{ event.eventAdressLocalName }}
             </div>
             <div class="row absolute-bottom reverse">
               <q-icon class="q-ml-md" name="o_share" size="27px" color="primary"/>

@@ -1,50 +1,50 @@
 import { LocalStorage, Loading } from 'quasar'
-import { firebaseAuth, db } from 'boot/firebase'
+import { firebaseAuth, db, storage } from 'boot/firebase'
 import { showErrorMessage } from 'src/functions/function-show-error-message'
 import { firestoreAction } from 'vuexfire'
 
 const state = {
     loggedIn: false,
     events: {
-        'eventoid1':{
-            eventID: 'event1',
-            userID: 'usuarioid1',
-            createdAt:'03/04/1998',
-            dateAprov:'28/07/1997',
-            dateAprovTimestamp: '21/01/2000',
-            dateTimestamp: '03/04/1998',
-            eventCategories: ['Academico', 'Empresarial', 'Social'],
-            eventStartDate: '03/07/2019',
-            eventEndDate: '03/07/2019',
-            eventStart: '22:45',
-            eventEntrance:'Gratuito',
-            eventImageLink: 'https://getscopedm8katie.files.wordpress.com/2014/11/smiling-kitty.gif',
-            eventLocal: 'No lugar lá',
-            eventName: 'Evento Balada em casa',
-            nomeRealizador: 'Pessoa Bacana',
-            active: false,
-            canceled: true,
-        },
+        // 'eventoid1':{
+        //     eventID: 'event1',
+        //     userID: 'usuarioid1',
+        //     createdAt:'03/04/1998',
+        //     dateAprov:'28/07/1997',
+        //     dateAprovTimestamp: '21/01/2000',
+        //     dateTimestamp: '03/04/1998',
+        //     eventCategories: ['Academico', 'Empresarial', 'Social'],
+        //     eventStartDate: '03/07/2019',
+        //     eventEndDate: '03/07/2019',
+        //     eventStart: '22:45',
+        //     eventEntrance:'Gratuito',
+        //     eventImageLink: 'https://getscopedm8katie.files.wordpress.com/2014/11/smiling-kitty.gif',
+        //     eventLocal: 'No lugar lá',
+        //     eventName: 'Evento Balada em casa',
+        //     nomeRealizador: 'Pessoa Bacana',
+        //     active: false,
+        //     canceled: true,
+        // },
 
-        'eventoid2':{
-            eventID: 'event2',
-            userID: 'usuarioid1',
-            createdAt:'03/04/1998',
-            dateAprov:'28/07/1997',
-            dateAprovTimestamp: '21/01/2000',
-            dateTimestamp: '03/04/1998',
-            eventCategories: ['Academico', 'Empresarial', 'Social'],
-            eventStartDate: '03/07/2019',
-            eventEndDate: '03/07/2019',
-            eventStart: '22:45',
-            eventEntrance:'Gratuito',
-            eventImageLink: 'https://getscopedm8katie.files.wordpress.com/2014/11/smiling-kitty.gif',
-            eventLocal: 'No lugar lá',
-            eventName: 'alguma coisa coisa coisa',
-            nomeRealizador: 'Pessoa Bacana',
-            active: false,
-            canceled: true,
-        }
+        // 'eventoid2':{
+        //     eventID: 'event2',
+        //     userID: 'usuarioid1',
+        //     createdAt:'03/04/1998',
+        //     dateAprov:'28/07/1997',
+        //     dateAprovTimestamp: '21/01/2000',
+        //     dateTimestamp: '03/04/1998',
+        //     eventCategories: ['Academico', 'Empresarial', 'Social'],
+        //     eventStartDate: '03/07/2019',
+        //     eventEndDate: '03/07/2019',
+        //     eventStart: '22:45',
+        //     eventEntrance:'Gratuito',
+        //     eventImageLink: 'https://getscopedm8katie.files.wordpress.com/2014/11/smiling-kitty.gif',
+        //     eventLocal: 'No lugar lá',
+        //     eventName: 'alguma coisa coisa coisa',
+        //     nomeRealizador: 'Pessoa Bacana',
+        //     active: false,
+        //     canceled: true,
+        // }
     }
 
 }
@@ -135,6 +135,54 @@ const actions = {
                 LocalStorage.set('loggedIn', false)
                 this.$router.replace('/').catch(err => {})
             }
+        })
+    },
+
+    createEvents({}, payload) {
+        db.collection('events').add({
+
+        }).then(result => {
+            let docID = result.id
+            let user = firebaseAuth.currentUser; 
+
+            db.collection("events").doc(docID).update({
+                eventID: docID,
+                userID: user.uid,
+                eventName: payload.eventName,
+                eventCategorie: payload.modelCategorie,
+                eventImg: payload.image,
+                eventDateStart: payload.dateStart,
+                eventTime: payload.time,
+                eventDateEnd: payload.dateEnd,
+                eventAdressLocalName: payload.adressLocalName,
+                eventAdressStreet: payload.adressStreet,
+                eventAdressNumber: payload.adressNumber,
+                eventAdressBairro: payload.adressBairro,
+                eventAdressOnline: payload.adressOnline,
+                eventDescription: payload.description,
+                eventNameResponsible: payload.nameResponsible,
+                eventWhatsappResponsible: payload.whatsapp
+                
+            
+            })
+            .then(result => {
+                console.log("Deu certo, Glória ao Pai!")
+            })
+            .catch(error => {
+                console.log("Não Salvou os dados!")
+                console.log(error)
+                db.collection('events').doc(docID).delete()
+                .then(result => {
+                    console.log("Deletou!")
+                })
+                .catch(error => {
+                    console.log("Não deletou!")
+                    console.log(error)
+                })
+            })
+        })
+        .catch(error => {
+            console.log(error)
         })
     },
 

@@ -9,11 +9,12 @@ import { mapActions } from 'vuex'
 
 export default {
   methods: {
-    ...mapActions('store', ['handleAuthStateChange'])
+    ...mapActions('store', ['handleAuthStateChange', 'bindEvents'])
   },
 
   mounted() {
     this.handleAuthStateChange()
+    this.bindEvents()
   }
 }
 </script>
