@@ -31,7 +31,7 @@
         <q-select v-model="eventData.modelEntrance" :options="optionsEntrance" color="deep-orange-9" class="app-font-light q-mt-sm"/>
 
 
-        <div class="border-img q-pa-sm bg-grey-1 q-mt-xl text-center flex flex-center" @click="getImageCamera" style="height: 30vh">
+        <div v-if="!eventData.image" class="border-img q-pa-sm bg-grey-1 q-mt-xl text-center flex flex-center">
           <div class="text-center">
             <div>
               <q-icon name="add_photo_alternate" size="40px" color="grey-6"/>
@@ -40,12 +40,32 @@
               Clique aqui para carregar uma imagem
             </div>
           </div>
+
+          <q-menu touch-position>
+            <q-list style="min-width: 100px">
+              <q-item clickable v-close-popup @click="getImageCamera">
+                <q-item-section>Camera</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup @click="captureImageFromGallery">
+                <q-item-section>Galeria</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </div>
 
+        <q-img
+          v-if="eventData.image"
+          :src="eventData.image"
+          :ratio="16/9"
+          class="border-img q-mt-xl"
+
+        />
 
         <div class="">
           A dimensão recomenda  é xx X xx
         </div>
+
+        
 
 
         <q-page-sticky position="bottom-right" :offset="[5, 5]">
@@ -346,6 +366,23 @@ export default {
 
     },
 
+    captureImageFromGallery () {
+      navigator.camera.getPicture(
+        data => { // on success
+          this.eventData.image = `data:image/jpeg;base64,${data}`
+        },
+        () => { // on fail
+
+        },
+        {
+          quality: 20, allowEdit: true,
+          correctOrientation: true,
+          destinationType: Camera.DestinationType.DATA_URL,
+          sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+        }
+      )
+    },
+
     closeModelDate() {
       this.$refs.qDateProxy.hide()
     },
@@ -381,7 +418,7 @@ export default {
 .border-img {
   border-style: dashed; 
   border-color: rgb(201, 195, 195);
-  height: 25vh
+  height: 30vh
 }
 
 </style>

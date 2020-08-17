@@ -1,4 +1,4 @@
-import { LocalStorage, Loading } from 'quasar'
+import { LocalStorage, Loading, uid } from 'quasar'
 import { firebaseAuth, db, storage } from 'boot/firebase'
 import { showErrorMessage } from 'src/functions/function-show-error-message'
 import { firestoreAction } from 'vuexfire'
@@ -144,42 +144,52 @@ const actions = {
         }).then(result => {
             let docID = result.id
             let user = firebaseAuth.currentUser; 
+            const storageRef =  storage.ref().child('/images/'+uid()+'.jpeg').putString(payload.image, 'data_url')
 
-            db.collection("events").doc(docID).update({
-                eventID: docID,
-                userID: user.uid,
-                eventName: payload.eventName,
-                eventCategorie: payload.modelCategorie,
-                eventImg: payload.image,
-                eventDateStart: payload.dateStart,
-                eventTime: payload.time,
-                eventDateEnd: payload.dateEnd,
-                eventAdressLocalName: payload.adressLocalName,
-                eventAdressStreet: payload.adressStreet,
-                eventAdressNumber: payload.adressNumber,
-                eventAdressBairro: payload.adressBairro,
-                eventAdressOnline: payload.adressOnline,
-                eventDescription: payload.description,
-                eventNameResponsible: payload.nameResponsible,
-                eventWhatsappResponsible: payload.whatsapp
-                
+            storageRef.on(
+                'state_changed',
+                snapshot => console.log(snapshot),
+                error => console.log(error),
+                () => {
+                    storageRef.snapshot.ref.getDownloadURL().then(downloadURL => {
+                        db.collection("events").doc(docID).update({
+                            eventID: docID,
+                            userID: user.uid,
+                            eventName: payload.eventName,
+                            eventCategorie: payload.modelCategorie,
+                            eventImg: downloadURL,
+                            eventDateStart: payload.dateStart,
+                            eventTime: payload.time,
+                            eventDateEnd: payload.dateEnd,
+                            eventAdressLocalName: payload.adressLocalName,
+                            eventAdressStreet: payload.adressStreet,
+                            eventAdressNumber: payload.adressNumber,
+                            eventAdressBairro: payload.adressBairro,
+                            eventAdressOnline: payload.adressOnline,
+                            eventDescription: payload.description,
+                            eventNameResponsible: payload.nameResponsible,
+                            eventWhatsappResponsible: payload.whatsapp
+                        
             
-            })
-            .then(result => {
-                console.log("Deu certo, Glória ao Pai!")
-            })
-            .catch(error => {
-                console.log("Não Salvou os dados!")
-                console.log(error)
-                db.collection('events').doc(docID).delete()
-                .then(result => {
-                    console.log("Deletou!")
-                })
-                .catch(error => {
-                    console.log("Não deletou!")
-                    console.log(error)
-                })
-            })
+                        })
+                        .then(result => {
+                            console.log("Deu certo, Glória ao Pai!")
+                        })
+                        .catch(error => {
+                            console.log("Não Salvou os dados!")
+                            console.log(error)
+                            db.collection('events').doc(docID).delete()
+                            .then(result => {
+                                console.log("Deletou!")
+                            })
+                            .catch(error => {
+                                console.log("Não deletou!")
+                                console.log(error)
+                            })
+                        })
+                    })
+                }
+            )
         })
         .catch(error => {
             console.log(error)

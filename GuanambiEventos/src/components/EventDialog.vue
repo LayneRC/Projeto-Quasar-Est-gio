@@ -15,15 +15,15 @@
           <q-card-section >
             <q-img class="img-dialog"
               style="margin-top: 48px"
-              contain
-              src="https://cdn.quasar.dev/img/parallax2.jpg"
+              :src = "eventData.eventImg"
               basic
+              :ratio="16/9"
               >
             </q-img> 
 
             <div class="bg-white ">
               <div class="text-grey-9 titulo app-font-bold q-pt-sm q-pl-md">
-                Nome Evento
+                {{ eventData.eventName }}
               </div>
 
               <div class="row q-pl-md q-pt-sm">
@@ -101,11 +101,19 @@
 <script>
 export default {
   name: 'PageExample',
+
+  props: [
+    "eventData"
+  ]
   
 }
 </script>
 
 <style scoped>
+
+.img-dialog {
+  width: 35;
+}
 
 </style>
 

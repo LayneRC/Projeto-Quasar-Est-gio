@@ -128,29 +128,4 @@ export default {
 
 <style>
 
-.q-tab__indicator{
-  height: 1px !important;
-  border-radius: 0px !important;
-}
-
-.q-tab__content {
-  z-index: 0 !important;
-  position: relative !important;
-  margin-top: 0px !important;
-}
-
-.q-tabs {
-  background: white !important;
-  border-radius: 0px !important;
-  font-weight: bold !important;
-}
-
-.tab-panels {
-  border-radius: 0px !important;
-}
-
-.q-tab-panel {
-  margin-top: 0x !important;
-}
-
 </style>

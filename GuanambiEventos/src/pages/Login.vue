@@ -11,9 +11,9 @@
     <q-tabs
       dense
       v-model="tab"
-      active-color="black"
+      active-color="white"
       indicator-color="white"
-      class="bg-grey-9 text-bold text-white app-font-bold q-pa-xs q-mt-lg"
+      class="text-bold text-blue-grey-11 app-font-bold q-pa-xs q-mt-lg"
       >
         <q-tab :ripple="false" name="login">Entrar</q-tab>
         <q-tab :ripple="false" name="register">Registrar</q-tab>
@@ -91,19 +91,6 @@ export default {
 .background-login{
   background: rgb(224,62,12) !important;
   background: linear-gradient(180deg, rgba(224,62,12,1) 0%, rgba(246,115,75,1) 95%) !important;
-}
-
-
-.q-tab__content {
-  z-index: 1 !important;
-  position: absolute !important;
-  margin-top: 4px !important;
-}
-
-.q-tabs {
-  background: rgba(0, 0, 0, .4) !important;
-  border-radius: 30px !important;
-  font-weight: bold !important;
 }
 
 .q-separator {
