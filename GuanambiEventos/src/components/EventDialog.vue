@@ -27,20 +27,26 @@
               </div>
 
               <div class="row q-pl-md q-pt-sm">
-                <div class="text-grey-8 flex flex-center q-ml-sm">Categoria</div>
+                <div class="text-grey-8 flex flex-center q-ml-sm">
+                  {{ eventData.eventCategorie }}
+                </div>
               </div>
 
               <div class="row q-pl-md q-pt-md">
                 <q-icon name="las la-calendar-day" size="30px" color="grey-8" class="q-mt-xs"/>
                 <div class="q-ml-sm">
                   <div class="text-grey-8">dom, 07 jun 2020</div>
-                  <div class="text-grey-8">19:00</div>
+                  <div class="text-grey-8">
+                    {{ eventData.eventTime }}
+                  </div>
                 </div>
               </div>
 
               <div class="row q-pl-md q-pt-sm">
                 <q-icon name="las la-map-marker" size="30px" color="grey-8"/>
-                <div class="text-grey-8 flex flex-center q-ml-sm">Localização</div>
+                <div class="text-grey-8 flex flex-center q-ml-sm">
+                  {{ eventData.eventAdressLocalName }}
+                </div>
               </div>
 
               <div class="row q-pl-md q-pt-sm q-pb-sm">
@@ -58,13 +64,8 @@
               </div>
 
               <div class="row q-pl-md q-pt-sm">
-                <div class="text-grey-8 flex flex-center q-mr-md text-justify">Lorem Ipsum is simply dummy text of the printing and 
-                  typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has 
-                  survived not only five centuries, but also the leap into electronic typesetting, remaining essentially 
-                  unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum 
-                  passages, and more recently with desktop publishing software like Aldus PageMaker including versions of 
-                  Lorem Ipsum.
+                <div class="text-grey-8 flex flex-center q-mr-md text-justify">
+                  {{ eventData.eventDescription }}
                 </div>
               </div>
             </div>
@@ -78,7 +79,7 @@
 
               <div class="row q-pl-md q-pt-sm q-mb-md">
                 <div class="text-grey-8 flex flex-center q-mr-md q-mb-md text-justify">
-                  Nome do organizador
+                  {{ eventData.eventNameResponsible }}
                 </div>
               </div>
             </div>

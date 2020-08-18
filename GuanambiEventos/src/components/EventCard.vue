@@ -13,7 +13,7 @@
 
           <q-card-section class="full-width ">
             <div class="text-deep-orange-9 app-font-bold q-ml-sm">
-              {{ event.eventDateStart }}
+              {{ event.eventDateStart + " - " + event.eventTime}}
             </div>
             <div class="app-font-bold text-grey-9 q-ml-sm" style="font-size: 3vh">
               {{ event.eventName }}

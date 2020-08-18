@@ -2,6 +2,7 @@ import { LocalStorage, Loading, uid } from 'quasar'
 import { firebaseAuth, db, storage } from 'boot/firebase'
 import { showErrorMessage } from 'src/functions/function-show-error-message'
 import { firestoreAction } from 'vuexfire'
+import moment from "moment"
 
 const state = {
     loggedIn: false,
@@ -157,6 +158,7 @@ const actions = {
                             userID: user.uid,
                             eventName: payload.eventName,
                             eventCategorie: payload.modelCategorie,
+                            eventEntrace: payload.modelEntrance,
                             eventImg: downloadURL,
                             eventDateStart: payload.dateStart,
                             eventTime: payload.time,
@@ -201,12 +203,38 @@ const actions = {
         return bindFirestoreRef('events', db.collection('events'))
     }),
 
+
+    
+
+}
+
+//----------------------Dates--------------------------
+
+let today = moment().format('DD/MM/YYYY');
+console.log(today);
+
+let month = moment().format('MM/YYYY');
+console.log(month);
+
+//----------------------Getters------------------------
+
+const eventsToday = (state) => {
+    return Object.values(state.events || {}).filter(i => i.eventDateStart == today);
+    console.log(today);
+}
+
+const eventsMonth = (state) => {
+    return Object.values(state.events || {}).filter(i => i.eventDateStart.substring(3) == month);
+    console.log(month);
 }
 
 const getters = {
     events: (state) => {
         return state.events
-    }
+    },
+
+    eventsToday : eventsToday,
+    eventsMonth : eventsMonth
 
 }
 

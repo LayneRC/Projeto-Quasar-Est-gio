@@ -190,13 +190,13 @@
         
         <div class="row q-gutter-sm no-wrap q-px-md">
 
-         <q-card  v-for="n in 4" :key="n" class="my-card" style="width: 250px"  @click="dialogCard = true" >
+         <q-card  v-for="event in events" :key="event.eventID" class="my-card" style="width: 250px"  @click="dialogCard = true" >
             <q-img
               :ratio="1.2"
               src="https://cdn.quasar.dev/img/parallax2.jpg"
               >
               <div class="absolute-bottom text-subtitle2 text-center">
-                Title
+                {{ event.eventName}}
               </div>
             </q-img>   
             <q-card-section class=" items-center row">
@@ -282,6 +282,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'PageIndex',
 
@@ -296,6 +298,10 @@ export default {
       maximizedToggleCard: true,
 
     }
+  },
+
+   computed: {
+    ...mapGetters('store', ['events'])
   },
 
   methods: {
