@@ -190,30 +190,9 @@
         
         <div class="row q-gutter-sm no-wrap q-px-md">
 
-         <q-card  v-for="event in events" :key="event.eventID" class="my-card" style="width: 250px"  @click="dialogCard = true" >
-            <q-img
-              :ratio="1.2"
-              src="https://cdn.quasar.dev/img/parallax2.jpg"
-              >
-              <div class="absolute-bottom text-subtitle2 text-center">
-                {{ event.eventName}}
-              </div>
-            </q-img>   
-            <q-card-section class=" items-center row">
-              <div class="row q-mt-sm q-ml-sm col-auto">
-                <q-icon name="las la-calendar" size="25px" color="grey-6" class="q-mt-xs"/>
-                <div class="q-ml-xs app-font-light">
-                  <div>seg, 10 jun 2020</div>
-                  <div class="text-caption">12:00</div>
-                </div>
-              </div>
-              <q-space/>
-              <div class="col-auto">
-                <q-icon color="red" name="lar la-heart" size="25px" class="q-mr-sm" />
-                <q-icon color="primary" size="25px" name="o_share" class="q-mr-sm"/>
-              </div>
-            </q-card-section> 
-          </q-card>
+          <div v-for="event in events" :key="event.eventID">
+            <event-destaques :event = event />
+          </div>
 
         </div>
         
@@ -221,7 +200,7 @@
 
     </div>
 
-    <div class="row q-pl-md q-pr-md q-mt-lg q-mb-md">
+    <div class="row q-pl-md q-pr-md q-mt-lg">
       <div class="col-8 categorias app-font-bold text-grey-9">
         Vistos recentemente
       </div>
@@ -229,8 +208,12 @@
     </div>
 
     <div>
+
+      <div class=" text-center flex flex-center grey-6 app-font-light" style="height: 15vh">
+        Nenhum evento visto recentemente
+      </div>
       
-      <q-scroll-area horizontal style="height: 275px" :thumb-style="{ opacity: 0 }">
+      <!-- <q-scroll-area horizontal style="height: 275px" :thumb-style="{ opacity: 0 }">
         
         <div class="row q-gutter-sm no-wrap q-px-md q-mb-md">
 
@@ -262,7 +245,7 @@
 
         </div>
         
-      </q-scroll-area>
+      </q-scroll-area> -->
 
     </div>
 
@@ -288,7 +271,8 @@ export default {
   name: 'PageIndex',
 
   components: {
-    'event-dialog': require("components/EventDialog.vue").default
+    'event-dialog': require("components/EventDialog.vue").default,
+    'event-destaques': require("components/EventDestaques.vue").default
   },
 
   data () {

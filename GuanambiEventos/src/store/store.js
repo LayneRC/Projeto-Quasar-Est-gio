@@ -216,6 +216,14 @@ console.log(today);
 let month = moment().format('MM/YYYY');
 console.log(month);
 
+//---------------------My Events------------------------
+
+let eventUser = firebaseAuth.currentUser; 
+console.log(eventUser)
+
+var isAfter = moment().isAfter(i => i.eventDateStart);
+console.log(isAfter);
+
 //----------------------Getters------------------------
 
 const eventsToday = (state) => {
@@ -228,13 +236,19 @@ const eventsMonth = (state) => {
     console.log(month);
 }
 
+
+const eventsUserNext = (state) => {
+    return Object.values(state.events || {}).filter(i => i.userID == eventUser.uid );
+}
+
 const getters = {
     events: (state) => {
         return state.events
     },
 
     eventsToday : eventsToday,
-    eventsMonth : eventsMonth
+    eventsMonth : eventsMonth,
+    eventsUserNext : eventsUserNext
 
 }
 
