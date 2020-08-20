@@ -24,7 +24,6 @@
           no-caps
           dense
           align="justify"
-          v-model="selectedTab"
           switch-indicator
           indicator-color="deep-orange-9"
           active-color="deep-orange-9"
@@ -70,7 +69,7 @@
                 <q-icon color="grey-9" name="las la-door-open" />
               </q-item-section>
 
-              <q-item-section class="text-grey-9">
+              <q-item-section class="text-grey-9" @click="loggoutUser">
                 Sair
               </q-item-section>
             </q-item>
@@ -108,14 +107,13 @@
           no-caps
           dense
           align="justify"
-          v-model="selectedTab"
           switch-indicator
           indicator-color="deep-orange-9"
           active-color="deep-orange-9"
           :breakpoint="0"
           class="bg-white app-font-bold text-grey-7 shadow-2"
           >
-          <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/index"/>
+          <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/"/>
           <q-route-tab name="meusEventos" icon="las la-calendar-alt" label="Meus Eventos" to=""/>
           <q-route-tab clickable exact name="favoritos" icon="lar la-heart" label="Favoritos" to="/favorites"/>
           
@@ -125,6 +123,7 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'MainLayout',
@@ -136,35 +135,15 @@ export default {
       tab: 'home'
       
     }
+  },
+
+   methods: {
+    ...mapActions('store', ['loggoutUser'])
   }
 }
 </script>
 
 <style>
 
-.q-tab__indicator{
-  height: 1px !important;
-  border-radius: 0px;
-}
-
-.q-tab__content {
-  z-index: 0;
-  position: relative;
-  margin-top: 0px;
-}
-
-.q-tabs {
-  background: white !important;
-  border-radius: 0px;
-  font-weight: bold !important;
-}
-
-.tab-panels {
-  border-radius: 0px !important;
-}
-
-.q-tab-panel {
-  margin-top: 0x !important;
-}
 
 </style>

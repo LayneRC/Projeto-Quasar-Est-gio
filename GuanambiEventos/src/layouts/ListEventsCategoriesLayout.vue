@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header>
       <q-bar class="bg-white q-pa-sm text-white" style="height: 6vh">
-        <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" to="/index">
+        <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" to="/">
         </q-btn> 
         <q-space/> 
         <div class="app-font-bold text-deep-orange-9" style="margin-left: -30px">Eventos</div>  
@@ -16,7 +16,7 @@
 
             <div class="q-pt-sm text-deep-orange-9">
 
-              <q-card @click="filter='academico'" :class="academico" class="my-card shadow-box flex flex-center" >
+              <q-card @click="filter='Acadêmico'" :class="academico" class="my-card shadow-box flex flex-center" >
                 <q-card-section class="text-center">
                   <q-icon name="las la-school" size="30px"/>
                 </q-card-section>
@@ -64,7 +64,7 @@
 
             <div class="q-pt-sm text-deep-orange-9"> 
 
-              <q-card @click="filter='exposicoes'" :class="exposicoes" class="my-card shadow-box flex flex-center">
+              <q-card @click="filter='Exposições'" :class="exposicoes" class="my-card shadow-box flex flex-center">
                 <q-card-section class="text-center">
                   <q-icon name="las la-camera" size="30px"/>
                 </q-card-section>
@@ -173,6 +173,7 @@
 </template>
 
 <script>
+import { LocalStorage } from 'quasar'
 
 export default {
   name: 'ListEventsLayout',
@@ -200,7 +201,7 @@ export default {
 
   watch: {
     'filter': function (val) {
-      if(val == 'academico') {
+      if(val == 'Acadêmico') {
         this.academico = 'bg-deep-orange-9 text-white'
         this.artesVisuais = ''
         this.competicoes = ''
@@ -211,6 +212,9 @@ export default {
         this.palestras = ''
         this.religiosos= ''
         this.teatroEspetaculos= ''
+
+        LocalStorage.set('filter', val)
+
       }
       if(val == 'artesVisuais') {
         this.artesVisuais = 'bg-deep-orange-9 text-white'
@@ -223,6 +227,8 @@ export default {
         this.palestras = ''
         this.religiosos= ''
         this.teatroEspetaculos= ''
+
+        LocalStorage.set('filter', val)
       }
       if(val == 'competicoes') {
         this.competicoes = 'bg-deep-orange-9 text-white'
@@ -235,6 +241,8 @@ export default {
         this.palestras = ''
         this.religiosos= ''
         this.teatroEspetaculos= ''
+
+        LocalStorage.set('filter', val)
       }
       if(val == 'esportes') {
         this.esportes = 'bg-deep-orange-9 text-white'
@@ -247,8 +255,10 @@ export default {
         this.palestras = ''
         this.religiosos= ''
         this.teatroEspetaculos= ''
+
+        LocalStorage.set('filter', val)
       }
-      if(val == 'exposicoes') {
+      if(val == 'Exposições') {
         this.exposicoes = 'bg-deep-orange-9 text-white'
         this.academico = ''
         this.artesVisuais = ''
@@ -259,6 +269,10 @@ export default {
         this.palestras = ''
         this.religiosos= ''
         this.teatroEspetaculos= ''
+
+        LocalStorage.set('filter', val)
+
+
       }
       if(val == 'festasShows') {
         this.festasShows = 'bg-deep-orange-9 text-white'
@@ -271,6 +285,8 @@ export default {
         this.palestras = ''
         this.religiosos= ''
         this.teatroEspetaculos= ''
+
+        LocalStorage.set('filter', val)
       }
       if(val == 'online') {
         this.online = 'bg-deep-orange-9 text-white'
@@ -283,6 +299,8 @@ export default {
         this.palestras = ''
         this.religiosos= ''
         this.teatroEspetaculos= ''
+
+        LocalStorage.set('filter', val)
       }
       if(val == 'palestras') {
         this.palestras = 'bg-deep-orange-9 text-white'
@@ -295,6 +313,8 @@ export default {
         this.online = ''
         this.religiosos= ''
         this.teatroEspetaculos= ''
+
+        LocalStorage.set('filter', val)
       }
       if(val == 'religiosos') {
         this.religiosos = 'bg-deep-orange-9 text-white'
@@ -307,6 +327,8 @@ export default {
         this.online = ''
         this.palestras= ''
         this.teatroEspetaculos= ''
+
+        LocalStorage.set('filter', val)
       }
       if(val == 'teatroEspetaculos') {
         this.teatroEspetaculos = 'bg-deep-orange-9 text-white'
@@ -319,6 +341,8 @@ export default {
         this.online = ''
         this.palestras= ''
         this.religiosos= ''
+
+        LocalStorage.set('filter', val)
       }
       
       
@@ -358,29 +382,5 @@ export default {
 
 <style>
 
-.q-tab__indicator{
-  height: 1px !important;
-  border-radius: 0px;
-}
-
-.q-tab__content {
-  z-index: 0;
-  position: relative;
-  margin-top: 0px;
-}
-
-.q-tabs {
-  background: white !important;
-  border-radius: 0px;
-  font-weight: bold !important;
-}
-
-.tab-panels {
-  border-radius: 0px !important;
-}
-
-.q-tab-panel {
-  margin-top: 0x !important;
-}
 
 </style>

@@ -5,7 +5,10 @@
     
     <div class="text-center">
       <div class="logo-block">
-      <q-icon name="img:statics/icons/calendar-white.svg" size="15vh" />
+      <img 
+        src="https://image.flaticon.com/icons/svg/1142/1142731.svg" 
+        style="width: 18vh" 
+      />
     </div>
 
     <q-tabs
@@ -45,7 +48,8 @@
         </div>
         <div v-if="tab == 'login'" class="flex flex-center logo-google-login">
           <div>
-            <q-icon name="img:statics/icons/logo-google.svg" size="35px" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" 
+            style="width: 30px" />
           </div>
         </div>
         

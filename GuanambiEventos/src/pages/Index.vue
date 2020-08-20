@@ -50,7 +50,7 @@
         
         <div class="row q-gutter-md no-wrap q-px-md">
 
-          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'academico'}})">
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Acadêmico'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -98,7 +98,7 @@
 
           </div>
 
-          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'exposicoes'}})">
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Exposições'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -266,6 +266,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
+import { LocalStorage } from 'quasar'
 
 export default {
   name: 'PageIndex',
@@ -289,7 +291,22 @@ export default {
   },
 
   methods: {
+    ...mapActions('store', ['handleAuthStateChange'])
+  },
+
+  created() {
+
     
+
+     console.log(LocalStorage.getItem('reload'))
+
+    if(LocalStorage.getItem('reload') == false){
+      LocalStorage.set('reload', true)
+      window.location.reload(true);
+
+
+    }
+
   }
 }
 </script>

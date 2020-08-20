@@ -18,8 +18,11 @@
             <div class="app-font-bold text-grey-9 q-ml-sm" style="font-size: 3vh">
               {{ event.eventName }}
             </div>
-            <div class="app-font-light q-ml-sm">
+            <div v-if="!eventOnline" class="app-font-light q-ml-sm">
               {{ event.eventAdressLocalName }}
+            </div>
+            <div v-if="eventOnline" class="app-font-light q-ml-sm">
+              Online
             </div>
             <div class="row absolute-bottom reverse">
               <q-icon class="q-ml-md" name="o_share" size="27px" color="primary"/>
@@ -51,7 +54,14 @@ export default {
     return {
       dialogCard: false,
       maximizedToggleCard: true,
+      eventOnline: false
 
+    }
+  },
+
+  mounted() {
+    if(this.event.eventAdressOnline){
+      this.eventOnline = true
     }
   },
 

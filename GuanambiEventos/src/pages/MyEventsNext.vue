@@ -20,6 +20,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { LocalStorage } from 'quasar'
 
 export default {
   name: 'PageExample',
@@ -37,6 +38,17 @@ export default {
   computed: {
     ...mapGetters('store', ['eventsUserNext'])
   },
+
+  
+
+  mounted () {
+    console.log(LocalStorage.getItem('loggedInUser'))
+    console.log(this.eventsUserNext)
+
+   
+
+
+  }
 
   
   

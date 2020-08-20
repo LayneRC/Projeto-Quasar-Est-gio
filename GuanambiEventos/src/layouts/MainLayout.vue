@@ -88,14 +88,13 @@
           no-caps
           dense
           align="justify"
-          v-model="selectedTab"
           switch-indicator
           indicator-color="deep-orange-9"
           active-color="deep-orange-9"
           :breakpoint="0"
           class="bg-white app-font-bold text-grey-7 shadow-2"
           >
-          <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/index"/>
+          <q-route-tab clickable exact name="home" icon="las la-home" label="Home" to="/"/>
           <q-route-tab name="meusEventos" icon="las la-calendar-alt" label="Meus Eventos" to="/myEvents/next"/>
           <q-route-tab clickable exact name="favoritos" icon="lar la-heart" label="Favoritos" to="/favorites"/>
           

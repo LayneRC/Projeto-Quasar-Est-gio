@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header>
       <q-bar class="bg-white q-pa-sm text-white" style="height: 6vh">
-        <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" to="/index">
+        <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" to="/">
         </q-btn> 
         <q-space/> 
         <div class="app-font-bold text-deep-orange-9" style="margin-left: -30px">Eventos</div>  
@@ -56,30 +56,5 @@ export default {
 </script>
 
 <style>
-
-.q-tab__indicator{
-  height: 1px !important;
-  border-radius: 0px;
-}
-
-.q-tab__content {
-  z-index: 0;
-  position: relative;
-  margin-top: 0px;
-}
-
-.q-tabs {
-  background: white !important;
-  border-radius: 0px;
-  font-weight: bold !important;
-}
-
-.tab-panels {
-  border-radius: 0px !important;
-}
-
-.q-tab-panel {
-  margin-top: 0x !important;
-}
 
 </style>

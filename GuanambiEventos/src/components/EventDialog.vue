@@ -92,7 +92,7 @@
               </div>
 
               <div class="row q-pa-md">
-                <q-img src="/statics/imgs/map.jpg" />
+                <q-img src="https://www.descubraonline.com/public/lotericas/bahia/guanambi/ouro-branco-da-sorte-brindes-min.png" />
               </div>
             </div>
           </q-card-section> 

@@ -1,6 +1,7 @@
 import { LocalStorage, Loading, uid } from 'quasar'
 import { firebaseAuth, db, storage } from 'boot/firebase'
 import { showErrorMessage } from 'src/functions/function-show-error-message'
+import { showSucessMessage } from 'src/functions/function-show-sucess-message'
 import { firestoreAction } from 'vuexfire'
 import moment from "moment"
 
@@ -53,7 +54,9 @@ const state = {
 const mutations = {
     setLoggedIn(state, value) {
         state.loggedIn = value
-    }
+    },
+
+    
 
 }
 
@@ -96,6 +99,7 @@ const actions = {
             payload.email, payload.password)
             .then(response => {
                 console.log('response: ', response)
+                LocalStorage.set('reload', false)
             })
             
             .catch(error => {
@@ -130,22 +134,72 @@ const actions = {
             if (user) {
               commit('setLoggedIn', true)
               LocalStorage.set('loggedIn', true)
-              this.$router.push('/index').catch(err => {})
+              LocalStorage.set('loggedInUser', firebaseAuth.currentUser.uid)
+              this.$router.push('/').catch(err => {})
             } else {
                 commit('setLoggedIn', false)
                 LocalStorage.set('loggedIn', false)
-                this.$router.replace('/').catch(err => {})
+                this.$router.replace('/auth').catch(err => {})
             }
         })
     },
 
     createEvents({}, payload) {
+        Loading.show({
+            message: 'Cadastrando evento'
+        })
         db.collection('events').add({
 
         }).then(result => {
             let docID = result.id
             let user = firebaseAuth.currentUser; 
-            const storageRef =  storage.ref().child('/images/'+uid()+'.jpeg').putString(payload.image, 'data_url')
+            if(payload.image == null) {
+                db.collection("events").doc(docID).update({
+                    eventID: docID,
+                    userID: user.uid,
+                    eventName: payload.eventName,
+                    eventCategorie: payload.modelCategorie,
+                    eventEntrace: payload.modelEntrance,
+                    eventImg: '',
+                    eventDateStart: payload.dateStart,
+                    eventTime: payload.time,
+                    eventDateEnd: payload.dateEnd,
+                    eventAdressLocalName: payload.adressLocalName,
+                    eventAdressStreet: payload.adressStreet,
+                    eventAdressNumber: payload.adressNumber,
+                    eventAdressBairro: payload.adressBairro,
+                    eventAdressOnline: payload.adressOnline,
+                    eventDescription: payload.description,
+                    eventNameResponsible: payload.nameResponsible,
+                    eventWhatsappResponsible: payload.whatsapp
+                
+    
+                })
+                .then(result => {
+                    console.log("Deu certo, Glória ao Pai!")
+                    Loading.hide()
+                    this.$router.replace('/myEvents/next')
+                    var sucessMessage = 'Evento cadastrado com sucesso.'
+                    showSucessMessage(sucessMessage)
+                })
+                .catch(error => {
+                    Loading.hide()
+                    this.$router.replace('/myEvents/next')
+                    console.log("Não Salvou os dados!")
+                    console.log(error)
+                    db.collection('events').doc(docID).delete()
+                    .then(result => {
+                        console.log("Deletou!")
+                    })
+                    .catch(error => {
+                        Loading.hide()
+                        this.$router.replace('/myEvents/next')
+                        console.log("Não deletou!")
+                        console.log(error)
+                    })
+                })
+            } else {
+                const storageRef =  storage.ref().child('/images/'+uid()+'.jpeg').putString(payload.image, 'data_url')
 
             storageRef.on(
                 'state_changed',
@@ -176,8 +230,12 @@ const actions = {
                         })
                         .then(result => {
                             console.log("Deu certo, Glória ao Pai!")
+                            Loading.hide()
+                            this.$router.replace('/myEvents/next')
                         })
                         .catch(error => {
+                            Loading.hide()
+                            this.$router.replace('/myEvents/next')
                             console.log("Não Salvou os dados!")
                             console.log(error)
                             db.collection('events').doc(docID).delete()
@@ -185,6 +243,8 @@ const actions = {
                                 console.log("Deletou!")
                             })
                             .catch(error => {
+                                Loading.hide()
+                                this.$router.replace('/myEvents/next')
                                 console.log("Não deletou!")
                                 console.log(error)
                             })
@@ -192,8 +252,13 @@ const actions = {
                     })
                 }
             )
+
+            }
+            
         })
         .catch(error => {
+            Loading.hide()
+            this.$router.replace('/myEvents/next')
             console.log(error)
         })
     },
@@ -203,6 +268,8 @@ const actions = {
         return bindFirestoreRef('events', db.collection('events'))
     }),
 
+
+    
 
     
 
@@ -216,14 +283,13 @@ console.log(today);
 let month = moment().format('MM/YYYY');
 console.log(month);
 
+
 //---------------------My Events------------------------
 
 let eventUser = firebaseAuth.currentUser; 
-console.log(eventUser)
+console.log(LocalStorage.getItem('loggedInUser'))
 
-var isAfter = moment().isAfter(i => i.eventDateStart);
-console.log(isAfter);
-
+let eventToday = moment().format('YYYY/MM/DD')
 //----------------------Getters------------------------
 
 const eventsToday = (state) => {
@@ -238,7 +304,19 @@ const eventsMonth = (state) => {
 
 
 const eventsUserNext = (state) => {
-    return Object.values(state.events || {}).filter(i => i.userID == eventUser.uid );
+    return Object.values(state.events || {}).filter(i => i.userID == LocalStorage.getItem('loggedInUser')
+                                                        &&  (moment(moment(i.eventDateStart, "DD/MM/YYYY").format('YYYY/MM/DD')).isSameOrAfter(eventToday)
+                                                                || moment(moment(i.eventDateEnd, "DD/MM/YYYY").format('YYYY/MM/DD')).isSameOrAfter(eventToday)));
+}
+
+const eventsUserPast = (state) => {
+    return Object.values(state.events || {}).filter(i => i.userID == LocalStorage.getItem('loggedInUser')
+                                                        &&  (moment(moment(i.eventDateStart, "DD/MM/YYYY").format('YYYY/MM/DD')).isBefore(eventToday))
+                                                                && moment(moment(i.eventDateEnd, "DD/MM/YYYY").format('YYYY/MM/DD')).isBefore(eventToday));
+}
+
+const eventsCategorie = (state) => (categorie) => {
+    return Object.values(state.events || {}).filter(i => i.eventCategorie == categorie)
 }
 
 const getters = {
@@ -248,7 +326,9 @@ const getters = {
 
     eventsToday : eventsToday,
     eventsMonth : eventsMonth,
-    eventsUserNext : eventsUserNext
+    eventsUserNext : eventsUserNext,
+    eventsUserPast : eventsUserPast,
+    eventsCategorie : eventsCategorie
 
 }
 
