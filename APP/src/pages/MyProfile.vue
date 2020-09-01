@@ -30,32 +30,10 @@
       </q-input>
     </div>
 
-    <div class="q-mt-md">
-      <q-input ref="password" v-model="password" :readonly="editPwd" :type="isPwd ? 'password' : 'text'">
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd = !isPwd"
-          />
-          <q-icon name="edit" @click="funcEditPwd" class="cursor-pointer q-ml-md" />
-
-        </template>
-      </q-input>
+    <div class="q-mt-md text-deep-orange-9" @click="resetPwd()">
+      Redefinir senha
     </div>
 
-    <div v-if="pwdConfirmed == true" class="q-mt-md">
-      <q-input ref="password" label="Confirmar senha" v-model="passwordConfirmed" :type="isPwdConfirmed ? 'password' : 'text'">
-        <template v-slot:append>
-          <q-icon
-            :name="isPwdConfirmed ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwdConfirmed = !isPwdConfirmed"
-          />
-        </template>
-      </q-input>
-    </div>
-     
 
     <div v-if="save == true" class="flex flex-center q-mt-xl app-font-bold">
       <q-btn  color="deep-orange-9" label="Salvar" />
@@ -70,24 +48,31 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'PageExample',
 
   data () {
     return {
-      textName: 'Razvan Stoenescu',
-      textEmail: 'rstoenescu@gmail.com',
+      textName: '',
+      textEmail: '',
       editName: true,
       editEmail: true,
       editPwd: true,
       save: false,
-      password: '123456',
+      password: '',
       isPwd: true,
       isPwdConfirmed: false,
       passwordConfirmed: '',
       pwdConfirmed: false,
 
     }
+  },
+
+  mounted() {
+    this.textName = this.userData.userName,
+    this.textEmail = this.userData.userEmail
   },
 
   methods: {
@@ -111,9 +96,26 @@ export default {
       this.save = true
       this.pwdConfirmed = true
 
-    }
+    }, 
+
+    ...mapActions('store', [ 'resetPassword']),
+      
+    resetPwd() {
+                    
+      this.resetPassword()
+                
+
+      
+    },
+
+   
+  },
     
-  }
+  
+
+  computed: {
+    ...mapGetters('store', ['userData'])
+  },
   
 }
 </script>

@@ -1,0 +1,116 @@
+<template>
+  <div >
+
+      <q-card  class="my-card" style="width: 250px"  @click="dialogCard = true" >
+            <q-img
+              :ratio="1.2"
+              :src="eventData.eventImg"
+              >
+              <div class="absolute-bottom text-subtitle2 text-center">
+                {{eventData.eventName}}
+              </div>
+            </q-img>   
+            <q-card-section class=" items-center row">
+              <div class="row q-mt-sm q-ml-sm col-auto">
+                <q-icon name="las la-calendar" size="25px" color="grey-6" class="q-mt-xs"/>
+                <div class="q-ml-xs app-font-light">
+                  <div>
+                    {{ eventData.eventDateStart }}
+                  </div>
+                  <div class="text-caption">
+                    {{ eventData.eventTime }}
+                  </div>
+                </div>
+              </div>
+              <q-space/>
+              <div class="col-auto">
+                <q-icon @click.stop="addFavorite(eventData.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="red" size="25px" class="q-mr-sm" />
+                <q-icon color="primary" size="25px" name="o_share" class="q-mr-sm"/>
+              </div>
+            </q-card-section> 
+
+            <q-dialog
+                v-model="dialogCard"
+                persistent
+                :maximized="maximizedToggleCard"
+                transition-show="scale"
+                transition-hide="scale"
+                >
+                <event-dialog :eventData = this.eventData />
+            </q-dialog>
+
+          </q-card>
+
+   
+    
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
+
+export default {
+  name: 'PageExample',
+
+  data () {
+    return {
+      dialogCard: false,
+      maximizedToggleCard: true,
+      eventData: null,
+      userFavorite: 'lar la-heart',
+      heartBeat: 'none'
+    }
+  },
+
+  computed: {
+    ...mapGetters('store', ['eventFinder', 'userData'])
+  },
+
+  methods: {
+    ...mapActions('store', ['addFavorite']),
+
+    handleFavIcon(){
+      if(this.userFavorite != 'las la-heart'){
+        this.userFavorite = 'las la-heart'
+        this.heartBeat = 'animated heartBeat my-delay'
+      }
+      else{
+        this.userFavorite = 'lar la-heart'
+        this.heartBeat = 'none'
+      }
+    },
+
+    checkFavorites(){
+      console.log('Teste')
+      if (this.userData.favorites.includes(this.event)){
+        this.userFavorite = 'las la-heart'
+        this.heartBeat = 'animated heartBeat my-delay'
+      }
+      else{
+        this.userFavorite = 'lar la-heart'
+        this.heartBeat = 'none'
+      }
+    },
+  },
+
+  components: {
+    'event-dialog': require("components/EventDialog.vue").default
+  },
+
+  props: [
+      "event"
+  ],
+
+  mounted() {
+    this.checkFavorites()
+    this.eventData = this.eventFinder(this.event)
+    console.log(this.eventData)
+  }
+  
+}
+</script>
+
+<style scoped>
+
+</style>
