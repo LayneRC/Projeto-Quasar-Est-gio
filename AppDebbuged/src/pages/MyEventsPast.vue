@@ -26,7 +26,7 @@ export default {
   name: 'PageExample',
 
   components: {
-    'event-card': require("components/EventCard.vue").default
+    'event-card': require("components/MyEventCard.vue").default
   },
 
   data () {

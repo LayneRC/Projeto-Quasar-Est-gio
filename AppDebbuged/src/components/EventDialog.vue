@@ -1,5 +1,5 @@
 <template>
-  <q-card class="bg-grey-1 text-white">
+  <q-card class="bg-white text-white">
         
           <q-bar class="bg-white fixed q-px-sm q-py-lg" style="z-index: 5; width: 100%">
             <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="lg" v-close-popup>
@@ -7,7 +7,7 @@
             </q-btn>
             <q-space/>
 
-            <q-btn flat round color="deep-orange-9" size="md" icon="lar la-heart" />
+            <q-icon flat round  @click.stop="addFavorite(eventData.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="deep-orange-9" size="md" />
             <q-btn flat round color="deep-orange-9" size="md" icon="share"/>
                 
           </q-bar>
@@ -35,17 +35,25 @@
               <div class="row q-pl-md q-pt-md">
                 <q-icon name="las la-calendar-day" size="30px" color="grey-8" class="q-mt-xs"/>
                 <div class="q-ml-sm">
-                  <div class="text-grey-8">dom, 07 jun 2020</div>
+                  <div class="text-grey-8">
+                    {{date.weekDay +', '+date.day+' '+date.month+' '+date.year}}
+                  </div>
                   <div class="text-grey-8">
                     {{ eventData.eventTime }}
                   </div>
                 </div>
               </div>
 
-              <div class="row q-pl-md q-pt-sm">
+              <div v-if="!eventOnline" class="row q-pl-md q-pt-sm">
                 <q-icon name="las la-map-marker" size="30px" color="grey-8"/>
                 <div class="text-grey-8 flex flex-center q-ml-sm">
                   {{ eventData.eventAdressLocalName }}
+                </div>
+              </div>
+              <div v-if="eventOnline" class="row q-pl-md q-pt-sm">
+                <q-icon name="las la-at" size="30px" color="grey-8"/>
+                <div class="text-grey-8 flex flex-center q-ml-sm">
+                  {{ eventData.eventAdressOnline }}
                 </div>
               </div>
 
@@ -57,8 +65,10 @@
       
           </q-card-section>
 
+          <q-separator inset class="q-my-md"/>
+
           <q-card-section >
-            <div class="bg-white q-mt-md">
+            <div class="bg-white">
               <div class="text-grey-9 app-font-bold q-pt-sm q-pl-md">
                 Descrição
               </div>
@@ -71,8 +81,10 @@
             </div>
           </q-card-section>
 
+          <q-separator inset class="q-my-md"/>
+
           <q-card-section >
-            <div class="bg-white q-mt-md">
+            <div class="bg-white">
               <div class="text-grey-9 app-font-bold q-pt-sm q-pl-md">
                 Organizador
               </div>
@@ -85,8 +97,10 @@
             </div>
           </q-card-section> 
 
+          <q-separator inset class="q-my-md"/>
+
           <q-card-section >
-            <div class="bg-white q-mt-md">
+            <div class="bg-white">
               <div class="text-grey-9 app-font-bold q-pt-sm q-pl-md">
                 Localização
               </div>
@@ -100,16 +114,73 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
+import * as moment from 'moment';
+import 'moment/locale/pt-br';
+
 export default {
   name: 'PageExample',
 
+  data () {
+    return {
+      userFavorite: 'lar la-heart',
+      heartBeat: 'animated heartBeat my-delay',
+      eventOnline: false,
+       date:{
+        day: null,
+        month: null,
+        year: null,
+        weekDay: null
+      }
+    }
+  },
+
    methods: {
-    ...mapActions('store', ['eventsHistory'])
+    ...mapActions('store', ['eventsHistory', 'addFavorite']),
+
+
+    handleFavIcon(){
+      if(this.userFavorite != 'las la-heart'){
+        this.userFavorite = 'las la-heart'
+        this.heartBeat = 'animated heartBeat my-delay'
+      }
+      else{
+        this.userFavorite = 'lar la-heart'
+        this.heartBeat = 'none'
+      }
+    },
+
+    checkFavorites(){
+      console.log('Teste')
+      if (this.userData.favorites.includes(this.eventData.eventID)){
+        this.userFavorite = 'las la-heart'
+        this.heartBeat = 'animated heartBeat my-delay'
+      }
+      else{
+        this.userFavorite = 'lar la-heart'
+        this.heartBeat = 'none'
+      }
+    },
   },
 
   mounted() {
-    this.eventsHistory(this.eventData.eventID)
+    this.eventsHistory(this.eventData.eventID),
+
+    this.checkFavorites()
+    this.date.day = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("D")
+    this.date.month = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("MMM")
+    this.date.year = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("YYYY")
+    this.date.weekDay = (moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("ddd"))
+    this.date.weekDay = this.date.weekDay.charAt(0).toUpperCase() + this.date.weekDay.slice(1)
+    this.date.month = this.date.month.charAt(0).toUpperCase() + this.date.month.slice(1)
+    console.log(this.date)
+    if(this.eventData.eventAdressOnline){
+      this.eventOnline = true
+    }
+  },
+
+  computed: {
+    ...mapGetters('store', ['userData'])
   },
 
   props: [
