@@ -5,6 +5,7 @@ const routes = [
     component: () => import('layouts/AuthLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Login.vue') },
+      { path: 'loading', component: () => import('pages/LoadingData.vue') },
 
     ]
   },
@@ -14,7 +15,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
-      
+      { path: 'loading', component: () => import('pages/LoadingData.vue') }
     ]
   },
 

@@ -27,7 +27,7 @@
               Online
             </div>
             <div class="row absolute-bottom reverse">
-              <q-icon class="q-ml-md" name="o_share" size="27px" color="primary"/>
+              <q-icon class="q-ml-md" name="o_share" size="27px" color="blue-9"/>
               <q-icon @click.stop="addFavorite(event.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite size="27px" color="red"/>
             </div>
           </q-card-section>
@@ -35,7 +35,6 @@
 
         <q-dialog
           v-model="dialogCard"
-          persistent
           :maximized="maximizedToggleCard"
           transition-show="scale"
           transition-hide="scale"

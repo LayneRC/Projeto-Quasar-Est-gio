@@ -73,7 +73,6 @@ const objToArray = obj => Object.values(obj);
 
 const actions = {
     registerUser ({}, payload) {
-        LocalStorage.set('reload', false)
         Loading.show({
             message: 'Registrando usuário'
           })
@@ -86,9 +85,11 @@ const actions = {
                 userName: payload.name.toUpperCase(),
                 userEmail: payload.email,
                 userNivel: 'usuario',
+                userUrlImage: 'https://image.flaticon.com/icons/svg/747/747376.svg',
                 favorites: [],
                 eventsHistory: []
             })
+            LocalStorage.set('reload', false)
         })
         .catch(error => {
             var errorCode = error.code;
@@ -105,13 +106,13 @@ const actions = {
     },
 
     loginUser ({}, payload) {
-        LocalStorage.set('reload', false)
         Loading.show({
             message: 'Validando usuário'
           })
         firebaseAuth.signInWithEmailAndPassword(
             payload.email, payload.password)
             .then(response => {
+                LocalStorage.set('reload', false)
                 console.log('response: ', response)
             })
             
@@ -148,7 +149,7 @@ const actions = {
               commit('setLoggedIn', true)
               LocalStorage.set('loggedIn', true)
               LocalStorage.set('loggedInUser', firebaseAuth.currentUser.uid)
-              this.$router.push('/').catch(err => {})
+              this.$router.push('/loading').catch(err => {})
             } else {
                 commit('setLoggedIn', false)
                 LocalStorage.set('loggedIn', false)
@@ -196,6 +197,12 @@ const actions = {
                     this.$router.replace('/myEvents/next')
                     var sucessMessage = 'Evento cadastrado com sucesso.'
                     showSucessMessage(sucessMessage)
+                    Dialog.create({
+                
+                        title: '<div class="q-pa-sm text-center text-deep-orange-9 app-font-bold">Evento enviado para análise!</div>',
+                        html: true 
+                      
+                  })
                 })
                 .catch(error => {
                     Loading.hide()
@@ -214,7 +221,7 @@ const actions = {
                     })
                 })
             } else {
-                const storageRef =  storage.ref().child('/images/'+uid()+'.jpeg').putString(payload.image, 'data_url')
+                const storageRef =  storage.ref().child('/images/events/'+uid()+'.jpeg').putString(payload.image, 'data_url')
 
             storageRef.on(
                 'state_changed',
@@ -422,25 +429,86 @@ const actions = {
         })
     }),
 
-   resetPassword({state}) {
-    var auth = firebaseAuth;
-    var emailAddress = state.userData.userEmail;
-    
-    auth.sendPasswordResetEmail(emailAddress).then(function() {
-        console.log('email enviado')
-        Dialog.create({
-            
-              title: '<div class="q-pa-sm text-center text-deep-orange-9 app-font-bold">Verifique seu email</div>',
-              message: '<div class="q-pa-md app-font-light text-grey-10"> Um link para alteração da senha foi enviado para seu email! </div>',
-              html: true 
-            
-        })
+
+    resetPassword({state}) {
+        var auth = firebaseAuth;
+        var emailAddress = state.userData.userEmail;
         
-    }).catch(function(error) {
-        console.log('email não enviado')
-    });
-   }
-    
+        auth.sendPasswordResetEmail(emailAddress).then(function() {
+            console.log('email enviado')
+            Dialog.create({
+                
+                  title: '<div class="q-pa-sm text-center text-deep-orange-9 app-font-bold">Verifique seu email</div>',
+                  message: '<div class="q-pa-md app-font-light text-grey-10"> Um link para alteração da senha foi enviado para seu email! </div>',
+                  html: true 
+                
+            })
+            
+        }).catch(function(error) {
+            console.log('email não enviado')
+        });
+    },
+
+    updateUser({state}, payload) {
+        var userID = firebaseAuth.currentUser.uid;
+        console.log(userID)
+
+        const credential = firebase.auth.EmailAuthProvider.credential(
+            state.userData.userEmail, 
+            payload.validPassword
+        );
+
+        firebaseAuth.currentUser.reauthenticateWithCredential(credential).then(function() {
+            db.collection('users').where('userID', '==', userID).get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    console.log(doc.data())
+                    firebaseAuth.currentUser.updateEmail(payload.textEmail).then(function() {
+                        console.log('atualizado email')
+                        if(payload.userImage == null){
+                            db.collection('users').doc(doc.id).update({
+                                userName: payload.textName,
+                                userEmail: payload.textEmail
+                            }).then(result => {
+                                console.log('atualizou doc')
+                            }).catch(error => {
+                                console.log('não atualizou doc')
+                            })
+                        } else {
+                            const storageRef =  storage.ref().child('/images/users/'+uid()+'.jpeg').putString(payload.userImage, 'data_url')
+
+                            storageRef.on(
+                                'state_changed',
+                                snapshot => console.log(snapshot),
+                                error => console.log(error),
+                                () => {
+                                    storageRef.snapshot.ref.getDownloadURL().then(downloadURL => {
+                                        db.collection('users').doc(doc.id).update({
+                                            userName: payload.textName,
+                                            userEmail: payload.textEmail,
+                                            userUrlImage: downloadURL
+                                        }).then(result => {
+                                            console.log('atualizou doc')
+                                        }).catch(error => {
+                                            console.log('não atualizou doc')
+                                        })
+                                    }
+                                )}
+                            )               
+                        }        
+                    }).catch(function(error) {
+                        console.log('não atualizado email')
+                    });
+                })
+            }).catch(error => {
+
+            })
+        }).catch(function(error) {
+            console.log('vc ñ é vc')
+        });
+
+        
+    }
 
     
 

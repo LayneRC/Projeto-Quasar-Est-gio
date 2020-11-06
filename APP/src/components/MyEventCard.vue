@@ -5,7 +5,7 @@
         <q-card-section horizontal>
           <q-img
             class="col-5"
-            :src="eventData.eventImg"
+            :src="event.eventImg"
             :ratio="1"
             style="border-radius: 3px"
             
@@ -15,32 +15,34 @@
             <div class="text-deep-orange-9 app-font-bold q-ml-sm">
               {{date.weekDay +', '+date.day+' '+date.month+' '+date.year}}
               <br>
-              {{eventData.eventTime}}
+              {{event.eventTime}}
             </div>
             <div class="app-font-bold text-grey-9 q-ml-sm" style="font-size: 3vh">
-              {{ eventData.eventName }}
+              {{ event.eventName }}
             </div>
             <div v-if="!eventOnline" class="app-font-light q-ml-sm">
-              {{ eventData.eventAdressLocalName }}
+              {{ event.eventAdressLocalName }}
             </div>
             <div v-if="eventOnline" class="app-font-light q-ml-sm">
               Online
             </div>
             <div class="row absolute-bottom reverse">
               <q-icon class="q-ml-md" name="o_share" size="27px" color="blue-9"/>
-              <q-icon @click.stop="addFavorite(event); handleFavIcon();" :class="heartBeat" :name= userFavorite size="27px" color="red"/>
+              <div>
+                <q-icon name= "las la-heart" size="27px" color="red"/>
+                {{ event.likes }}
+              </div>
             </div>
           </q-card-section>
         </q-card-section>
 
         <q-dialog
           v-model="dialogCard"
-          persistent
           :maximized="maximizedToggleCard"
           transition-show="scale"
           transition-hide="scale"
           >
-          <event-dialog :eventData = this.eventData />
+          <event-dialog :eventData = this.event />
         </q-dialog>
 
       </q-card>
@@ -62,7 +64,6 @@ export default {
       dialogCard: false,
       maximizedToggleCard: true,
       eventOnline: false,
-      eventData: {},
       userFavorite: 'lar la-heart',
       heartBeat: 'animated heartBeat my-delay',
       date:{
@@ -76,43 +77,18 @@ export default {
   },
 
   computed: {
-    ...mapGetters('store', ['userData', 'eventFinder'])
+    ...mapGetters('store', ['userData'])
   },
 
   methods: {
-    ...mapActions('store', ['addFavorite']),
 
-    handleFavIcon(){
-      if(this.userFavorite != 'las la-heart'){
-        this.userFavorite = 'las la-heart'
-        this.heartBeat = 'animated heartBeat my-delay'
-      }
-      else{
-        this.userFavorite = 'lar la-heart'
-        this.heartBeat = 'none'
-      }
-    },
-
-    checkFavorites(){
-      console.log('Teste')
-      if (this.userData.favorites.includes(this.event)){
-        this.userFavorite = 'las la-heart'
-        this.heartBeat = 'animated heartBeat my-delay'
-      }
-      else{
-        this.userFavorite = 'lar la-heart'
-        this.heartBeat = 'none'
-      }
-    },
   },
 
   mounted() {
-    this.eventData = this.eventFinder(this.event)
-    this.checkFavorites()
-    this.date.day = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("D")
-    this.date.month = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("MMM")
-    this.date.year = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("YYYY")
-    this.date.weekDay = (moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("ddd"))
+    this.date.day = moment(this.event.eventDateStart, "DD/MM/YYYY").format("D")
+    this.date.month = moment(this.event.eventDateStart, "DD/MM/YYYY").format("MMM")
+    this.date.year = moment(this.event.eventDateStart, "DD/MM/YYYY").format("YYYY")
+    this.date.weekDay = (moment(this.event.eventDateStart, "DD/MM/YYYY").format("ddd"))
     this.date.weekDay = this.date.weekDay.charAt(0).toUpperCase() + this.date.weekDay.slice(1)
     this.date.month = this.date.month.charAt(0).toUpperCase() + this.date.month.slice(1)
     console.log(this.date)

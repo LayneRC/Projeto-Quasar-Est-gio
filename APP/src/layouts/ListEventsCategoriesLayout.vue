@@ -28,7 +28,7 @@
 
             <div class="q-pt-sm text-deep-orange-9">
 
-              <q-card  @click="filter='artesVisuais'" :class="artesVisuais" class="my-card shadow-box flex flex-center">
+              <q-card  @click="filter='Artes Visuais'" :class="artesVisuais" class="my-card shadow-box flex flex-center">
                 <q-card-section class="text-center ">
                   <q-icon name="las la-palette" size="30px"/>
                 </q-card-section>
@@ -40,7 +40,7 @@
 
             <div class="q-pt-sm text-deep-orange-9">
 
-              <q-card @click="filter='competicoes'" :class="competicoes" class="my-card shadow-box flex flex-center">
+              <q-card @click="filter='Competições'" :class="competicoes" class="my-card shadow-box flex flex-center">
                 <q-card-section class="text-center">
                   <q-icon name="las la-trophy" size="30px"/>
                 </q-card-section>
@@ -52,7 +52,7 @@
 
             <div class="q-pt-sm text-deep-orange-9">
 
-              <q-card @click="filter='esportes'" :class="esportes" class="my-card shadow-box flex flex-center">
+              <q-card @click="filter='Esportes'" :class="esportes" class="my-card shadow-box flex flex-center">
                 <q-card-section class="text-center">
                   <q-icon name="las la-futbol" size="30px"/>
                 </q-card-section>
@@ -76,7 +76,7 @@
 
             <div class="q-pt-sm text-deep-orange-9">
 
-              <q-card @click="filter='festasShows'" :class="festasShows" class="my-card shadow-box flex flex-center">
+              <q-card @click="filter='Festas e Shows'" :class="festasShows" class="my-card shadow-box flex flex-center">
                 <q-card-section class="text-center">
                   <q-icon name="las la-music" size="30px"/>
                 </q-card-section>
@@ -89,7 +89,7 @@
 
             <div class="q-pt-sm text-deep-orange-9">
 
-              <q-card @click="filter='online'" :class="online" class="my-card shadow-box flex flex-center">
+              <q-card @click="filter='Online'" :class="online" class="my-card shadow-box flex flex-center">
                 <q-card-section class="text-center">
                   <q-icon name="las la-wifi" size="30px"/>
                 </q-card-section>
@@ -101,7 +101,7 @@
 
             <div class="q-pt-sm text-deep-orange-9">
 
-              <q-card @click="filter='palestras'" :class="palestras" class="my-card shadow-box flex flex-center">
+              <q-card @click="filter='Palestras'" :class="palestras" class="my-card shadow-box flex flex-center">
                 <q-card-section class="text-center">
                   <q-icon name="las la-chalkboard-teacher" size="30px"/>
                 </q-card-section>
@@ -113,7 +113,7 @@
 
             <div class="q-pt-sm text-deep-orange-9">
 
-              <q-card @click="filter='religiosos'" :class="religiosos" class="my-card shadow-box flex flex-center">
+              <q-card @click="filter='Religiosos'" :class="religiosos" class="my-card shadow-box flex flex-center">
                 <q-card-section class="text-center">
                   <q-icon name="las la-praying-hands" size="30px"/>
                 </q-card-section>
@@ -125,7 +125,7 @@
 
             <div class="q-pt-sm text-deep-orange-9">
 
-              <q-card @click="filter='teatroEspetaculos'" :class="teatroEspetaculos" class="my-card shadow-box flex flex-center">
+              <q-card @click="filter='Teatro e Espetáculos'" :class="teatroEspetaculos" class="my-card shadow-box flex flex-center">
                 <q-card-section class="text-center">
                   <q-icon name="las la-theater-masks" size="30px"/>
                 </q-card-section>
@@ -218,7 +218,7 @@ export default {
         LocalStorage.set('filter', val)
 
       }
-      if(val == 'artesVisuais') {
+      if(val == 'Artes Visuais') {
         this.artesVisuais = 'bg-deep-orange-9 text-white'
         this.academico = ''
         this.competicoes = ''
@@ -232,7 +232,7 @@ export default {
 
         LocalStorage.set('filter', val)
       }
-      if(val == 'competicoes') {
+      if(val == 'Competições') {
         this.competicoes = 'bg-deep-orange-9 text-white'
         this.academico = ''
         this.artesVisuais = ''
@@ -246,7 +246,7 @@ export default {
 
         LocalStorage.set('filter', val)
       }
-      if(val == 'esportes') {
+      if(val == 'Esportes') {
         this.esportes = 'bg-deep-orange-9 text-white'
         this.academico = ''
         this.artesVisuais = ''
@@ -276,7 +276,7 @@ export default {
 
 
       }
-      if(val == 'festasShows') {
+      if(val == 'Festas e Shows') {
         this.festasShows = 'bg-deep-orange-9 text-white'
         this.academico = ''
         this.artesVisuais = ''
@@ -290,7 +290,7 @@ export default {
 
         LocalStorage.set('filter', val)
       }
-      if(val == 'online') {
+      if(val == 'Online') {
         this.online = 'bg-deep-orange-9 text-white'
         this.academico = ''
         this.artesVisuais = ''
@@ -304,7 +304,7 @@ export default {
 
         LocalStorage.set('filter', val)
       }
-      if(val == 'palestras') {
+      if(val == 'Palestras') {
         this.palestras = 'bg-deep-orange-9 text-white'
         this.academico = ''
         this.artesVisuais = ''
@@ -318,7 +318,7 @@ export default {
 
         LocalStorage.set('filter', val)
       }
-      if(val == 'religiosos') {
+      if(val == 'Religiosos') {
         this.religiosos = 'bg-deep-orange-9 text-white'
         this.academico = ''
         this.artesVisuais = ''
@@ -332,7 +332,7 @@ export default {
 
         LocalStorage.set('filter', val)
       }
-      if(val == 'teatroEspetaculos') {
+      if(val == 'Teatro e Espetáculos') {
         this.teatroEspetaculos = 'bg-deep-orange-9 text-white'
         this.academico = ''
         this.artesVisuais = ''
@@ -365,19 +365,19 @@ export default {
   mounted () {
     this.eventFilter(this.filter)
     this.filter = this.$route.params.categorie
-      if (this.filter == 'esportes') {
+      if (this.filter == 'Esportes') {
         this.$refs.scrollCategories.setScrollPosition (45)
       }
-     if (this.filter == 'exposicoes'
-          || this.filter == 'festasShows'
-          || this.filter == 'online') {
+     if (this.filter == 'Exposições'
+          || this.filter == 'Festas e Shows'
+          || this.filter == 'Online') {
       this.$refs.scrollCategories.setScrollPosition (345)
     }
-    if (this.filter == 'palestras') {
+    if (this.filter == 'Palestras') {
       this.$refs.scrollCategories.setScrollPosition (375)
     }
-    if (this.filter == 'religiosos'
-          || this.filter == 'teatroEspetaculos') {
+    if (this.filter == 'Religiosos'
+          || this.filter == 'Teatro e Espetáculos') {
       this.$refs.scrollCategories.setScrollPosition (545)
     }
   }

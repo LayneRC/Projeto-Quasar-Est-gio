@@ -25,13 +25,12 @@
               <q-space/>
               <div class="col-auto">
                 <q-icon @click.stop="addFavorite(event.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="red" size="25px" class="q-mr-sm" />
-                <q-icon color="primary" size="25px" name="o_share" class="q-mr-sm"/>
+                <q-icon color="blue-9" size="25px" name="o_share" class="q-mr-sm"/>
               </div>
             </q-card-section> 
 
             <q-dialog
                 v-model="dialogCard"
-                persistent
                 :maximized="maximizedToggleCard"
                 transition-show="scale"
                 transition-hide="scale"

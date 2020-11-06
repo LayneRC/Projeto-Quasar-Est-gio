@@ -62,7 +62,7 @@
 
           </div>
 
-          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'artesVisuais'}})">
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Artes Visuais'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center ">
@@ -74,7 +74,7 @@
 
           </div>
 
-          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'competicoes'}})">
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Competições'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -86,7 +86,7 @@
 
           </div>
 
-          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'esportes'}})">
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Esportes'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -110,7 +110,7 @@
 
           </div>
 
-          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'festasShows'}})">
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Festas e Shows'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -123,7 +123,7 @@
           </div>
 
 
-          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'online'}})">
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Online'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -135,7 +135,7 @@
 
           </div>
 
-           <div clickable @click="$router.push({name: 'allName', params: {categorie: 'palestras'}})">
+           <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Palestras'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -147,7 +147,7 @@
 
           </div>
 
-          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'religiosos'}})">
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Religiosos'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -159,7 +159,7 @@
 
           </div>
 
-          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'teatroEspetaculos'}})">
+          <div clickable @click="$router.push({name: 'allName', params: {categorie: 'Teatro e Espetáculos'}})">
 
             <q-card class="my-card shadow-box flex flex-center">
               <q-card-section class="text-center">
@@ -311,18 +311,18 @@ export default {
     console.log('isso', this.userData.eventsHistory)
   },
 
-  created() {
+  // created() {
 
-     console.log(LocalStorage.getItem('reload'))
+  //    console.log(LocalStorage.getItem('reload'))
 
-    if(LocalStorage.getItem('reload') == false){
-      LocalStorage.set('reload', true)
-      window.location.reload(true);
+  //   if(LocalStorage.getItem('reload') == false){
+  //     LocalStorage.set('reload', true)
+  //     window.location.reload(true);
 
 
-    }
+  //   }
 
-  }
+  // }
 }
 </script>
 
