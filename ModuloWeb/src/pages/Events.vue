@@ -1,6 +1,6 @@
 <template>
-  <q-page class="bg-orange-2 q-pa-md">
-    <div class="bg-white">
+  <q-page class="bg-grey-1 q-pa-md">
+    <div class="bg-grey-1">
       <q-tabs
       indicator-color="deep-orange-9"
       active-color="deep-orange-9"

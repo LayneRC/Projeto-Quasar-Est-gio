@@ -18,15 +18,15 @@
         <div class="row q-pa-sm">
           <div class="col-11 text-h6">Gerenciamento do sistema:</div>
         </div>
-        <div class="row">
+        <div class="row shadow-2">
           <q-tabs
-          indicator-color="primary"
+          indicator-color="white"
           active-color="white"
           inline-label
           class="col-8"
           align="left">
             <q-route-tab to="/" name="inicio" label="Inicio" icon="home" />
-            <q-route-tab to="/events/pendent" name="events" label="Gerenciar eventos" icon="assignment_turned_in" />
+            <q-route-tab to="/events/" name="events" label="Gerenciar eventos" icon="assignment_turned_in" />
             <q-route-tab to="/users" name="usuarios" label="Gerenciar usuários" icon="supervisor_account" />
           </q-tabs>
         </div>

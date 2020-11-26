@@ -9,6 +9,7 @@ const routes = [
         path: 'events',
         component: () => import('pages/Events.vue'),
         children: [
+          { path: '', component: () => import('pages/PendentEvents.vue') },
           { path: 'pendent', component: () => import('pages/PendentEvents.vue') },
           { path: 'approved', component: () => import('pages/ApprovedEvents.vue') },
           { path: 'reproved', component: () => import('pages/ReprovedEvents.vue') }
