@@ -7,8 +7,8 @@
             </q-btn>
             <q-space/>
 
-            <q-icon flat round  @click.stop="addFavorite(eventData.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="deep-orange-9" size="md" />
-            <q-btn flat round color="deep-orange-9" size="md" icon="share"/>
+            <q-icon v-if="eventData.eventStatus != 3" flat round  @click.stop="addFavorite(eventData.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="deep-orange-9" size="md" />
+            <q-btn v-if="eventData.eventStatus != 3" flat round color="deep-orange-9" size="md" icon="share"/>
                 
           </q-bar>
         
@@ -19,6 +19,11 @@
               basic
               :ratio="16/9"
               >
+              <div v-if="eventData.eventStatus == 3" class="absolute canceledEvent flex flex-center">
+                <div class="nameCanceledEvent text-bold text-red-10">
+                  CANCELADO
+                </div>
+              </div>
             </q-img> 
 
             <div class="bg-white ">
@@ -465,6 +470,21 @@ export default {
 #online{
   min-height: 300px;
   height: 100%;
+}
+
+.canceledEvent {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(211, 31, 31, 0.2);
+  z-index: 1;
+}
+
+.nameCanceledEvent {
+  font-size: 26px;
+  text-shadow: rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,
+             rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px;  
+  -webkit-font-smoothing: antialiased;
+  
 }
 
 </style>

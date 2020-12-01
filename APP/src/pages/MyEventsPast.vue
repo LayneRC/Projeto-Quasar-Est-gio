@@ -1,20 +1,11 @@
 <template>
   <q-page >
-
      <div class="q-pa-sm q-gutter-sm">
       <div v-for="event in eventsUserPast" :key="event.eventID">
         <event-card :event = event />
       </div>
-
-      
-
     </div>
-
-    
-
-
-   
-    
+    <div v-if="space" style="min-height: 80px"/>
   </q-page>
 </template>
 
@@ -31,7 +22,7 @@ export default {
 
   data () {
     return {
-      
+      space: false
     }
   },
 
@@ -39,9 +30,10 @@ export default {
     ...mapGetters('store', ['eventsUserPast'])
   },
 
-  
-
   mounted () {
+    if(this.eventsUserPast.length > 1){
+      this.space = true
+    }
 
   }
 

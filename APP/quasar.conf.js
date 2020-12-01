@@ -17,7 +17,8 @@ module.exports = function (/* ctx */) {
       'i18n',
       'axios',
       'firebase',
-      'router-auth'
+      'router-auth',
+      'hello'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -62,7 +63,7 @@ module.exports = function (/* ctx */) {
         'LocalStorage',
         'Dialog',
         'Notify',
-        'Loading'
+        'Loading',
       ]
     },
 

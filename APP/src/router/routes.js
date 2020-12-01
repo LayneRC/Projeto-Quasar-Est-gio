@@ -74,6 +74,17 @@ const routes = [
     component: () => import('layouts/NewEventLayout.vue'),
     children: [
       { path: '', component: () => import('pages/NewEvent.vue') },
+      { path: 'edit', component: () => import('pages/EditEvent.vue') },
+
+
+    ]
+  },
+
+  {
+    path: '/EditEvent',
+    component: () => import('layouts/EditEventLayout.vue'),
+    children: [
+      { path: '', name: 'edit', component: () => import('pages/EditEvent.vue') },
 
 
     ]

@@ -47,7 +47,7 @@
           <q-separator v-if="tab == 'login'" color="white" inset />
         </div>
         <div v-if="tab == 'login'" class="flex flex-center logo-google-login">
-          <div>
+          <div @click="auth('facebook')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" 
             style="width: 30px" />
           </div>
@@ -84,7 +84,12 @@ export default {
   },
 
   methods: {
-    
+    auth (network) {
+      this.$hello(network).login({ scope: 'friends' })
+        .then((res) => {
+          this.$router.push('index')
+        })
+    }
     
   }
 }

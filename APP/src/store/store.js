@@ -180,6 +180,7 @@ const actions = {
                     eventDateStart: payload.dateStart,
                     eventTime: payload.time,
                     eventDateEnd: payload.dateEnd,
+                    eventAdressOption: payload.adressOption,
                     eventAdressLocalName: payload.adressLocalName,
                     eventAdressStreet: payload.adressStreet,
                     eventAdressNumber: payload.adressNumber,
@@ -299,7 +300,6 @@ const actions = {
             db.collection('users').where("userID", "==", LocalStorage.getItem('loggedInUser')).get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
-                    console.log(doc.data())
                     db.collection('users').doc(doc.id).update({
                         favorites: firebase.firestore.FieldValue.arrayUnion(eventID)
                     })
@@ -508,6 +508,148 @@ const actions = {
         });
 
         
+    },
+
+    cancelEvents({state}, id){
+        db.collection('events').where('eventID', '==', id).get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                console.log(doc.data())
+                db.collection('events').doc(doc.id).update({
+                    eventStatus: 3,
+                }).then(result => {
+                    console.log('cancelou')
+                }).catch(error => {
+                    console.log('não cancelou')
+                })
+            })
+        })
+    },
+
+    updateEvent({state}, payload){
+        var id = payload.id
+        console.log(payload)
+        db.collection('events').where('eventID', '==', id).get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                console.log(doc.data())
+                if(payload.eventImage == null){
+                    if ((payload.adressOption == 'Online' && payload.adressLocalName == '') ||
+                    (payload.adressOption == 'Físico' && payload.adressOnline != '')){
+                    db.collection('events').doc(doc.id).update({
+                        eventName: payload.eventName,
+                        eventCategorie: payload.modelCategorie,
+                        eventEntrace: payload.modelEntrance,
+                        eventDateStart: payload.dateStart,
+                        eventTime: payload.time,
+                        eventDateEnd: payload.dateEnd,
+                        eventAdressOption: payload.adressOption,
+                        eventAdressLocalName: '',
+                        eventAdressStreet: '',
+                        eventAdressNumber: '',
+                        eventAdressBairro: '',
+                        eventAdressOnline: payload.adressOnline,
+                        eventDescription: payload.description,
+                        eventNameResponsible: payload.nameResponsible,
+                        eventWhatsappResponsible: payload.whatsapp
+                    }).then(result => {
+                        console.log('alterou')
+                    }).catch(error => {
+                        console.log('não alterou')
+                    })
+                    }if ((payload.adressOption == 'Físico' && payload.adressOnline == '') ||
+                        (payload.adressOption == 'Online' && payload.adressLocalName != '')) {
+                        db.collection('events').doc(doc.id).update({
+                            eventName: payload.eventName,
+                            eventCategorie: payload.modelCategorie,
+                            eventEntrace: payload.modelEntrance,
+                            eventDateStart: payload.dateStart,
+                            eventTime: payload.time,
+                            eventDateEnd: payload.dateEnd,
+                            eventAdressOption: payload.adressOption,
+                            eventAdressLocalName: payload.adressLocalName,
+                            eventAdressStreet: payload.adressStreet,
+                            eventAdressNumber: payload.adressNumber,
+                            eventAdressBairro: payload.adressBairro,
+                            eventAdressOnline: '',
+                            eventDescription: payload.description,
+                            eventNameResponsible: payload.nameResponsible,
+                            eventWhatsappResponsible: payload.whatsapp
+                        }).then(result => {
+                            console.log('alterou')
+                        }).catch(error => {
+                            console.log('não alterou')
+                        })
+                
+                    }
+                } else {
+                    const storageRef =  storage.ref().child('/images/events/'+uid()+'.jpeg').putString(payload.eventImage, 'data_url')
+
+                    storageRef.on(
+                        'state_changed',
+                        snapshot => console.log(snapshot),
+                        error => console.log(error),
+                        () => {
+                            storageRef.snapshot.ref.getDownloadURL().then(downloadURL => {
+                                if ((payload.adressOption == 'Online' && payload.adressLocalName == '') ||
+                                    (payload.adressOption == 'Físico' && payload.adressOnline != '')){
+                                    db.collection('events').doc(doc.id).update({
+                                        eventName: payload.eventName,
+                                        eventCategorie: payload.modelCategorie,
+                                        eventEntrace: payload.modelEntrance,
+                                        eventImg: downloadURL,
+                                        eventDateStart: payload.dateStart,
+                                        eventTime: payload.time,
+                                        eventDateEnd: payload.dateEnd,
+                                        eventAdressOption: payload.adressOption,
+                                        eventAdressLocalName: '',
+                                        eventAdressStreet: '',
+                                        eventAdressNumber: '',
+                                        eventAdressBairro: '',
+                                        eventAdressOnline: payload.adressOnline,
+                                        eventDescription: payload.description,
+                                        eventNameResponsible: payload.nameResponsible,
+                                        eventWhatsappResponsible: payload.whatsapp
+                                    }).then(result => {
+                                        console.log('alterou')
+                                    }).catch(error => {
+                                        console.log('não alterou')
+                                    })
+                                }if ((payload.adressOption == 'Físico' && payload.adressOnline == '') ||
+                                    (payload.adressOption == 'Online' && payload.adressLocalName != '')) {
+                                    db.collection('events').doc(doc.id).update({
+                                        eventName: payload.eventName,
+                                        eventCategorie: payload.modelCategorie,
+                                        eventEntrace: payload.modelEntrance,
+                                        eventImg: downloadURL,
+                                        eventDateStart: payload.dateStart,
+                                        eventTime: payload.time,
+                                        eventDateEnd: payload.dateEnd,
+                                        eventAdressOption: payload.adressOption,
+                                        eventAdressLocalName: payload.adressLocalName,
+                                        eventAdressStreet: payload.adressStreet,
+                                        eventAdressNumber: payload.adressNumber,
+                                        eventAdressBairro: payload.adressBairro,
+                                        eventAdressOnline: '',
+                                        eventDescription: payload.description,
+                                        eventNameResponsible: payload.nameResponsible,
+                                        eventWhatsappResponsible: payload.whatsapp
+                                    }).then(result => {
+                                        console.log('alterou')
+                                    }).catch(error => {
+                                        console.log('não alterou')
+                                    })
+                                
+                                }
+                            }
+                        )}
+                    )               
+                }     
+                
+                
+            })
+        })
+
     }
 
     
@@ -573,7 +715,7 @@ const eventFinder = (state) => (eventID) => {
 
 const getters = {
     events: (state) => {
-        return Object.values(state.events || {}).filter(i => i.eventStatus == 1)
+        return Object.values(state.events || {}).filter(i => i.eventStatus != 0 && i.eventStatus != 2)
     },
 
     userData: (state) => {

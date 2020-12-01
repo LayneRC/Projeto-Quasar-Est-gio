@@ -335,6 +335,7 @@ export default {
         adressNumber: '',
         adressBairro: '',
         adressOnline: '',
+        adressOption: '',
         description: '',
         nameResponsible: '',
         whatsapp: ''
@@ -394,6 +395,11 @@ export default {
     ...mapActions('store', [ 'createEvents']),
       
       submitForm() {
+        if(this.eventData.adressOnline == ''){
+          this.eventData.adressOption = 'Físico'
+        }else{
+          this.eventData.adressOption = 'Online'
+        }
                       
         this.createEvents(this.eventData)
                   
@@ -406,6 +412,8 @@ export default {
   mounted() {
     this.eventData.dateStart = new Date().getDate().toString().padStart(2,0)+'/'+(new Date().getMonth()+1).toString().padStart(2,0)+'/'+new Date().getFullYear();
     this.eventData.dateEnd = new Date().getDate().toString().padStart(2,0)+'/'+(new Date().getMonth()+1).toString().padStart(2,0)+'/'+new Date().getFullYear();
+  
+    
   }
 
   

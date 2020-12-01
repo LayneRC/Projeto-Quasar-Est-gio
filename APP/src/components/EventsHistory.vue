@@ -2,6 +2,11 @@
   <div >
 
       <q-card  class="my-card" style="width: 250px"  @click="dialogCard = true" >
+            <div v-if="eventData.eventStatus == 3" class="absolute canceledEvent flex flex-center">
+              <div class="nameCanceledEvent text-bold text-red-10">
+                CANCELADO
+              </div>
+            </div>
             <q-img
               :ratio="1.2"
               :src="eventData.eventImg"
@@ -58,12 +63,18 @@ export default {
       maximizedToggleCard: true,
       eventData: null,
       userFavorite: 'lar la-heart',
-      heartBeat: 'none'
+      heartBeat: 'none',
+      favoriteEvents: {}
     }
   },
 
   computed: {
-    ...mapGetters('store', ['eventFinder', 'userData'])
+    ...mapGetters('store', ['eventFinder', 'userData']),
+
+    favoritesComputed:function() {
+       var self = this
+       return this.userData.favorites
+    },
   },
 
   methods: {
@@ -93,6 +104,14 @@ export default {
     },
   },
 
+  watch: {
+    favoritesComputed: function (val) {
+      this.checkFavorites()
+      // this.favoriteEvents = this.userData.favorites
+      console.log(val)
+    }
+  },
+
   components: {
     'event-dialog': require("components/EventDialog.vue").default
   },
@@ -111,5 +130,21 @@ export default {
 </script>
 
 <style scoped>
+
+.canceledEvent {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(211, 31, 31, 0.2);
+  z-index: 1;
+}
+
+.nameCanceledEvent {
+  font-size: 26px;
+  margin-top: -40px;
+  text-shadow: rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,
+             rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px;  
+  -webkit-font-smoothing: antialiased;
+  
+}
 
 </style>

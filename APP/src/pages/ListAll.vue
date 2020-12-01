@@ -28,7 +28,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters('store', ['events'])
+    ...mapGetters('store', ['events']),
+    
   },
 
   data () {

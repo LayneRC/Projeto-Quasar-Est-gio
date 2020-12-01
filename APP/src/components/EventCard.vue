@@ -17,7 +17,7 @@
               <br>
               {{event.eventTime}}
             </div>
-            <div class="app-font-bold text-grey-9 q-ml-sm" style="font-size: 3vh">
+            <div class="app-font-bold text-grey-9 q-ml-sm" style="font-size: 16px">
               {{ event.eventName }}
             </div>
             <div v-if="!eventOnline" class="app-font-light q-ml-sm">
@@ -68,13 +68,20 @@ export default {
         month: null,
         year: null,
         weekDay: null
-      }
+      },
+      favoriteEvents: {}
+
 
     }
   },
 
   computed: {
-    ...mapGetters('store', ['userData'])
+    ...mapGetters('store', ['userData']),
+
+    favoritesComputed:function() {
+       var self = this
+       return this.userData.favorites
+    },
   },
 
   methods: {
@@ -115,6 +122,14 @@ export default {
     console.log(this.date)
     if(this.event.eventAdressOnline){
       this.eventOnline = true
+    }
+  },
+
+  watch: {
+    favoritesComputed: function (val) {
+      this.checkFavorites()
+      // this.favoriteEvents = this.userData.favorites
+      console.log(val)
     }
   },
 
