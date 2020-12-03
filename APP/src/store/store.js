@@ -142,12 +142,104 @@ const actions = {
         firebaseAuth.signOut()
     },
 
+    googleLoginUser() {
+        var base_provider = new firebase.auth.GoogleAuthProvider()
+        var newUser = false
+        firebase.auth().signInWithPopup(base_provider).then(function(result){
+            db.collection('users').get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(result.user.email == doc.data().userEmail){
+                        console.log('email ja existe')
+                        LocalStorage.set('reload', false)
+                        newUser = true
+                    }
+                })
+                if(newUser == false){
+                    console.log('email não existe doc')
+                    db.collection('users').add({
+                        userID: result.user.uid,
+                        userName: result.user.displayName,
+                        userEmail: result.user.email,
+                        userNivel: 'usuario',
+                        userUrlImage: 'https://image.flaticon.com/icons/svg/747/747376.svg',
+                        favorites: [],
+                        eventsHistory: []
+                    }).then(response => {
+                        console.log('doc cadastrado')
+    
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        console.log('doc não cadastrado')
+                    })
+
+                }
+
+            })      
+            console.log(result)
+            console.log("Sucesso login Google")
+            LocalStorage.set('reload', false)
+
+        }).catch(function(err){
+            console.log(err)
+            console.log("Falhou login Google")
+        })
+
+    },
+
+    facebookLoginUser() {
+        var base_provider = new firebase.auth.FacebookAuthProvider()
+        var newUser = false
+        firebase.auth().signInWithPopup(base_provider).then(function(result){
+            db.collection('users').get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    if(result.user.email == doc.data().userEmail){
+                        console.log('email ja existe')
+                        LocalStorage.set('reload', false)
+                        newUser = true
+                    }
+                })
+                if(newUser == false){
+                    console.log('email não existe doc')
+                    db.collection('users').add({
+                        userID: result.user.uid,
+                        userName: result.user.displayName,
+                        userEmail: result.user.email,
+                        userNivel: 'usuario',
+                        userUrlImage: 'https://image.flaticon.com/icons/svg/747/747376.svg',
+                        favorites: [],
+                        eventsHistory: []
+                    }).then(response => {
+                        console.log('doc cadastrado')
+    
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        console.log('doc não cadastrado')
+                    })
+
+                }
+
+            })      
+            console.log(result)
+            console.log("Sucesso login Google")
+            LocalStorage.set('reload', false)
+
+        }).catch(function(err){
+            console.log(err)
+            console.log("Falhou login Google")
+        })
+
+    },
+
     handleAuthStateChange({ commit }) {
         firebaseAuth.onAuthStateChanged(user => {
             Loading.hide()
             if (user) {
               commit('setLoggedIn', true)
               LocalStorage.set('loggedIn', true)
+              LocalStorage.set('att', true)
+
               LocalStorage.set('loggedInUser', firebaseAuth.currentUser.uid)
               this.$router.push('/loading').catch(err => {})
             } else {
@@ -675,7 +767,7 @@ let eventToday = moment().format('YYYY/MM/DD')
 
 const eventsToday = (state) => {
     return Object.values(state.events || {}).filter(i => i.eventDateStart == today && i.eventStatus == 1);
-    console.log(today);
+    console.log(eventsToday);
 }
 
 const eventsMonth = (state) => {
@@ -694,6 +786,12 @@ const eventsUserPast = (state) => {
     return Object.values(state.events || {}).filter(i => i.userID == LocalStorage.getItem('loggedInUser')
                                                         &&  (moment(moment(i.eventDateStart, "DD/MM/YYYY").format('YYYY/MM/DD')).isBefore(eventToday))
                                                                 && moment(moment(i.eventDateEnd, "DD/MM/YYYY").format('YYYY/MM/DD')).isBefore(eventToday));
+}
+
+const eventsDestaques = (state) => {
+    return Object.values(state.events || {}).filter(i => (moment(moment(i.eventDateStart, "DD/MM/YYYY").format('YYYY/MM/DD')).isSameOrAfter(eventToday)
+                                                            || moment(moment(i.eventDateEnd, "DD/MM/YYYY").format('YYYY/MM/DD')).isSameOrAfter(eventToday)));
+
 }
 
 const eventsAllCategorie = (state) => (categorie) => {
@@ -733,7 +831,8 @@ const getters = {
     eventsUserPast : eventsUserPast,
     eventsAllCategorie : eventsAllCategorie,
     eventsTodayCategorie : eventsTodayCategorie,
-    eventsMonthCategorie : eventsMonthCategorie
+    eventsMonthCategorie : eventsMonthCategorie,
+    eventsDestaques : eventsDestaques
 
 }
 

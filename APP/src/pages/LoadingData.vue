@@ -10,6 +10,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { LocalStorage } from 'quasar'
+
 
 export default {
 
@@ -29,7 +31,22 @@ export default {
   },
 
   mounted() {
+    if( LocalStorage.getItem('att') == true){
+      LocalStorage.set('att', false)
+    }
+
+    // if (LocalStorage.getItem('att')) {
+    //     // The page was just reloaded. Clear the value from local storage
+    //     // so that it will reload the next time this page is visited.
+    //   LocalStorage.clear('att');
+    // } else {
+    //     // Set a flag so that we know not to reload the page twice.
+    //     LocalStorage.setItem('att', '1');
+    //     location.reload()
+    // }
+
     this.loadData()
+
   }
 }
 </script>

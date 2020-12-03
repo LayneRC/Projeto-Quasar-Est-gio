@@ -3,7 +3,7 @@
 
    <div class="q-pa-sm q-gutter-sm">
 
-      <div v-for="event in eventsMonth" :key="event.eventID">
+      <div v-for="event in eventsOrder" :key="event.eventID">
         <event-card :event = event />
       </div>
 
@@ -14,6 +14,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment'
+
 
 export default {
   name: 'PageExample',
@@ -24,9 +26,24 @@ export default {
 
   data () {
     return {
+      eventsOrder: {}
       
 
     }
+  },
+
+  mounted() {
+    // this.eventsMonth.sort(function (a, b) {
+    //   if (a.eventDateStart > b.eventDateStart ) return 1;
+    //   if (a.eventDateStart < b.eventDateStart ) return -1;
+    //   return 0;
+      
+    // })
+
+    this.eventsOrder = this.eventsMonth.sort((a, b) => a.eventDateStart.localeCompare(b.eventDateStart) 
+                                    || a.eventTime.localeCompare(b.eventTime));
+
+ 
   },
 
   computed: {

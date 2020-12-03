@@ -185,12 +185,16 @@
     </div>
 
     <div>
+
+      <div v-if="!userData.eventsDestaques" class=" text-center flex flex-center grey-6 app-font-light" style="height: 15vh">
+        Nenhum Destaque
+      </div>
       
-      <q-scroll-area horizontal style="height: 263px" :thumb-style="{ opacity: 0 }">
+      <q-scroll-area v-if="userData.eventsDestaques" horizontal style="height: 263px" :thumb-style="{ opacity: 0 }">
         
         <div class="row q-gutter-sm no-wrap q-px-md">
 
-          <div v-for="event in events" :key="event.eventID">
+          <div v-for="event in filteredEvents" :key="event.eventID">
             <event-destaques :event = event />
           </div>
 
@@ -295,16 +299,40 @@ export default {
       tab: 'todos',
       dialogCard: false,
       maximizedToggleCard: true,
+      search: ''
 
     }
   },
 
    computed: {
-    ...mapGetters('store', ['events', 'userData'])
+    ...mapGetters('store', ['eventsDestaques', 'userData']),
+
+    filteredEvents:function() {
+       var self = this
+       return this.eventsDestaques.filter(function(event){return event.eventName.toLowerCase().indexOf(self.search.toLowerCase())>=0;}).sort(self.compareLikes);
+       //return this.customers;
+    },
+
+    
   },
 
   methods: {
-    ...mapActions('store', ['handleAuthStateChange'])
+    ...mapActions('store', ['handleAuthStateChange']),
+
+    compareLikes(a, b) {
+      // Use toUpperCase() to ignore character casing
+      const itemA = a.likes;
+      const itemB = b.likes;
+
+      let comparison = 0;
+      if (itemA < itemB) {
+        comparison = 1;
+      } else if (itemA > itemB) {
+        comparison = -1;
+      }
+      return comparison;
+    },
+
   },
 
   mounted() {
