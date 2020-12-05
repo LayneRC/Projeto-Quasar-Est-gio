@@ -280,7 +280,8 @@ const actions = {
                     eventAdressOnline: payload.adressOnline,
                     eventDescription: payload.description,
                     eventNameResponsible: payload.nameResponsible,
-                    eventWhatsappResponsible: payload.whatsapp
+                    eventWhatsappResponsible: payload.whatsapp,
+                    created: firebase.firestore.Timestamp.fromDate(new Date)
                 
     
                 })
@@ -341,7 +342,8 @@ const actions = {
                             eventAdressOnline: payload.adressOnline,
                             eventDescription: payload.description,
                             eventNameResponsible: payload.nameResponsible,
-                            eventWhatsappResponsible: payload.whatsapp
+                            eventWhatsappResponsible: payload.whatsapp,
+                            created: firebase.firestore.Timestamp.fromDate(new Date)
                         
             
                         })

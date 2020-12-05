@@ -10,7 +10,7 @@
         appear
         enter-active-class="animated bounceIn"
         leave-active-class="animated zoomOutRight">
-        <div v-for="event in userData.favorites" :key="event">
+        <div v-for="event in userData.favorites.slice().reverse()" :key="event">
           <event-card :event = event />
         </div>
       </transition-group>
@@ -34,11 +34,32 @@ export default {
 
   data () {
     return {
+      orderFavorites: {}
       
       
 
     }
   },
+
+  methods: {
+    // listFavoritesOrder() {
+    //     this.orderFavorites = this.userData.favorites.reverse()
+
+    // }
+
+  },
+
+  mounted() {
+    // this.listFavoritesOrder()
+  },
+
+  // watch: {
+  //       this.userData.favorites: function (val) {
+  //           this.listFavoritesOrder()
+  //           console.log('isso aqui',val)
+
+  //       },
+  //   },
 
   
 }

@@ -186,11 +186,11 @@
 
     <div>
 
-      <div v-if="!userData.eventsDestaques" class=" text-center flex flex-center grey-6 app-font-light" style="height: 15vh">
+      <div v-if="!eventsDestaques" class=" text-center flex flex-center grey-6 app-font-light" style="height: 15vh">
         Nenhum Destaque
       </div>
       
-      <q-scroll-area v-if="userData.eventsDestaques" horizontal style="height: 263px" :thumb-style="{ opacity: 0 }">
+      <q-scroll-area v-if="eventsDestaques" horizontal style="height: 263px" :thumb-style="{ opacity: 0 }">
         
         <div class="row q-gutter-sm no-wrap q-px-md">
 
@@ -337,6 +337,7 @@ export default {
 
   mounted() {
     console.log('isso', this.userData.eventsHistory)
+    console.log('Destaques', this.eventsDestaques)
   },
 
   // created() {

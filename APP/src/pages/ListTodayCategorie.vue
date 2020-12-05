@@ -2,7 +2,7 @@
   <q-page transition-show="slide-left">
     
     <div class="q-pa-sm q-gutter-sm">
-      <div v-for="event in eventsList" :key="event.eventID">
+      <div v-for="event in eventsOrderTodayCategorie" :key="event.eventID">
         <event-card :event = event />
       </div>
 
@@ -27,9 +27,10 @@ export default {
 
   data () {
     return {
-      eventsList: {}
+      eventsList: {},
+      eventsOrderTodayCategorie: {}
       
-
+ 
     }
   },
 
@@ -41,14 +42,26 @@ export default {
     ...mapGetters('store', ['eventsTodayCategorie', 'eventFilter'])
   },
 
+  methods: {
+    functionOrderTodayCategorie(){
+      this.eventsOrderTodayCategorie = this.eventsList.sort((a, b) => a.eventTime.localeCompare(b.eventTime))
+    }
+
+  },
+
   mounted() {
     console.log(this.eventFilter)
     this.eventsList = this.eventsTodayCategorie(this.eventFilter)
+
+    this.functionOrderTodayCategorie()
   },
 
   watch: {
     eventFilter: function (val) {
       this.eventsList = this.eventsTodayCategorie(this.eventFilter)
+
+      this.functionOrderTodayCategorie()
+
     }
   }
 
