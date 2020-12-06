@@ -10,7 +10,7 @@
                     <q-icon name="lar la-user" />
                 </template>
         </q-input>
-
+ 
         <q-input 
             color="deep-orange-9 q-mt-sm " 
             v-model="formData.email" 
