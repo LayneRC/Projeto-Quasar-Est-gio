@@ -280,8 +280,7 @@ const actions = {
                     eventAdressOnline: payload.adressOnline,
                     eventDescription: payload.description,
                     eventNameResponsible: payload.nameResponsible,
-                    eventWhatsappResponsible: payload.whatsapp,
-                    created: firebase.firestore.Timestamp.fromDate(new Date)
+                    eventWhatsappResponsible: payload.whatsapp
                 
     
                 })
@@ -315,7 +314,7 @@ const actions = {
                     })
                 })
             } else {
-                const storageRef =  storage.ref().child('/images/events/'+uid()+'.jpeg').putString(payload.image, 'data_url')
+                const storageRef =  storage.ref().child('/' + 'Evento '+ uid() +'.jpeg').putString(payload.image, 'data_url')
 
             storageRef.on(
                 'state_changed',
@@ -342,8 +341,7 @@ const actions = {
                             eventAdressOnline: payload.adressOnline,
                             eventDescription: payload.description,
                             eventNameResponsible: payload.nameResponsible,
-                            eventWhatsappResponsible: payload.whatsapp,
-                            created: firebase.firestore.Timestamp.fromDate(new Date)
+                            eventWhatsappResponsible: payload.whatsapp
                         
             
                         })

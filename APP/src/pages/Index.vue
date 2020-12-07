@@ -337,7 +337,6 @@ export default {
 
   mounted() {
     console.log('isso', this.userData.eventsHistory)
-    console.log('Destaques', this.eventsDestaques)
   },
 
   // created() {

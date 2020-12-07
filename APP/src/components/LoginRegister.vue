@@ -22,7 +22,7 @@
                     <q-icon name="lar la-envelope" />
                 </template>
         </q-input>
-
+ 
         <q-input 
             color="deep-orange-9 q-mt-sm " 
             v-model="formData.password" 

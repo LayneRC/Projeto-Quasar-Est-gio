@@ -27,7 +27,7 @@
               Online
             </div>
             <div class="row absolute-bottom reverse">
-              <q-icon class="q-ml-md" name="o_share" size="27px" color="blue-9"/>
+              <q-icon onclick = " window.plugins.socialsharing.shareViaWhatsApp ('Message via WhatsApp', null / * img * /, null / * url * /, function () {console.log ('share ok')}, function ( errormsg) {alert (errormsg)}) " class="q-ml-md" name="o_share" size="27px" color="blue-9"/>
               <q-icon @click.stop="addFavorite(event.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite size="27px" color="red"/>
             </div>
           </q-card-section>

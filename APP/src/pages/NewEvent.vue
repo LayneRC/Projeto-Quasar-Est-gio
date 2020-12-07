@@ -13,7 +13,7 @@
       flat
       contracted
       animated
-       
+      
     >
       <q-step
         :name="1"
@@ -26,22 +26,9 @@
         <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
           1. Identificação do evento
         </div>
-        <q-input v-model="eventData.eventName" label="Nome do evento" color="grey-7" class="app-font-light"
-          :rules="[
-            val => val.length > 0 || 'Nome do evento é obrigatório'
-          ]"
-        />
-        <q-select v-model="eventData.modelCategorie" :options="optionsCategorie" color="deep-orange-9" class="app-font-light q-mt-sm" label="Categoria principal"
-           :rules="[
-            val => val.length > 0 || 'Categoria é obrigatório'
-          ]"
-        />
-        <q-select v-model="eventData.modelEntrance" :options="optionsEntrance" color="deep-orange-9" class="app-font-light q-mt-sm" label="Entrada"
-          :rules="[
-            val => val.length > 0 || 'Entrada é obrigatório'
-          ]"
-
-        />
+        <q-input v-model="eventData.eventName" label="Nome do evento" color="grey-7" class="app-font-light"/>
+        <q-select v-model="eventData.modelCategorie" :options="optionsCategorie" color="deep-orange-9" class="app-font-light q-mt-sm"/>
+        <q-select v-model="eventData.modelEntrance" :options="optionsEntrance" color="deep-orange-9" class="app-font-light q-mt-sm"/>
 
 
         <div v-if="!eventData.image" class="border-img q-pa-sm bg-grey-1 q-mt-xl text-center flex flex-center">
@@ -125,12 +112,11 @@
               <q-icon name="event" class="cursor-pointer">
               </q-icon>
             </template>
-            
           </q-input>
           <div class="q-mt-sm">
-            <q-input v-model="eventData.time" mask="time" readonly >
+            <q-input v-model="eventData.time" mask="time" readonly :rules="['time']">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-time v-model="eventData.time" format24h color="deep-orange-9"/>
+                <q-time v-model="eventData.time" format24h color="deep-orange-9" />
               </q-popup-proxy>
               <template v-slot:prepend>
                 <q-icon name="access_time" class="cursor-pointer">
@@ -138,21 +124,18 @@
               </template>
             </q-input>
           </div>
-          <div class="q-mt-md">
-            <div class="app-font-bold text-grey-10">
-              Fim
-            </div>
-            <q-input v-model="eventData.dateEnd" readonly :rules="[val => checkDateEnd() || 'Data final inválida']">
-              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                <q-date v-model="eventData.dateEnd" color="deep-orange-9" today-btn mask="DD/MM/YYYY" @input="() => $refs.qDateProxy.hide()" />
-              </q-popup-proxy>
-              <template v-slot:prepend>
-                <q-icon name="event" class="cursor-pointer">
-                </q-icon>
-              </template>
-            </q-input>
+          <div class="app-font-bold text-grey-10">
+            Fim
           </div>
-          
+          <q-input v-model="eventData.dateEnd" readonly>
+            <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+              <q-date v-model="eventData.dateEnd" color="deep-orange-9" today-btn mask="DD/MM/YYYY" @input="() => $refs.qDateProxy.hide()" />
+            </q-popup-proxy>
+            <template v-slot:prepend>
+              <q-icon name="event" class="cursor-pointer">
+              </q-icon>
+            </template>
+          </q-input>
         </div>
         
 
@@ -194,32 +177,12 @@
           3. Onde o seu evento vai acontecer?
         </div>
         <q-select v-model="modelAdress" :options="optionsAdress" color="deep-orange-9"/>
-        <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressLocalName" label="Nome do local" color="grey-7" class="q-mt-md"
-          :rules="[
-            val => val && val.length > 0 || 'O nome do local é obrigatório'
-          ]"
-        />
-        <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressStreet" label="Av/Rua" color="grey-7" class="q-mt-md"
-          :rules="[
-            val => val && val.length > 0 || 'Rua é obrigatório'
-          ]"
-        />
-        <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressNumber" label="Número" color="grey-7" class="q-mt-md"
-          :rules="[
-            val => val && val.length > 0 || 'Número é obrigatório. Caso não tenha número colocar S/N'
-          ]"
-        />
-        <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressBairro" label="Bairro" color="grey-7" class="q-mt-md q-mb-xl"
-          :rules="[
-            val => val && val.length > 0 || 'Bairro é obrigatório'
-          ]"
-        />
+        <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressLocalName" label="Nome do local" color="grey-7" class="q-mt-md"/>
+        <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressStreet" label="Av/Rua" color="grey-7" class="q-mt-md"/>
+        <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressNumber" label="Número" color="grey-7" class="q-mt-md"/>
+        <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressBairro" label="Bairro" color="grey-7" class="q-mt-md"/>
 
-        <q-input v-if="modelAdress == 'Online'" v-model="eventData.adressOnline" label="Endereço online" color="grey-7" class="q-mt-md"
-          :rules="[
-            val => val && val.length > 0 || 'O endereço online é obrigatório. Caso ainda não tenha colocar A definir. Você poderá alterar posteriormente.'
-          ]"
-        />
+        <q-input v-if="modelAdress == 'Online'" v-model="eventData.adressOnline" label="Endereço online" color="grey-7" class="q-mt-md"/>
 
         <q-page-sticky position="bottom-right" :offset="[5, 5]">
 
@@ -258,7 +221,7 @@
         <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
           4. Descrição do evento
         </div>
-        <q-editor v-model="eventData.description" min-height="15rem" class="q-mt-md q-mb-xl"/>
+        <q-editor v-model="eventData.description" min-height="15rem" class="q-mt-md"/>
         
 
         <q-page-sticky position="bottom-right" :offset="[5, 5]">
@@ -296,18 +259,8 @@
         <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
           5. Sobre o organizador
         </div>
-        <q-input v-model="eventData.nameResponsible" label="Nome do organizador" color="grey-7"
-          :rules="[
-            val => val && val.length > 0 || 'Nome do organizador é obrigatório'
-          ]"
-        />
-        <q-input v-model="eventData.whatsapp" type="tel" label="WhatsApp" color="grey-7" class="q-mt-md" mask="(##) ##### - ####"
-        hint="Essa informação não ficará pública."
-        lazy-rules
-        :rules="[val => val != '' || 'O whatsapp é obrigatório',
-                val => val.length == 17 || 'Número invalido']"
-        
-        />
+        <q-input v-model="eventData.nameResponsible" label="Nome do organizador" color="grey-7"/>
+        <q-input v-model="eventData.whatsapp" type="tel" label="WhatsApp" color="grey-7" class="q-mt-md"/>
 
 
 
@@ -350,8 +303,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { required } from 'vuelidate/lib/validators'
-import moment from 'moment'
 
 export default {
   name: 'PageExample',
@@ -370,13 +321,11 @@ export default {
       ],
       value: 0,
       modelAdress: 'Cadastrar um endereço',
-      // checkRequiredWhats: val => val && val.length > 0 || 'O whatsapp é obrigatório',
-      // checkLengthWhats: val => val && val.length == 9 || 'Número invalido',
 
       eventData: {
         eventName: '',
-        modelCategorie: '',  
-        modelEntrance: '',
+        modelCategorie: 'Categoria principal',  
+        modelEntrance: 'Entrada',
         image: null,
         dateStart: '',
         time: '',
@@ -398,8 +347,6 @@ export default {
     }
     
   },
-
-  
 
   methods: {
     getImageCamera() {
@@ -445,31 +392,6 @@ export default {
       this.eventData.dateEnd = this.eventData.dateStart
     },
 
-    checkDateEnd() {
-      var dateEndFormat = moment(this.eventData.dateEnd, 'DD/MM/YYYY').format('YYYY/MM/DD')
-      var dateStartFormat = moment(this.eventData.dateStart, 'DD/MM/YYYY').format('YYYY/MM/DD')
-
-      if(dateEndFormat < dateStartFormat){
-        return false
-      }else {
-        return true
-      }
-      
-    },
-
-    checkWhats() {
-      if(this.eventData.whatsapp ==''){
-        return 'Whats é obrigatorio'
-      }
-      if(this.eventData.whatsapp.length != 9){
-        return 'numero invalido'
-      }
-    },
-
-    reset () {
-      this.$refs.inputWhats.resetValidation()
-    },
-
     ...mapActions('store', [ 'createEvents']),
       
       submitForm() {
@@ -490,17 +412,7 @@ export default {
   mounted() {
     this.eventData.dateStart = new Date().getDate().toString().padStart(2,0)+'/'+(new Date().getMonth()+1).toString().padStart(2,0)+'/'+new Date().getFullYear();
     this.eventData.dateEnd = new Date().getDate().toString().padStart(2,0)+'/'+(new Date().getMonth()+1).toString().padStart(2,0)+'/'+new Date().getFullYear();
-    var currentdate = new Date()
-    var hour = currentdate.getHours()
-    var minute = currentdate.getMinutes()
-    if(minute < 10 || hour < 10){
-      minute = '0' + minute
-      hour = '0' + hour
-
-      this.eventData.time = hour + ":" + minute.slice(-2)
-
-    }
-    this.eventData.time = hour + ":" + minute
+  
     
   }
 

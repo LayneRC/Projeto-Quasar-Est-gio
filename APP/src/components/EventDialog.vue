@@ -8,7 +8,7 @@
             <q-space/>
 
             <q-icon v-if="eventData.eventStatus != 3" flat round  @click.stop="addFavorite(eventData.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="deep-orange-9" size="md" />
-            <q-btn v-if="eventData.eventStatus != 3" flat round color="deep-orange-9" size="md" icon="share"/>
+            <q-btn @click="share()" v-if="eventData.eventStatus != 3" flat round color="deep-orange-9" size="md" icon="share"/>
                 
           </q-bar>
         
@@ -156,6 +156,15 @@ export default {
 
    methods: {
     ...mapActions('store', ['eventsHistory', 'addFavorite']),
+
+    share(){
+      var  options  = { 
+        message : this.eventData.eventName + '20/12/2020' , //  não compatível com alguns aplicativos (Facebook, Instagram)  
+        chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão  
+        files: [this.eventData.eventImg],
+      } ;
+       window.plugins.socialsharing.shareWithOptions (options)
+    },
 
 
     handleFavIcon(){

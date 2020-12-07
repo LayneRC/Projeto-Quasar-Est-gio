@@ -18,8 +18,7 @@ module.exports = function (/* ctx */) {
       'axios',
       'firebase',
       'router-auth',
-      'hello',
-      'vuelidate'
+      'hello'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
