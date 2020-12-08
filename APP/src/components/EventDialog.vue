@@ -8,7 +8,7 @@
             <q-space/>
 
             <q-icon v-if="eventData.eventStatus != 3" flat round  @click.stop="addFavorite(eventData.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="deep-orange-9" size="md" />
-            <q-btn @click="share()" v-if="eventData.eventStatus != 3" flat round color="deep-orange-9" size="md" icon="share"/>
+            <q-btn @click="showLoading(), share()" v-if="eventData.eventStatus != 3" flat round color="deep-orange-9" size="md" icon="share"/>
                 
           </q-bar>
         
@@ -133,9 +133,12 @@
 import {mapActions, mapGetters} from 'vuex'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
+import { QSpinner } from 'quasar'
+
 
 export default {
   name: 'PageExample',
+
 
   data () {
     return {
@@ -157,9 +160,28 @@ export default {
    methods: {
     ...mapActions('store', ['eventsHistory', 'addFavorite']),
 
+     showLoading () {
+      this.$q.loading.show({
+        spinner: QSpinner,
+        spinnerColor: 'white',
+        spinnerSize: 100,
+        message: 'Compartilhar evento...',
+        messageColor: 'white'
+      })
+
+      // hiding in 3s
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 3000)
+    },
+
     share(){
+      var texto = "*" + this.eventData.eventName + "*" + "\n" + "\n" + this.eventData.eventDateStart + "\n" + "20:00" + 
+                  "\n" + "\n" + this.eventData.eventDescription
+
       var  options  = { 
-        message : this.eventData.eventName + '20/12/2020' , //  não compatível com alguns aplicativos (Facebook, Instagram)  
+        message : texto.split(' ').join('%20'), //  não compatível com alguns aplicativos (Facebook, Instagram)  
         chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão  
         files: [this.eventData.eventImg],
       } ;
@@ -428,6 +450,13 @@ export default {
     },
 
     
+  },
+
+   beforeDestroy () {
+    if (this.timer !== void 0) {
+      clearTimeout(this.timer)
+      this.$q.loading.hide()
+    }
   },
 
   async mounted() {

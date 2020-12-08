@@ -71,7 +71,7 @@
                 <q-icon name= "las la-heart" size="27px" color="red"/>
                 {{ event.likes }}
               </div>
-              <q-icon class="q-ml-md q-mt-xs" name="o_share" size="27px" color="blue-9"/>
+              <q-icon @click.stop="showLoading(), share()" class="q-ml-md q-mt-xs" name="o_share" size="27px" color="blue-9"/>
             </div>
           </q-card-section>
         </q-card-section>
@@ -119,6 +119,8 @@ import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
+import { QSpinner } from 'quasar'
+
 
 export default {
   name: 'PageExample',
@@ -152,6 +154,34 @@ export default {
 
   methods: {
     ...mapActions('store', ['cancelEvents']),
+
+    showLoading () {
+      this.$q.loading.show({
+        spinner: QSpinner,
+        spinnerColor: 'white',
+        spinnerSize: 100,
+        message: 'Compartilhar evento...',
+        messageColor: 'white'
+      })
+
+      // hiding in 3s
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 3000)
+    },
+
+    share(){
+      var texto = "*" + this.event.eventName + "*" + "\n" + "\n" + this.event.eventDateStart + "\n" + "20:00" + 
+                  "\n" + "\n" + this.event.eventDescription
+
+      var  options  = { 
+        message : texto.split(' ').join('%20'), //  não compatível com alguns aplicativos (Facebook, Instagram)  
+        chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão  
+        files: [this.event.eventImg],
+      } ;
+       window.plugins.socialsharing.shareWithOptions (options)
+    },
 
     openMenu(){
       console.log("testemenu")

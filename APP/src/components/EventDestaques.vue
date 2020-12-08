@@ -30,7 +30,7 @@
               <q-space/>
               <div class="col-auto">
                 <q-icon @click.stop="addFavorite(event.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="red" size="25px" class="q-mr-sm" />
-                <q-icon color="blue-9" size="25px" name="o_share" class="q-mr-sm"/>
+                <q-icon @click.stop="showLoading(), share()" color="blue-9" size="25px" name="o_share" class="q-mr-sm"/>
               </div>
             </q-card-section> 
 
@@ -53,6 +53,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
+import { QSpinner } from 'quasar'
 
 export default {
   name: 'PageExample',
@@ -79,6 +80,34 @@ export default {
 
   methods: {
     ...mapActions('store', ['addFavorite']),
+
+    showLoading () {
+      this.$q.loading.show({
+        spinner: QSpinner,
+        spinnerColor: 'white',
+        spinnerSize: 100,
+        message: 'Compartilhar evento...',
+        messageColor: 'white'
+      })
+
+      // hiding in 3s
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 3000)
+    },
+
+    share(){
+      var texto = "*" + this.event.eventName + "*" + "\n" + "\n" + this.event.eventDateStart + "\n" + "20:00" + 
+                  "\n" + "\n" + this.event.eventDescription
+
+      var  options  = { 
+        message : texto.split(' ').join('%20'), //  não compatível com alguns aplicativos (Facebook, Instagram)  
+        chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão  
+        files: [this.event.eventImg],
+      } ;
+       window.plugins.socialsharing.shareWithOptions (options)
+    },
 
     handleFavIcon(){
       if(this.userFavorite != 'las la-heart'){
