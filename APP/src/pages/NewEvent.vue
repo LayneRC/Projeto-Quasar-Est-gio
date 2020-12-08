@@ -412,7 +412,10 @@ export default {
   mounted() {
     this.eventData.dateStart = new Date().getDate().toString().padStart(2,0)+'/'+(new Date().getMonth()+1).toString().padStart(2,0)+'/'+new Date().getFullYear();
     this.eventData.dateEnd = new Date().getDate().toString().padStart(2,0)+'/'+(new Date().getMonth()+1).toString().padStart(2,0)+'/'+new Date().getFullYear();
-  
+
+    var hour = (new Date().getHours()).toString().padStart(2,0)
+    var minute = (new Date().getMinutes()).toString().padStart(2,0)
+    this.eventData.time = hour + minute
     
   }
 

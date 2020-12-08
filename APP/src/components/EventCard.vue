@@ -3,9 +3,17 @@
 
    <q-card class="my-card q-pa-sm" flat bordered @click="dialogCard = true" >
         <q-card-section horizontal>
-          <q-img
+          <q-img v-if="event.eventImg != ''"
             class="col-5"
             :src="event.eventImg"
+            :ratio="1"
+            style="border-radius: 3px"
+            
+          />
+
+          <q-img v-if="event.eventImg == ''"
+            class="col-5"
+            src="https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"
             :ratio="1"
             style="border-radius: 3px"
             
