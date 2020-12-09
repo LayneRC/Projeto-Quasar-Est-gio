@@ -79,7 +79,7 @@
                 <q-icon name= "las la-heart" size="27px" color="red"/>
                 {{ event.likes }}
               </div>
-              <q-icon @click.stop="showLoading(), share()" class="q-ml-md q-mt-xs" name="o_share" size="27px" color="blue-9"/>
+              <q-icon v-if="event.eventStatus == 1 && event.eventCancel == 0" @click.stop="showLoading(), share()" class="q-ml-md q-mt-xs" name="o_share" size="27px" color="blue-9"/>
             </div>
           </q-card-section>
         </q-card-section>

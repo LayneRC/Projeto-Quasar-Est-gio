@@ -3,7 +3,7 @@
     <q-header elevated>
       
       <q-toolbar class="bg-white shadow-2">
-        <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" to="/">
+        <q-btn dense flat icon="las la-arrow-left" color="deep-orange-9" size="15px" @click="$router.go(-1)">
         </q-btn> 
 
         <q-space />

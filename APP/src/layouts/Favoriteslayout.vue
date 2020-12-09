@@ -66,10 +66,10 @@
           <div class="absolute-bottom text-center bg-transparent">
             <div>
               <q-avatar size="80px" class="q-mb-sm">
-                <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                <img :src="userData.userUrlImage">
               </q-avatar>
-              <div class="text-weight-bold text-grey-9">Razvan Stoenescu</div>
-              <div class=" q-mb-sm text-grey-8">@rstoenescu</div>
+              <div class="text-weight-bold text-grey-9">{{ userData.userName }}</div>
+              <div class=" q-mb-sm text-grey-8">{{ userData.userEmail }}</div>
             </div>
             
           </div>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'MainLayout',
@@ -121,7 +121,11 @@ export default {
 
    methods: {
     ...mapActions('store', ['loggoutUser'])
-  }
+  },
+
+  computed: {
+    ...mapGetters('store', ['userData'])
+  },
 }
 </script>
 
