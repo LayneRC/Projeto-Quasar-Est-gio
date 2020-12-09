@@ -2,6 +2,11 @@
   <div >
 
    <q-card class="my-card q-pa-sm" flat bordered @click="dialogCard = true" >
+      <div v-if="event.eventCancel == 1" class="absolute canceledEvent flex flex-center">
+        <div class="nameCanceledEvent text-bold text-red-10">
+          CANCELADO
+        </div>
+      </div>
         <q-card-section horizontal>
           <q-img v-if="event.eventImg != ''"
             class="col-5"
@@ -183,5 +188,23 @@ export default {
 </script>
 
 <style scoped>
+
+.canceledEvent {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(211, 31, 31, 0.2);
+  z-index: 1;
+  margin-top: -8px;
+  margin-left: -8px;
+}
+
+.nameCanceledEvent {
+  font-size: 26px;
+ 
+  text-shadow: rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,
+             rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px;  
+  -webkit-font-smoothing: antialiased;
+  
+}
 
 </style>

@@ -2,14 +2,22 @@
   <div >
 
       <q-card  class="my-card" style="width: 250px"  @click="dialogCard = true" >
-            <div v-if="eventData.eventStatus == 3" class="absolute canceledEvent flex flex-center">
+            <div v-if="eventData.eventCancel == 1" class="absolute canceledEvent flex flex-center">
               <div class="nameCanceledEvent text-bold text-red-10">
                 CANCELADO
               </div>
             </div>
-            <q-img
+            <q-img v-if="eventData.eventImg != ''"
               :ratio="1.2"
               :src="eventData.eventImg"
+              >
+              <div class="absolute-bottom text-subtitle2 text-center">
+                {{eventData.eventName}}
+              </div>
+            </q-img> 
+            <q-img v-if="eventData.eventImg == ''"
+              :ratio="1.2"
+              src="https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"
               >
               <div class="absolute-bottom text-subtitle2 text-center">
                 {{eventData.eventName}}
@@ -165,7 +173,7 @@ export default {
   height: 100%;
   width: 100%;
   background-color: rgba(211, 31, 31, 0.2);
-  z-index: 1;
+  z-index: 2;
 }
 
 .nameCanceledEvent {

@@ -308,6 +308,7 @@ export default {
     ...mapGetters('store', ['eventsDestaques', 'userData']),
 
     filteredEvents:function() {
+      console.log(this.eventsDestaques)
        var self = this
        return this.eventsDestaques.filter(function(event){return event.eventName.toLowerCase().indexOf(self.search.toLowerCase())>=0;}).sort(self.compareLikes);
        //return this.customers;

@@ -280,7 +280,9 @@ const actions = {
                     eventAdressOnline: payload.adressOnline,
                     eventDescription: payload.description,
                     eventNameResponsible: payload.nameResponsible,
-                    eventWhatsappResponsible: payload.whatsapp
+                    eventWhatsappResponsible: payload.whatsapp,
+                    createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+                    eventCancel: 0
                 
     
                 })
@@ -288,14 +290,6 @@ const actions = {
                     console.log("Deu certo, Glória ao Pai!")
                     Loading.hide()
                     this.$router.replace('/myEvents/next')
-                    var sucessMessage = 'Evento cadastrado com sucesso.'
-                    showSucessMessage(sucessMessage)
-                    Dialog.create({
-                
-                        title: '<div class="q-pa-sm text-center text-deep-orange-9 app-font-bold">Evento enviado para análise!</div>',
-                        html: true 
-                      
-                  })
                 })
                 .catch(error => {
                     Loading.hide()
@@ -341,7 +335,9 @@ const actions = {
                             eventAdressOnline: payload.adressOnline,
                             eventDescription: payload.description,
                             eventNameResponsible: payload.nameResponsible,
-                            eventWhatsappResponsible: payload.whatsapp
+                            eventWhatsappResponsible: payload.whatsapp,
+                            createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+                            eventCancel: 0
                         
             
                         })
@@ -608,7 +604,7 @@ const actions = {
             querySnapshot.forEach(doc => {
                 console.log(doc.data())
                 db.collection('events').doc(doc.id).update({
-                    eventStatus: 3,
+                    eventCancel: 1,
                 }).then(result => {
                     console.log('cancelou')
                 }).catch(error => {
@@ -790,7 +786,8 @@ const eventsUserPast = (state) => {
 
 const eventsDestaques = (state) => {
     return Object.values(state.events || {}).filter(i => (moment(moment(i.eventDateStart, "DD/MM/YYYY").format('YYYY/MM/DD')).isSameOrAfter(eventToday)
-                                                            || moment(moment(i.eventDateEnd, "DD/MM/YYYY").format('YYYY/MM/DD')).isSameOrAfter(eventToday)));
+                                                            || moment(moment(i.eventDateEnd, "DD/MM/YYYY").format('YYYY/MM/DD')).isSameOrAfter(eventToday))
+                                                            && i.eventStatus == 1);
 
 }
 

@@ -3,9 +3,17 @@
 
    <q-card class="my-card q-pa-sm" :class="status" flat bordered @click="dialogCard = true" >
         <q-card-section horizontal>
-          <q-img
+          <q-img v-if="event.eventImg != ''"
             class="col-5"
             :src="event.eventImg"
+            :ratio="1"
+            style="border-radius: 3px"
+            
+          />
+
+          <q-img v-if="event.eventImg == ''"
+            class="col-5"
+            src="https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"
             :ratio="1"
             style="border-radius: 3px"
             
@@ -14,7 +22,7 @@
 
           <q-card-section class="full-width ">
 
-            <div v-if="event.eventStatus == 0 || event.eventStatus == 1"  class="no-shadow absolute-right">
+            <div v-if="(event.eventStatus == 0 || event.eventStatus == 1) && event.eventCancel == 0"  class="no-shadow absolute-right">
               <q-icon @click.stop="menuOptions = true" name="las la-ellipsis-v" color="deep-orange-9" size="25px"/>
               <q-menu class="shadow-0"
                 v-model="menuOptions"
@@ -203,28 +211,28 @@ export default {
       this.eventOnline = true
     }
 
-    if(this.event.eventStatus == 3){
+    if(this.event.eventCancel == 1){
       this.status = 'bg-red-2'
       this.textStatus = 'CANCELADO'
       this.nameStatus = 'text-red'
 
     }
 
-    if(this.event.eventStatus == 1){
+    if(this.event.eventStatus == 1 && this.event.eventCancel == 0){
       this.status = 'bg-green-2'
       this.textStatus = 'APROVADO'
       this.nameStatus = 'text-light-green-10'
 
     }
 
-    if(this.event.eventStatus == 2){
+    if(this.event.eventStatus == 2 && this.event.eventCancel == 0){
       this.status = 'bg-red-2'
       this.textStatus = 'REPROVADO'
       this.nameStatus = 'text-red-10'
 
     }
 
-    if(this.event.eventStatus == 0){
+    if(this.event.eventStatus == 0 && this.event.eventCancel == 0){
       this.status = ''
       this.textStatus = 'PENDENTE'
       this.nameStatus = 'text-amber-9'
@@ -235,29 +243,33 @@ export default {
 
   watch: {
     'event.eventStatus': function (val) {
-      if(val == 3){
-        this.status = 'bg-red-2'
-        this.textStatus = 'CANCELADO'
-        this.nameStatus = 'text-red'
-      }
-       if(val == 1){
+      
+       if(val == 1 && this.event.eventCancel == 0){
         this.status = 'bg-green-2'
         this.textStatus = 'APROVADO'
         this.nameStatus = 'text-light-green-10'
 
       }
-       if(val == 2){
+       if(val == 2 && this.event.eventCancel == 0){
         this.status = 'bg-red-2'
         this.textStatus = 'REPROVADO'
         this.nameStatus = 'text-red-10'
 
       }
 
-      if(val == 0){
+      if(val == 0  && this.event.eventCancel == 0){
         this.status = ''
         this.textStatus = 'PENDENTE'
         this.nameStatus = 'text-amber-9'
 
+      }
+    },
+
+    'event.eventCancel': function (val){
+      if(val == 1){
+        this.status = 'bg-red-2'
+        this.textStatus = 'CANCELADO'
+        this.nameStatus = 'text-red'
       }
     }
   },
@@ -275,5 +287,6 @@ export default {
 </script>
 
 <style scoped>
+
 
 </style>

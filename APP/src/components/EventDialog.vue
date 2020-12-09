@@ -7,19 +7,32 @@
             </q-btn>
             <q-space/>
 
-            <q-icon v-if="eventData.eventStatus != 3" flat round  @click.stop="addFavorite(eventData.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="deep-orange-9" size="md" />
-            <q-btn @click="showLoading(), share()" v-if="eventData.eventStatus != 3" flat round color="deep-orange-9" size="md" icon="share"/>
+            <q-icon v-if="eventData.eventStatus == 1 && eventData.eventCancel == 0" flat round  @click.stop="addFavorite(eventData.eventID); handleFavIcon();" :class="heartBeat" :name= userFavorite color="deep-orange-9" size="md" />
+            <q-btn @click="showLoading(), share()" v-if="eventData.eventStatus == 1 && eventData.eventCancel == 0" flat round color="deep-orange-9" size="md" icon="share"/>
                 
           </q-bar>
         
           <q-card-section >
-            <q-img class="img-dialog"
+            <q-img v-if="eventData.eventImg != ''" class="img-dialog"
               style="margin-top: 48px"
               :src = "eventData.eventImg"
               basic
               :ratio="16/9"
               >
-              <div v-if="eventData.eventStatus == 3" class="absolute canceledEvent flex flex-center">
+              <div v-if="eventData.eventCancel == 1" class="absolute canceledEvent flex flex-center">
+                <div class="nameCanceledEvent text-bold text-red-10">
+                  CANCELADO
+                </div>
+              </div>
+            </q-img> 
+
+            <q-img v-if="eventData.eventImg == ''" class="img-dialog"
+              style="margin-top: 48px"
+              src="https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"
+              basic
+              :ratio="16/9"
+              >
+              <div v-if="eventData.eventCancel == 1" class="absolute canceledEvent flex flex-center">
                 <div class="nameCanceledEvent text-bold text-red-10">
                   CANCELADO
                 </div>
@@ -40,8 +53,12 @@
               <div class="row q-pl-md q-pt-md">
                 <q-icon name="las la-calendar-day" size="30px" color="grey-8" class="q-mt-xs"/>
                 <div class="q-ml-sm">
-                  <div class="text-grey-8">
-                    {{date.weekDay +', '+date.day+' '+date.month+' '+date.year}}
+                  <div v-if="eventData.eventDateEnd == eventData.eventDateStart" class="text-grey-8">
+                    {{date.weekDayStart +', '+date.dayStart+' '+date.monthStart+' '+date.yearStart}}
+                  </div>
+                  <div v-if="eventData.eventDateEnd != eventData.eventDateStart" class="text-grey-8">
+                    {{date.weekDayStart +', '+date.dayStart+' '+date.monthStart+' '+date.yearStart + ' - ' +
+                    dateEnd.weekDayEnd +', '+dateEnd.dayEnd+' '+dateEnd.monthEnd+' '+dateEnd.yearEnd}}
                   </div>
                   <div class="text-grey-8">
                     {{ eventData.eventTime }}
@@ -64,15 +81,17 @@
 
               <div class="row q-px-md q-pt-sm q-pb-sm">
                 <q-icon name="las la-dollar-sign" size="30px" color="grey-8"/>
-                <div class="text-grey-8 flex flex-center q-ml-sm">Gratuito</div>
+                <div class="text-grey-8 flex flex-center q-ml-sm">
+                  {{ eventData.eventEntrace }}
+                </div>
               </div>
             </div>
       
           </q-card-section>
 
-          <q-separator inset class="q-my-md"/>
+          <q-separator v-if="eventData.eventDescription" inset class="q-my-md"/>
 
-          <q-card-section >
+          <q-card-section v-if="eventData.eventDescription">
             <div class="bg-white">
               <div class="text-grey-9 app-font-bold q-pt-sm q-px-md">
                 Descrição
@@ -109,11 +128,11 @@
               <div class="text-grey-9 app-font-bold q-pt-sm q-pl-md">
                 Localização
               </div>
-              <div v-if="!eventOnline" class="text-grey-9 text-caption q-px-md">{{adressShow}}</div>
-              <div v-if="!eventOnline" class="q-pa-sm">
+              <div v-if="!eventData.eventAdressOption == 'Online'" class="text-grey-9 text-caption q-px-md">{{adressShow}}</div>
+              <div v-if="!eventData.eventAdressOption == 'Online'" class="q-pa-sm">
                 <div id="map"></div>
               </div>
-              <div v-if="eventOnline" class="q-pa-sm flex flex-center" id="online">
+              <div v-if="eventData.eventAdressOption == 'Online'" class="q-pa-sm flex flex-center" id="online">
                 <div class="text-center">
                   <q-icon name="las la-at" size="150px" color="grey-8"/>
                   <div class="text-grey-9 text-h6">O evento é online!</div>
@@ -121,7 +140,7 @@
                 </div>
               </div>
             </div>
-            <div class="row q-pa-sm">
+            <div v-if="!eventData.eventAdressOption == 'Online'" class="row q-pa-sm">
               <a class="q-pa-sm bg-deep-orange-9 rounded-borders text-white text-center col-12" style="text-decoration: none" href="#" @click="createDynamicURL" id="mapsLink">Abrir no Maps</a>
             </div>
             
@@ -146,10 +165,16 @@ export default {
       heartBeat: 'animated heartBeat my-delay',
       eventOnline: false,
        date:{
-        day: null,
-        month: null,
-        year: null,
-        weekDay: null
+        dayStart: null,
+        monthStart: null,
+        yearStart: null,
+        weekDayStart: null
+      },
+      dateEnd:{
+        dayEnd: null,
+        monthEnd: null,
+        yearEnd: null,
+        weekDayEnd: null
       },
       adress: '',
       adressShow: '',
@@ -463,13 +488,23 @@ export default {
     this.eventsHistory(this.eventData.eventID),
 
     this.checkFavorites()
-    this.date.day = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("D")
-    this.date.month = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("MMM")
-    this.date.year = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("YYYY")
-    this.date.weekDay = (moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("ddd"))
-    this.date.weekDay = this.date.weekDay.charAt(0).toUpperCase() + this.date.weekDay.slice(1)
-    this.date.month = this.date.month.charAt(0).toUpperCase() + this.date.month.slice(1)
+
+    this.date.dayStart = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("D")
+    this.date.monthStart = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("MMM")
+    this.date.yearStart = moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("YYYY")
+    this.date.weekDayStart = (moment(this.eventData.eventDateStart, "DD/MM/YYYY").format("ddd"))
+    this.date.weekDayStart = this.date.weekDayStart.charAt(0).toUpperCase() + this.date.weekDayStart.slice(1)
+    this.date.monthStart = this.date.monthStart.charAt(0).toUpperCase() + this.date.monthStart.slice(1)
     console.log(this.date)
+
+    this.dateEnd.dayEnd = moment(this.eventData.eventDateEnd, "DD/MM/YYYY").format("D")
+    this.dateEnd.monthEnd = moment(this.eventData.eventDateEnd, "DD/MM/YYYY").format("MMM")
+    this.dateEnd.yearEnd = moment(this.eventData.eventDateEnd, "DD/MM/YYYY").format("YYYY")
+    this.dateEnd.weekDayEnd = (moment(this.eventData.eventDateEnd, "DD/MM/YYYY").format("ddd"))
+    this.dateEnd.weekDayEnd = this.dateEnd.weekDayEnd.charAt(0).toUpperCase() + this.dateEnd.weekDayEnd.slice(1)
+    this.dateEnd.monthEnd = this.dateEnd.monthEnd.charAt(0).toUpperCase() + this.dateEnd.monthEnd.slice(1)
+    console.log(this.dateEnd)
+
     this.adress = this.eventData.eventAdressLocalName + ', ' + this.eventData.eventAdressStreet + ', ' + this.eventData.eventAdressNumber + ', ' + this.eventData.eventAdressBairro + ', Guanambi - BA'
     this.adressShow = this.eventData.eventAdressLocalName + ', ' + this.eventData.eventAdressStreet + ', ' + this.eventData.eventAdressNumber + ', ' + this.eventData.eventAdressBairro
     if(this.eventData.eventAdressOnline){
