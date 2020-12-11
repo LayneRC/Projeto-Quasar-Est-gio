@@ -1,4 +1,4 @@
-import { LocalStorage, Loading, uid, Dialog } from 'quasar'
+import { LocalStorage, Loading, uid, Dialog, Notify } from 'quasar'
 import { firebaseAuth, db, storage } from 'boot/firebase'
 import * as firebase from 'firebase/app'
 import { showErrorMessage } from 'src/functions/function-show-error-message'
@@ -290,6 +290,17 @@ const actions = {
                     console.log("Deu certo, Glória ao Pai!")
                     Loading.hide()
                     this.$router.replace('/myEvents/next')
+                
+                    Notify.create({
+                        type: 'positive',
+                        progress: true,
+                        message: 'Evento cadastrado e enviado para análise!',
+                        icon: 'check_circle',
+                        color: 'positive',
+                        textColor: 'white',
+                        position: 'top',
+                        timeout: 4000,
+                    }) 
                 })
                 .catch(error => {
                     Loading.hide()

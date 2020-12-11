@@ -485,7 +485,10 @@ export default {
   },
 
   async mounted() {
-    this.eventsHistory(this.eventData.eventID),
+    if(this.eventData.eventStatus == 1){
+      this.eventsHistory(this.eventData.eventID)
+    }
+  
 
     this.checkFavorites()
 
