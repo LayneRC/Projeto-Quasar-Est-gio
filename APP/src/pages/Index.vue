@@ -204,7 +204,7 @@
 
     </div>
 
-    <div class="row q-pl-md q-pr-md q-mt-lg">
+    <div class="row q-pl-md q-pr-md q-mt-lg q-mb-md">
       <div class="col-8 categorias app-font-bold text-grey-9">
         Vistos recentemente
       </div>
@@ -213,13 +213,13 @@
 
     <div>
 
-      <div v-if="!userData.eventsHistory.length" class=" text-center flex flex-center grey-6 app-font-light" style="height: 15vh">
+      <div v-if="!userData.eventsHistory.length" class=" text-center flex flex-center grey-6 app-font-light q-mb-lg" style="height: 15vh">
         Nenhum evento visto recentemente
       </div>
 
-      <q-scroll-area v-if="userData.eventsHistory.length" horizontal style="height: 263px" :thumb-style="{ opacity: 0 }">
+      <q-scroll-area class="row q-mb-lg" v-if="userData.eventsHistory.length" horizontal style="height: 263px" :thumb-style="{ opacity: 0 }" >
         
-        <div class="row q-gutter-sm no-wrap q-px-md">
+        <div class="row q-mb-lg q-gutter-sm no-wrap q-px-md">
 
           <div v-for="event in userData.eventsHistory" :key="event">
             <events-history :event = event />

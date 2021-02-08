@@ -1,7 +1,7 @@
 <template>
-  <q-page >
-        <q-card class="bg-white ">
-            <q-form  @submit.prevent="submitForm">
+  <q-page class="window-height">
+        
+            <q-form  @submit.prevent="submitForm" class="window-height">
                 <q-stepper
                     v-model="step"
                     header-nav
@@ -11,6 +11,7 @@
                     flat
                     contracted
                     animated
+                    class="window-height"
                 
                 >
                 <q-step
@@ -18,29 +19,28 @@
                     icon="settings"
                     :done="step > 1"
                     :header-nav="step > 1"
-                    style="height: 81.01vh"
+                    style="height: full-height"
                     title="identificação do evento"
+                    class="window-height"
                 >
                     <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
-                    1. Identificação do evento
-                    </div>
-                    <q-input v-model="eventData.eventName" label="Nome do evento" color="grey-7" class="app-font-light"/>
-                    <q-select v-model="eventData.modelCategorie" :options="optionsCategorie" color="deep-orange-9" class="app-font-light q-mt-sm"/>
-                    <q-select v-model="eventData.modelEntrance" :options="optionsEntrance" color="deep-orange-9" class="app-font-light q-mt-sm"/>
-
-
-                    <div v-if="!imageActually" class="border-img q-pa-sm bg-grey-1 q-mt-xl text-center flex flex-center">
-                    <div class="text-center">
-                        <div>
-                        <q-icon name="add_photo_alternate" size="40px" color="grey-6"/>
-                        </div>
-                        <div>
-                        Clique aqui para carregar uma imagem
+                        1. Identificação do evento
+                        <div class="text-red-14" style="font-size:2vh">
+                            * Campos obrigatórios
                         </div>
                     </div>
+                    <q-input v-model="eventData.eventName" ref="refName" label="Nome do evento *" color="grey-7" class="app-font-light" counter maxlength="200"
+                        :rules="[ val => val && val.trim().length > 0 || 'Nome do evento é obrigatório']"
+                    />
+                    <q-select v-model="eventData.modelCategorie" ref="refCategorie" :options="optionsCategorie" color="deep-orange-9" class="app-font-light q-mt-sm" label="Categoria principal *"
+                        :rules="[ val => val && val.trim().length > 0 || 'Categoria é obrigatório']"
+                    />
+                    <q-select v-model="eventData.modelEntrance" ref="refEntrace" :options="optionsEntrance" color="deep-orange-9" class="app-font-light q-mt-sm" label="Entrada *"
+                        :rules="[ val => val && val.trim().length > 0 || 'Entrada é obrigatório']"
+                    />
 
-                    
-                    </div>
+
+                   
 
                     <q-img
                     v-if="imageActually"
@@ -61,27 +61,39 @@
                     </q-menu>
                     </q-img>
 
-                    <div class="">
-                    A dimensão recomenda  é xx X xx
-                    </div>
+                    <q-img
+                    v-if="!imageActually"
+                    src="https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"
+                    :ratio="16/9"
+                    class="border-img q-mt-xl"
 
-                    
-
+                    >
+                    <q-menu touch-position>
+                        <q-list style="min-width: 100px">
+                        <q-item clickable v-close-popup @click="getImageCamera">
+                            <q-item-section>Camera</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="captureImageFromGallery">
+                            <q-item-section>Galeria</q-item-section>
+                        </q-item>
+                        </q-list>
+                    </q-menu>
+                    </q-img>
 
                     <q-page-sticky position="bottom-right" :offset="[5, 5]">
 
                     <q-circular-progress
-                        @click="() => { done1 = true; step = 2; value=20 }"
                         show-value
                         class="text-white q-ma-md"
                         :value="value"
                         size="70px"
                         :thickness="0.2"
                         color="grey-9"
-                        center-color="deep-orange-9"
                         track-color="transparent"
                         >
-                        <q-icon name="las la-angle-right" />
+                        <q-btn :disable="checkValidate" @click="() => {done1 = true; step = 2; value=20, checkValidate = false  }" size="19px" round color="deep-orange-9">
+                            <q-icon name="las la-angle-right" />
+                        </q-btn>
                     </q-circular-progress>
 
                     </q-page-sticky>
@@ -94,19 +106,27 @@
                     icon="las la-clock"
                     :done="step > 2"
                     :header-nav="step > 2"
-                    style="height: 81.01vh"
+                    style="height: full-height"
                     title="data evento"
+                    class="window-height"
                 >
                     <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
                     2. Quando o evento vai acontecer?
+                        <div class="text-red-14" style="font-size:2vh">
+                            * Campos obrigatórios
+                        </div>
                     </div>
                     <div class="q-pa-lg" style="max-width: 300px">
                     <div class="app-font-bold text-grey-10">
-                        Início
+                        Início *
                     </div>
-                    <q-input v-model="eventData.dateStart" readonly>
+                    <q-input v-model="eventData.dateStart" ref="refDateStart" readonly :disable="disableDate" :rules="[ val => checkDateStart() || 'Data inválida']">
                         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                        <q-date v-model="eventData.dateStart"  color="deep-orange-9" today-btn mask="DD/MM/YYYY" @input="closeModelDate(); setDateEnd();" />
+                        <q-date v-model="eventData.dateStart"  color="deep-orange-9" today-btn mask="DD/MM/YYYY" @input="setDateEnd()">
+                            <div class="row items-center justify-end">
+                                <q-btn v-close-popup label="OK" color="primary" flat />
+                            </div>
+                        </q-date>
                         </q-popup-proxy>
                         <template v-slot:prepend>
                         <q-icon name="event" class="cursor-pointer">
@@ -114,7 +134,7 @@
                         </template>
                     </q-input>
                     <div class="q-mt-sm">
-                        <q-input v-model="eventData.time" mask="time" readonly :rules="['time']">
+                        <q-input v-model="eventData.time" ref="refTime" mask="time" readonly :rules="['time']" >
                         <q-popup-proxy transition-show="scale" transition-hide="scale">
                             <q-time v-model="eventData.time" format24h color="deep-orange-9" />
                         </q-popup-proxy>
@@ -125,15 +145,19 @@
                         </q-input>
                     </div>
                     <div class="app-font-bold text-grey-10">
-                        Fim
+                        Fim *
                     </div>
-                    <q-input v-model="eventData.dateEnd" readonly>
+                    <q-input v-model="eventData.dateEnd" ref="refDateEnd" readonly :rules="[ val => checkDateEnd() || 'Data inválida']">>
                         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                        <q-date v-model="eventData.dateEnd" color="deep-orange-9" today-btn mask="DD/MM/YYYY" @input="() => $refs.qDateProxy.hide()" />
+                            <q-date v-model="eventData.dateEnd" color="deep-orange-9" today-btn mask="DD/MM/YYYY">
+                                <div class="row items-center justify-end">
+                                    <q-btn v-close-popup label="OK" color="primary" flat />
+                                </div>
+                            </q-date>
                         </q-popup-proxy>
                         <template v-slot:prepend>
-                        <q-icon name="event" class="cursor-pointer">
-                        </q-icon>
+                            <q-icon name="event" class="cursor-pointer">
+                            </q-icon>
                         </template>
                     </q-input>
                     </div>
@@ -142,24 +166,24 @@
                     <q-page-sticky position="bottom-right" :offset="[5, 5]">
 
                     <q-circular-progress
-                        @click="() => { done2 = true; step = 3; value=40 }"
                         show-value
                         class="text-white q-ma-md"
                         :value="value"
                         size="70px"
                         :thickness="0.2"
                         color="blue-3"
-                        center-color="deep-orange-9"
                         track-color="transparent"
                         >
-                        <q-icon name="las la-angle-right" />
+                        <q-btn :disable="checkValidate" @click="() => { done2 = true; step = 3; value=40, checkBtn1()}" size="19px" round color="deep-orange-9">
+                            <q-icon name="las la-angle-right" />
+                        </q-btn>
                     </q-circular-progress>
 
                     </q-page-sticky>
 
-                    <q-page-sticky position="bottom-left" :offset="[20, -25]">
+                    <q-page-sticky position="bottom-left" :offset="[20, 40]">
 
-                    <div clickable @click="() => {step = 1; value=0}" class="app-font-bold text-deep-orange-9">Voltar</div>
+                    <div clickable @click="() => {step = 1; value=0;  checkValidate = false}" class="app-font-bold text-deep-orange-9">Voltar</div>
 
 
                     </q-page-sticky>
@@ -170,41 +194,59 @@
                     icon="las la-map-marker-alt"
                     :done="step > 3"
                     :header-nav="step > 3"
-                    style="height: 81.01vh"
+                    style="height: full-height"
                     title="lucal evento"
+                    class="window-height"
                 >
                     <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
-                    3. Onde o seu evento vai acontecer?
+                        3. Onde o seu evento vai acontecer?
+                        <div class="text-red-14" style="font-size:2vh">
+                            * Campos obrigatórios
+                        </div>
                     </div>
                     <q-select v-model="modelAdress" :options="optionsAdress" color="deep-orange-9"/>
-                    <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressLocalName" label="Nome do local" color="grey-7" class="q-mt-md"/>
-                    <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressStreet" label="Av/Rua" color="grey-7" class="q-mt-md"/>
-                    <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressNumber" label="Número" color="grey-7" class="q-mt-md"/>
-                    <q-input v-if="modelAdress == 'Cadastrar um endereço'" v-model="eventData.adressBairro" label="Bairro" color="grey-7" class="q-mt-md"/>
-
-                    <q-input v-if="modelAdress == 'Online'" v-model="eventData.adressOnline" label="Endereço online" color="grey-7" class="q-mt-md"/>
+                    <div v-if="modelAdress == 'Cadastrar um endereço'">
+                        <q-input v-model="eventData.adressLocalName" ref="refLocalName" label="Nome do local *" color="grey-7" class="q-mt-md" key="end_name"
+                            :rules="[ val => val && val.trim().length > 0 || 'Nome do local é obrigatório']"
+                        />
+                        <q-input v-model="eventData.adressStreet" ref="refStreet" label="Av/Rua *" color="grey-7" class="q-mt-sm" key="end_street"
+                            :rules="[val => val && val.trim().length > 0 || 'Av/Rua é obrigatório']"
+                        />
+                        <q-input v-model="eventData.adressBairro" ref="refBairro" label="Bairro *" color="grey-7" class="q-mt-sm" key="end_bairro"
+                            :rules="[val => val && val.trim().length > 0 || 'Bairro é obrigatório']"
+                        />
+                        <q-input v-model="eventData.adressNumber" ref="refNumber" label="Número *" color="grey-7" class="q-mt-sm q-mb-xl"  key="end_num"
+                            :rules="[ val => val && val.trim().length > 0 || 'Número é obrigatório. Caso não tenha, colocar S/N']"
+                        />
+                    </div>
+                    
+                    <div v-else>
+                        <q-input v-model="eventData.adressOnline" ref="refOnline" label="Endereço online *" color="grey-7" class="q-mt-md" key="end_online" counter maxlength="150"
+                            :rules="[ val => val && val.trim().length > 0 || 'Endereço online é obrigatório. Caso ainda não tenha, colocar A Definir. Você poderá alterar posteriormente']"
+                        />
+                    </div>
 
                     <q-page-sticky position="bottom-right" :offset="[5, 5]">
 
                     <q-circular-progress
-                        @click="() => { done2 = true; step = 4; value=60 }"
                         show-value
                         class="text-white q-ma-md"
                         :value="value"
                         size="70px"
                         :thickness="0.2"
                         color="blue-3"
-                        center-color="deep-orange-9"
                         track-color="transparent"
                         >
-                        <q-icon name="las la-angle-right" />
+                        <q-btn :disable="checkValidate" @click="() => { done2 = true; step = 4; value=60 }" size="19px" round color="deep-orange-9">
+                            <q-icon name="las la-angle-right" />
+                        </q-btn>
                     </q-circular-progress>
 
                     </q-page-sticky>
 
-                    <q-page-sticky position="bottom-left" :offset="[20, -25]">
+                    <q-page-sticky position="bottom-left" :offset="[20, 40]">
 
-                    <div clickable @click="() => {step = 2; value=20}" class="app-font-bold text-deep-orange-9">Voltar</div>
+                    <div clickable @click="() => {step = 2; value=20; checkValidate = false}" class="app-font-bold text-deep-orange-9">Voltar</div>
 
 
                     </q-page-sticky>
@@ -215,35 +257,36 @@
                     icon="add_comment"
                     :done="step > 4"
                     :header-nav="step > 4"
-                    style="height: 81.01vh"
+                    style="height: full-height"
                     title="descrição evento"
+                    class="window-height"
                 >
                     <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
                     4. Descrição do evento
                     </div>
-                    <q-editor v-model="eventData.description" min-height="15rem" class="q-mt-md"/>
+                    <q-editor v-model="eventData.description" min-height="15rem" class="q-mt-md" toolbar-text-color="grey-9"/>
                     
 
                     <q-page-sticky position="bottom-right" :offset="[5, 5]">
 
                     <q-circular-progress
-                        @click="() => { done4 = true; step = 5; value=80 }"
                         show-value
                         class="text-white q-ma-md"
                         :value="value"
                         size="70px"
                         :thickness="0.2"
                         color="blue-3"
-                        center-color="deep-orange-9"
                         track-color="transparent"
                         >
-                        <q-icon name="las la-angle-right" />
+                        <q-btn :disable="checkValidate" @click="() => { done4 = true; step = 5; value=80; checkBtn2() }" size="19px" round color="deep-orange-9">
+                            <q-icon name="las la-angle-right" />
+                        </q-btn>
                     </q-circular-progress>
 
                     </q-page-sticky>
-                    <q-page-sticky position="bottom-left" :offset="[20, -25]">
+                    <q-page-sticky position="bottom-left" :offset="[20, 40]">
 
-                    <div clickable @click="() => {step = 3; value=40}" class="app-font-bold text-deep-orange-9">Voltar</div>
+                    <div clickable @click="() => {step = 3; value=40; checkValidate = false}" class="app-font-bold text-deep-orange-9">Voltar</div>
 
 
                     </q-page-sticky>
@@ -253,39 +296,48 @@
                     :name="5"
                     icon="las la-user"
                     :header-nav="step > 5"
-                    style="height: 81.01vh"
+                    style="height: full-height"
                     title="organizador evento"
+                    class="window-height"
                 >
                     <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
-                    5. Sobre o organizador
+                        5. Sobre o organizador
+                        <div class="text-red-14" style="font-size:2vh">
+                            * Campos obrigatórios
+                        </div>
                     </div>
-                    <q-input v-model="eventData.nameResponsible" label="Nome do organizador" color="grey-7"/>
-                    <q-input v-model="eventData.whatsapp" type="tel" label="WhatsApp" color="grey-7" class="q-mt-md"/>
+                    <q-input v-model="eventData.nameResponsible" ref="refNameOrg" label="Nome do organizador *" color="grey-7"
+                        :rules="[ val => val && val.trim().length > 0 || 'Nome do organizador é obrigatório']"
+                    />
+                    <q-input v-model="eventData.whatsapp" ref="refWhats" type="tel" label="WhatsApp *" color="grey-7" class="q-mt-md" mask="(##) ##### - ####" hint="Esta informação não ficará pública."
+                        :rules="[ val => val && val.trim().length > 0 || 'Whatsapp é obrigatório, Caso não tenha whatsapp, informe um número para contato.',
+                                val => val && val.trim().length == 17 || 'Número inválido']"
+                    />
 
 
 
                     <q-page-sticky position="bottom-right" :offset="[5, 5]">
 
                     <q-circular-progress
-                        @click="done5 = true; value=100; submitForm()"
                         show-value
                         class="text-white q-ma-md"
                         :value="value"
                         size="70px"
                         :thickness="0.2"
                         color="blue-3"
-                        center-color="deep-orange-9"
                         track-color="transparent"
                         type= "submit"
                         >
-                        <q-icon name="las la-angle-right" />
+                        <q-btn :disable="checkValidate" @click="done5 = true; value=100, submitForm()" size="19px" round color="deep-orange-9">
+                            <q-icon name="las la-angle-right" />
+                        </q-btn>
                     </q-circular-progress>
 
                     </q-page-sticky>
 
-                    <q-page-sticky position="bottom-left" :offset="[20, -25]">
+                    <q-page-sticky position="bottom-left" :offset="[20, 40]">
 
-                    <div clickable @click="() => {step = 4; value=60}" class="app-font-bold text-deep-orange-9">Voltar</div>
+                    <div clickable @click="() => {step = 4; value=60; checkValidate = false}" class="app-font-bold text-deep-orange-9">Voltar</div>
 
 
                     </q-page-sticky>
@@ -296,7 +348,7 @@
 
         
           
-        </q-card>
+
 
    
     
@@ -313,43 +365,59 @@ export default {
 
   data () {
     return {
-       step: 1,
-      optionsCategorie: [
-        'Acadêmico', 'Artes Visuais', 'Competições', 'Esportes', 'Exposições', 'Festas e Shows', 'Online', 'Palestras', 'Religiosos', 'Teatro e Espetáculos'
-      ],
-      optionsAdress: [
-        'Cadastrar um endereço', 'Online'
-      ],
-      optionsEntrance: [
-        'Gratuito', 'Pago'
-      ],
-      value: 0,
-      modelAdress: 'Cadastrar um endereço',
+        step: 1,
+        optionsCategorie: [
+            'Acadêmico', 'Artes Visuais', 'Competições', 'Esportes', 'Exposições', 'Festas e Shows', 'Online', 'Palestras', 'Religiosos', 'Teatro e Espetáculos'
+        ],
+        optionsAdress: [
+            'Cadastrar um endereço', 'Online'
+        ],
+        optionsEntrance: [
+            'Gratuito', 'Pago'
+        ],
+        value: 0,
+        modelAdress: 'Cadastrar um endereço',
         imageActually: null,
         editData: {},
+        checkValidate: true,
+        validateName: false,
+        validateCategorie: false,
+        validateEntrace: false,
+        validateLocalName: false,
+        validateStreet: false,
+        validateBairro: false,
+        validateNumber: false,
+        validateOnline: false,
+        validateNameOrg: false,
+        validateWhats: false,
 
 
-      eventData: {
-        eventName: '',
-        modelCategorie: 'Categoria principal',  
-        modelEntrance: 'Entrada',
-        eventImage: null,
-        dateStart: '',
-        time: '',
-        dateEnd: '',
-        adressOption: '',
-        adressLocalName: '',
-        adressStreet: '',
-        adressNumber: '',
-        adressBairro: '',
-        adressOnline: '',
-        description: '',
-        nameResponsible: '',
-        whatsapp: '',
-        id: ''
+        eventData: {
+            eventName: '',
+            modelCategorie: 'Categoria principal',  
+            modelEntrance: 'Entrada',
+            eventImage: null,
+            dateStart: '',
+            time: '',
+            dateEnd: '',
+            adressOption: '',
+            adressLocalName: '',
+            adressStreet: '',
+            adressNumber: '',
+            adressBairro: '',
+            adressOnline: '',
+            description: '',
+            nameResponsible: '',
+            whatsapp: '',
+            id: ''
 
-         
-      }
+            
+        },
+        dateActually: '',
+        dateStartFormat: '',
+        dateEndFormat: '',
+        disableDate: false
+
       
     }
   },
@@ -397,11 +465,49 @@ export default {
         },
 
         closeModelDate() {
-        this.$refs.qDateProxy.hide()
+            this.$refs.qDateProxy.hide()
         },
 
         setDateEnd() {
-        this.eventData.dateEnd = this.eventData.dateStart
+            this.eventData.dateEnd = this.eventData.dateStart
+        },
+
+        checkDateStart() {
+            var dateActually = moment().format('YYYY/MM/DD')
+            var dateStartFormat = moment(this.eventData.dateStart, 'DD/MM/YYYY').format('YYYY/MM/DD')
+            if(dateStartFormat < dateActually){
+                this.eventData.dateStart = this.$route.params.event.eventDateStart
+                this.eventData.dateEnd = this.eventData.dateStart
+            }
+            return moment(dateActually).isSameOrBefore(dateStartFormat)
+        },
+
+        checkDateEnd(){
+            var dateStartFormat = moment(this.eventData.dateStart, 'DD/MM/YYYY').format('YYYY/MM/DD')
+            var dateEndFormat = moment(this.eventData.dateEnd, 'DD/MM/YYYY').format('YYYY/MM/DD')
+
+            if(dateEndFormat < dateStartFormat){
+                this.eventData.dateEnd = this.eventData.dateStart
+            }
+            
+            return moment(dateStartFormat).isSameOrBefore(dateEndFormat)
+        },
+
+        checkBtn1() {
+            if((this.eventData.adressLocalName != '' && this.eventData.adressStreet != '' && this.eventData.adressBairro != '' && this.eventData.adressNumber)
+                || this.eventData.adressOnline){
+                this.checkValidate = false
+            }else{
+                this.checkValidate = true
+            }
+        },
+
+        checkBtn2() {
+            if(this.eventData.nameResponsible != '' && this.eventData.whatsapp != '' ){
+                this.checkValidate = false
+            }else{
+                this.checkValidate = true
+            }
         },
 
         
@@ -413,43 +519,49 @@ export default {
             }
                         
             this.updateEvent(this.eventData)
-                    
-
-            
+                      
         }
     },
 
-  mounted() {
+    mounted() {
       this.editData = this.$route.params.event
       console.log(this.editData)
-    this.eventData.eventName = this.$route.params.event.eventName
-    this.eventData.modelCategorie = this.$route.params.event.eventCategorie
-    this.eventData.modelEntrance = this.$route.params.event.eventEntrace
-    this.eventData.dateStart = this.$route.params.event.eventDateStart
-    this.eventData.time = this.$route.params.event.eventTime
-    this.eventData.dateEnd = this.$route.params.event.eventDateEnd
-    if(this.$route.params.event.eventAdressOnline == ''){
-        console.log('entrou')
-        this.modelAdress = 'Cadastrar um endereço'
-        this.eventData.adressLocalName = this.$route.params.event.eventAdressLocalName
-        this.eventData.adressStreet = this.$route.params.event.eventAdressStreet
-        this.eventData.adressNumber = this.$route.params.event.eventAdressNumber
-        this.eventData.adressBairro = this.$route.params.event.eventAdressBairro
+        this.eventData.eventName = this.$route.params.event.eventName
+        this.eventData.modelCategorie = this.$route.params.event.eventCategorie
+        this.eventData.modelEntrance = this.$route.params.event.eventEntrace
+        this.eventData.dateStart = this.$route.params.event.eventDateStart
+        this.eventData.time = this.$route.params.event.eventTime
+        this.eventData.dateEnd = this.$route.params.event.eventDateEnd
+        if(this.$route.params.event.eventAdressOnline == ''){
+            console.log('entrou')
+            this.modelAdress = 'Cadastrar um endereço'
+            this.eventData.adressLocalName = this.$route.params.event.eventAdressLocalName
+            this.eventData.adressStreet = this.$route.params.event.eventAdressStreet
+            this.eventData.adressNumber = this.$route.params.event.eventAdressNumber
+            this.eventData.adressBairro = this.$route.params.event.eventAdressBairro
+            
+        }else{
+            this.modelAdress = 'Online'
+            this.eventData.adressOnline = this.$route.params.event.eventAdressOnline
+        }
+        this.eventData.description = this.$route.params.event.eventDescription
+        this.eventData.nameResponsible = this.$route.params.event.eventNameResponsible
+        this.eventData.whatsapp = this.$route.params.event.eventWhatsappResponsible
+        this.imageActually = this.$route.params.event.eventImg
+        this.eventData.id = this.$route.params.event.eventID
+        this.eventData.adressOption = this.$route.params.event.eventAdressOption
+
+        this.dateActually = moment().format('YYYY/MM/DD')
+        this.dateStartFormat = moment(this.eventData.dateStart, 'DD/MM/YYYY').format('YYYY/MM/DD')
+
+        if(moment(this.dateStartFormat).isBefore(this.dateActually)){
+            this.disableDate = true
+        }
         
-    }else{
-        this.modelAdress = 'Online'
-        this.eventData.adressOnline = this.$route.params.event.eventAdressOnline
-    }
-    this.eventData.description = this.$route.params.event.eventDescription
-    this.eventData.nameResponsible = this.$route.params.event.eventNameResponsible
-    this.eventData.whatsapp = this.$route.params.event.eventWhatsappResponsible
-    this.imageActually = this.$route.params.event.eventImg
-    this.eventData.id = this.$route.params.event.eventID
-    this.eventData.adressOption = this.$route.params.event.eventAdressOption
-    
-  },
+    },
   
     watch: {
+
         'modelAdress': function (val) {
             if(val == 'Online'){
                 this.eventData.adressLocalName = ''
@@ -457,10 +569,13 @@ export default {
                 this.eventData.adressNumber = ''
                 this.eventData.adressBairro = ''
 
+                this.checkValidate = true
 
             }
             if(val == 'Cadastrar um endereço'){
                 this.eventData.adressOnline = ''
+
+                this.checkValidate = true
 
             }
 
@@ -469,8 +584,270 @@ export default {
         'eventData.eventImage': function (val) {
             if(val != null){
                 this.imageActually = this.eventData.eventImage
+            }else{
+                this.imageActually = "https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"
             }
+
+        },
+
+        'eventData.eventName': {
+      
+      handler: function(val){
+        this.$refs.refName.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refName.hasError){
+            this.validateName = true
+            console.log(this.validateName)
+          }else{
+            this.validateName = false 
+          }
+          if(this.validateName == true && this.validateCategorie == true && this.validateEntrace == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
         }
+          
+        }, 100)
+
+        
+      },
+      
+    },
+
+    'eventData.modelCategorie': {
+      
+      handler: function(val){
+        this.$refs.refCategorie.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refCategorie.hasError){
+            this.validateCategorie = true
+            console.log(this.validateCategorie)
+          }
+          else{
+            this.validateCategorie = false
+          }
+          if(this.validateName == true && this.validateCategorie == true && this.validateEntrace == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
+        }
+        }, 100)
+         
+      },
+      
+    },
+
+    'eventData.modelEntrance': {
+      
+      handler: function(val){
+        this.$refs.refEntrace.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refEntrace.hasError){
+            this.validateEntrace = true
+            console.log(this.validateEntrace)
+          }
+          else{
+            this.validateEntrace = false
+          }
+          if(this.validateName == true && this.validateCategorie == true && this.validateEntrace == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
+        }
+        }, 100)
+         
+      },
+      
+    },
+
+    'eventData.modelAdress':{
+      handler:function(val){
+        if(this.modelAdress == 'Online'){
+          this.checkValidate = true
+        }
+      }
+    },
+
+    'eventData.adressLocalName': {
+      
+      handler: function(val){
+        this.$refs.refLocalName.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refLocalName.hasError){
+            this.validateLocalName = true
+            console.log(this.validateLocalName)
+          }
+          else{
+            this.validateLocalName = false
+          }
+          if(this.modelAdress == 'Cadastrar um endereço' && this.validateLocalName == true && this.validateStreet == true && this.validateNumber == true && this.validateBairro == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
+        }
+        }, 100)
+         
+      },
+      
+    },
+
+    'eventData.adressStreet': {
+      
+      handler: function(val){
+        this.$refs.refStreet.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refStreet.hasError){
+            this.validateStreet = true
+            console.log(this.validateStreet)
+          }
+          else{
+            this.validateStreet = false
+          }
+          if(this.modelAdress == 'Cadastrar um endereço' && this.validateLocalName == true && this.validateStreet == true && this.validateNumber == true && this.validateBairro == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
+        }
+        }, 100)
+         
+      },
+      
+    },
+
+    'eventData.adressBairro': {
+      
+      handler: function(val){
+        this.$refs.refBairro.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refBairro.hasError){
+            this.validateBairro = true
+            console.log(this.validateBairro)
+          }
+          else{
+            this.validateBairro = false
+          }
+          if(this.modelAdress == 'Cadastrar um endereço' && this.validateLocalName == true && this.validateStreet == true && this.validateNumber == true && this.validateBairro == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
+        }
+        }, 100)
+         
+      },
+      
+    },
+
+    'eventData.adressNumber': {
+      
+      handler: function(val){
+        this.$refs.refNumber.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refNumber.hasError){
+            this.validateNumber = true
+            console.log(this.validateNumber)
+          }
+          else{
+            this.validateNumber = false
+          }
+          if(this.modelAdress == 'Cadastrar um endereço' && this.validateLocalName == true && this.validateStreet == true && this.validateBairro == true && this.validateNumber == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
+        }
+        }, 100)
+         
+      },
+      
+    },
+
+    'eventData.adressOnline': {
+      
+      handler: function(val){
+        this.$refs.refOnline.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refOnline.hasError){
+            this.validateOnline = true
+            console.log(this.validateOnline)
+          }
+          else{
+            this.validateOnline = false
+          }
+          if(this.modelAdress == 'Online' && this.validateOnline == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
+        }
+        }, 100)
+         
+      },
+      
+    },
+
+    'eventData.nameResponsible': {
+      
+      handler: function(val){
+        this.$refs.refNameOrg.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refNameOrg.hasError){
+            this.validateNameOrg = true
+            console.log(this.validateNameOrg)
+          }
+          else{
+            this.validateNameOrg = false
+          }
+          if(this.validateNameOrg == true && this.validateWhats == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
+        }
+        }, 100)
+         
+      },
+      
+    },
+
+    'eventData.whatsapp': {
+      
+      handler: function(val){
+        this.$refs.refWhats.validate()
+        console.log(val)
+        setTimeout(() => {
+          if(!this.$refs.refWhats.hasError){
+            this.validateWhats = true
+            console.log(this.validateWhats)
+          }
+          else{
+            this.validateWhats = false
+          }
+          if(this.validateNameOrg == true && this.validateWhats == true){
+          this.checkValidate = false
+          console.log(this.checkValidate)
+        }else{
+          this.checkValidate = true
+        }
+        }, 100)
+         
+      },
+      
+    },
     },
   
 

@@ -22,7 +22,7 @@
 
           <q-card-section class="full-width ">
 
-            <div v-if="(event.eventStatus == 0 || event.eventStatus == 1) && event.eventCancel == 0"  class="no-shadow absolute-right">
+            <div v-if="((event.eventStatus == 0 || event.eventStatus == 1) && event.eventCancel == 0) && this.datePast == true"  class="no-shadow absolute-right">
               <q-icon @click.stop="menuOptions = true" name="las la-ellipsis-v" color="deep-orange-9" size="25px"/>
               <q-menu class="shadow-0"
                 v-model="menuOptions"
@@ -61,7 +61,7 @@
               <br>
               {{event.eventTime}}
             </div>
-            <div class="app-font-bold text-grey-9 q-ml-sm" style="font-size: 16px">
+            <div class="divName app-font-bold text-grey-9 q-ml-sm text-justify" style="font-size: 16px">
               {{ event.eventName }}
             </div>
             <div v-if="!eventOnline" class="app-font-light q-ml-sm">
@@ -152,6 +152,10 @@ export default {
         year: null,
         weekDay: null
       },
+      datePast: '',
+      dateActually: '',
+      dateStartFormat: '',
+      dateEndFormat: ''
 
     }
   },
@@ -180,14 +184,23 @@ export default {
     },
 
     share(){
-      var texto = "*" + this.event.eventName + "*" + "\n" + "\n" + this.event.eventDateStart + "\n" + "20:00" + 
+      var texto = "*" + this.event.eventName + "*" + "\n" + "\n" + this.event.eventDateStart + "\n" + this.event.eventTime + 
                   "\n" + "\n" + this.event.eventDescription
 
-      var  options  = { 
-        message : texto.split(' ').join('%20'), //  não compatível com alguns aplicativos (Facebook, Instagram)  
-        chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão  
-        files: [this.event.eventImg],
-      } ;
+      if(this.event.eventImg != ''){
+        var  options  = { 
+          message : texto, //  não compatível com alguns aplicativos (Facebook, Instagram)  
+          chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão 
+          files: [this.event.eventImg],
+        } 
+      }else{
+        var  options  = { 
+          message : texto, //  não compatível com alguns aplicativos (Facebook, Instagram)  
+          chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão 
+          files: ["https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"],
+        } 
+      }
+      
        window.plugins.socialsharing.shareWithOptions (options)
     },
 
@@ -196,6 +209,10 @@ export default {
       this.menuOptions = true
     },
 
+    checkDate() {
+      
+            
+    }
 
   },
 
@@ -237,6 +254,18 @@ export default {
       this.textStatus = 'PENDENTE'
       this.nameStatus = 'text-amber-9'
 
+    }
+
+    this.dateActually = moment().format('YYYY/MM/DD')
+    this.dateStartFormat = moment(this.event.eventDateStart, 'DD/MM/YYYY').format('YYYY/MM/DD')
+    this.dateEndFormat = moment(this.event.eventDateEnd, 'DD/MM/YYYY').format('YYYY/MM/DD')
+    console.log(this.dateActually, this.dateStartFormat, this.dateEndFormat)
+
+    if(moment(this.dateStartFormat).isBefore(this.dateActually) && moment(this.dateEndFormat).isBefore(this.dateActually)){
+      console.log('menor')
+      this.datePast = false
+    }else{
+      this.datePast = true
     }
 
   },
@@ -287,6 +316,14 @@ export default {
 </script>
 
 <style scoped>
+
+.divName{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 
 </style>

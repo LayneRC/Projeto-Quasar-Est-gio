@@ -122,8 +122,8 @@ cfg.module.rules.push({
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Aplicação Guanambi Eventos',
-        short_name: 'Aplicação Guanambi Eventos',
+        name: 'GBI Eventos',
+        short_name: 'GBI Eventos',
         description: 'Aplicação de estágio de gerenciamento de eventos culturais',
         display: 'standalone',
         orientation: 'portrait',

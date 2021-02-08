@@ -56,16 +56,6 @@
 
             <q-item clickable v-ripple>
               <q-item-section avatar>
-                <q-icon color="grey-9" name="las la-cog" />
-              </q-item-section>
-
-              <q-item-section class="text-grey-9" @click="$router.push('/settings')">
-                Configurações
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
                 <q-icon color="grey-9" name="las la-door-open" />
               </q-item-section>
 

@@ -306,6 +306,16 @@ const actions = {
                     Loading.hide()
                     this.$router.replace('/myEvents/next')
                     console.log("Não Salvou os dados!")
+                    Notify.create({
+                        type: 'negative',
+                        progress: true,
+                        message: 'Erro. Tente novamente mais tarde.',
+                        icon: 'error',
+                        color: 'negative',
+                        textColor: 'white',
+                        position: 'top',
+                        timeout: 4000,
+                    }) 
                     console.log(error)
                     db.collection('events').doc(docID).delete()
                     .then(result => {
@@ -319,7 +329,7 @@ const actions = {
                     })
                 })
             } else {
-                const storageRef =  storage.ref().child('/' + 'Evento '+ uid() +'.jpeg').putString(payload.image, 'data_url')
+                const storageRef =  storage.ref().child('/' + 'Evento'+ uid() +'.jpeg').putString(payload.image, 'data_url')
 
             storageRef.on(
                 'state_changed',
@@ -344,6 +354,7 @@ const actions = {
                             eventAdressNumber: payload.adressNumber,
                             eventAdressBairro: payload.adressBairro,
                             eventAdressOnline: payload.adressOnline,
+                            eventAdressOption: payload.adressOption,
                             eventDescription: payload.description,
                             eventNameResponsible: payload.nameResponsible,
                             eventWhatsappResponsible: payload.whatsapp,
@@ -356,6 +367,16 @@ const actions = {
                             console.log("Deu certo, Glória ao Pai!")
                             Loading.hide()
                             this.$router.replace('/myEvents/next')
+                            Notify.create({
+                                type: 'positive',
+                                progress: true,
+                                message: 'Evento cadastrado e enviado para análise!',
+                                icon: 'check_circle',
+                                color: 'positive',
+                                textColor: 'white',
+                                position: 'top',
+                                timeout: 4000,
+                            }) 
                         })
                         .catch(error => {
                             Loading.hide()
@@ -548,6 +569,26 @@ const actions = {
         });
     },
 
+    resetPasswordInit({state}, payload) {
+        var auth = firebaseAuth;
+        var emailAddress = payload.emailresetPwd;
+
+        auth.sendPasswordResetEmail(emailAddress).then(function() {
+            console.log('email enviado')
+            Dialog.create({
+                
+                  title: '<div class="q-pa-sm text-center text-deep-orange-9 app-font-bold">Verifique seu email</div>',
+                  message: '<div class="q-pa-sm text-subtitle1 text-justify app-font-light text-grey-10"> Um link para alteração da senha foi enviado para seu email! </div>',
+                  html: true 
+                
+            })
+            
+        }).catch(function(error) {
+            console.log('email não enviado')
+        });
+
+    },
+
     updateUser({state}, payload) {
         var userID = firebaseAuth.currentUser.uid;
         console.log(userID)
@@ -618,14 +659,37 @@ const actions = {
                     eventCancel: 1,
                 }).then(result => {
                     console.log('cancelou')
+                    Notify.create({
+                        type: 'positive',
+                        progress: true,
+                        message: 'Evento cancelado!',
+                        icon: 'check_circle',
+                        color: 'positive',
+                        textColor: 'white',
+                        position: 'top',
+                        timeout: 4000,
+                    }) 
                 }).catch(error => {
                     console.log('não cancelou')
+                    Notify.create({
+                        type: 'negative',
+                        progress: true,
+                        message: 'Erro. Tente novamente mais tarde.',
+                        icon: 'error',
+                        color: 'negative',
+                        textColor: 'white',
+                        position: 'top',
+                        timeout: 4000,
+                    }) 
                 })
             })
         })
     },
 
     updateEvent({state}, payload){
+        Loading.show({
+            message: 'Alterando evento'
+        })
         var id = payload.id
         console.log(payload)
         db.collection('events').where('eventID', '==', id).get()
@@ -653,8 +717,32 @@ const actions = {
                         eventWhatsappResponsible: payload.whatsapp
                     }).then(result => {
                         console.log('alterou')
+                        Loading.hide()
+                        this.$router.replace('/myEvents/next')
+                        Notify.create({
+                            type: 'positive',
+                            progress: true,
+                            message: 'Evento alterado!',
+                            icon: 'check_circle',
+                            color: 'positive',
+                            textColor: 'white',
+                            position: 'top',
+                            timeout: 4000,
+                        }) 
                     }).catch(error => {
+                        Loading.hide()
                         console.log('não alterou')
+                        this.$router.replace('/myEvents/next')
+                        Notify.create({
+                            type: 'negative',
+                            progress: true,
+                            message: 'Erro. Tente novamente mais tarde.',
+                            icon: 'error',
+                            color: 'negative',
+                            textColor: 'white',
+                            position: 'top',
+                            timeout: 4000,
+                        }) 
                     })
                     }if ((payload.adressOption == 'Físico' && payload.adressOnline == '') ||
                         (payload.adressOption == 'Online' && payload.adressLocalName != '')) {
@@ -676,8 +764,32 @@ const actions = {
                             eventWhatsappResponsible: payload.whatsapp
                         }).then(result => {
                             console.log('alterou')
+                            Loading.hide()
+                            this.$router.replace('/myEvents/next')
+                            Notify.create({
+                                type: 'positive',
+                                progress: true,
+                                message: 'Evento alterado!',
+                                icon: 'check_circle',
+                                color: 'positive',
+                                textColor: 'white',
+                                position: 'top',
+                                timeout: 4000,
+                            }) 
                         }).catch(error => {
+                            Loading.hide()
                             console.log('não alterou')
+                            this.$router.replace('/myEvents/next')
+                            Notify.create({
+                                type: 'negative',
+                                progress: true,
+                                message: 'Erro. Tente novamente mais tarde.',
+                                icon: 'error',
+                                color: 'negative',
+                                textColor: 'white',
+                                position: 'top',
+                                timeout: 4000,
+                            }) 
                         })
                 
                     }
@@ -711,8 +823,32 @@ const actions = {
                                         eventWhatsappResponsible: payload.whatsapp
                                     }).then(result => {
                                         console.log('alterou')
+                                        Loading.hide()
+                                        this.$router.replace('/myEvents/next')
+                                        Notify.create({
+                                            type: 'positive',
+                                            progress: true,
+                                            message: 'Evento alterado!',
+                                            icon: 'check_circle',
+                                            color: 'positive',
+                                            textColor: 'white',
+                                            position: 'top',
+                                            timeout: 4000,
+                                        }) 
                                     }).catch(error => {
                                         console.log('não alterou')
+                                        Loading.hide()
+                                        this.$router.replace('/myEvents/next')
+                                        Notify.create({
+                                            type: 'negative',
+                                            progress: true,
+                                            message: 'Erro. Tente novamente mais tarde.',
+                                            icon: 'error',
+                                            color: 'negative',
+                                            textColor: 'white',
+                                            position: 'top',
+                                            timeout: 4000,
+                                        }) 
                                     })
                                 }if ((payload.adressOption == 'Físico' && payload.adressOnline == '') ||
                                     (payload.adressOption == 'Online' && payload.adressLocalName != '')) {
@@ -735,8 +871,32 @@ const actions = {
                                         eventWhatsappResponsible: payload.whatsapp
                                     }).then(result => {
                                         console.log('alterou')
+                                        Loading.hide()
+                                        this.$router.replace('/myEvents/next')
+                                        Notify.create({
+                                            type: 'positive',
+                                            progress: true,
+                                            message: 'Evento alterado!',
+                                            icon: 'check_circle',
+                                            color: 'positive',
+                                            textColor: 'white',
+                                            position: 'top',
+                                            timeout: 4000,
+                                        }) 
                                     }).catch(error => {
                                         console.log('não alterou')
+                                        Loading.hide()
+                                        this.$router.replace('/myEvents/next')
+                                        Notify.create({
+                                            type: 'negative',
+                                            progress: true,
+                                            message: 'Erro. Tente novamente mais tarde.',
+                                            icon: 'error',
+                                            color: 'negative',
+                                            textColor: 'white',
+                                            position: 'top',
+                                            timeout: 4000,
+                                        }) 
                                     })
                                 
                                 }

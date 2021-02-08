@@ -30,7 +30,7 @@
               <br>
               {{eventData.eventTime}}
             </div>
-            <div class="app-font-bold text-grey-9 q-ml-sm" style="font-size: 3vh">
+            <div class="divName app-font-bold text-grey-9 text-justify q-ml-sm" style="font-size: 16px">
               {{ eventData.eventName }}
             </div>
             <div v-if="!eventOnline" class="app-font-light q-ml-sm">
@@ -113,14 +113,23 @@ export default {
     },
 
     share(){
-      var texto = "*" + this.eventData.eventName + "*" + "\n" + "\n" + this.eventData.eventDateStart + "\n" + "20:00" + 
+      var texto = "*" + this.eventData.eventName + "*" + "\n" + "\n" + this.eventData.eventDateStart + "\n" + this.eventData.eventTime + 
                   "\n" + "\n" + this.eventData.eventDescription
 
-      var  options  = { 
-        message : texto.split(' ').join('%20'), //  não compatível com alguns aplicativos (Facebook, Instagram)  
-        chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão  
-        files: [this.eventData.eventImg],
-      } ;
+      if(this.eventData.eventImg != ''){
+        var  options  = { 
+          message : texto, //  não compatível com alguns aplicativos (Facebook, Instagram)  
+          chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão 
+          files: [this.eventData.eventImg],
+        } 
+      }else{
+        var  options  = { 
+          message : texto, //  não compatível com alguns aplicativos (Facebook, Instagram)  
+          chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão 
+          files: ["https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"],
+        } 
+      }
+      
        window.plugins.socialsharing.shareWithOptions (options)
     },
 
@@ -193,6 +202,14 @@ export default {
              rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px;  
   -webkit-font-smoothing: antialiased;
   
+}
+
+.divName{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 </style>

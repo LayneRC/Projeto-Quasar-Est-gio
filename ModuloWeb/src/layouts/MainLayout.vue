@@ -6,7 +6,7 @@
             <img src="https://image.flaticon.com/icons/svg/1142/1142731.svg">
           </q-avatar>
 
-          <q-toolbar-title class="text-h5 text-bold">Módulo Web</q-toolbar-title>
+          <q-toolbar-title class="text-h5 text-bold">GBI Eventos</q-toolbar-title>
 
           <q-icon name="account_circle" class="text-white q-mr-sm" style="font-size: 2em;" />
           <div class="text-h6 q-mr-md">Administrador</div>
@@ -15,10 +15,8 @@
 
         <q-separator class="q-my-sm" inset/>
 
-        <div class="row q-pa-sm">
-          <div class="col-11 text-h6">Gerenciamento do sistema:</div>
-        </div>
-        <div class="row shadow-2">
+      
+        <div class="row">
           <q-tabs
           indicator-color="white"
           active-color="white"
@@ -27,6 +25,7 @@
           align="left">
             <q-route-tab to="/" name="inicio" label="Inicio" icon="home" />
             <q-route-tab to="/events/" name="events" label="Gerenciar eventos" icon="assignment_turned_in" />
+            <q-route-tab to="/myEvents/" name="myEvents" label="Meus eventos" icon="event" />
             <q-route-tab to="/users" name="usuarios" label="Gerenciar usuários" icon="supervisor_account" />
           </q-tabs>
         </div>

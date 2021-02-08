@@ -40,7 +40,7 @@
             </q-img> 
 
             <div class="bg-white ">
-              <div class="text-grey-9 titulo app-font-bold q-pt-sm q-px-md">
+              <div class="text-grey-9 titulo text-justify app-font-bold q-pt-sm q-px-md">
                 {{ eventData.eventName }}
               </div>
 
@@ -128,8 +128,8 @@
               <div class="text-grey-9 app-font-bold q-pt-sm q-pl-md">
                 Localização
               </div>
-              <div v-if="!eventData.eventAdressOption == 'Online'" class="text-grey-9 text-caption q-px-md">{{adressShow}}</div>
-              <div v-if="!eventData.eventAdressOption == 'Online'" class="q-pa-sm">
+              <div v-if="eventData.eventAdressOption != 'Online'"  class="text-grey-9 text-caption q-px-md">{{adressShow}}</div>
+              <div v-if="eventData.eventAdressOption != 'Online'" class="q-pa-sm">
                 <div id="map"></div>
               </div>
               <div v-if="eventData.eventAdressOption == 'Online'" class="q-pa-sm flex flex-center" id="online">
@@ -140,7 +140,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="!eventData.eventAdressOption == 'Online'" class="row q-pa-sm">
+            <div v-if="eventData.eventAdressOption != 'Online'"  class="row q-pa-sm">
               <a class="q-pa-sm bg-deep-orange-9 rounded-borders text-white text-center col-12" style="text-decoration: none" href="#" @click="createDynamicURL" id="mapsLink">Abrir no Maps</a>
             </div>
             
@@ -202,14 +202,23 @@ export default {
     },
 
     share(){
-      var texto = "*" + this.eventData.eventName + "*" + "\n" + "\n" + this.eventData.eventDateStart + "\n" + "20:00" + 
+      var texto = "*" + this.eventData.eventName + "*" + "\n" + "\n" + this.eventData.eventDateStart + "\n" + this.eventData.eventTime + 
                   "\n" + "\n" + this.eventData.eventDescription
 
-      var  options  = { 
-        message : texto.split(' ').join('%20'), //  não compatível com alguns aplicativos (Facebook, Instagram)  
-        chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão  
-        files: [this.eventData.eventImg],
-      } ;
+      if(this.eventData.eventImg != ''){
+        var  options  = { 
+          message : texto, //  não compatível com alguns aplicativos (Facebook, Instagram)  
+          chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão 
+          files: [this.eventData.eventImg],
+        } 
+      }else{
+        var  options  = { 
+          message : texto, //  não compatível com alguns aplicativos (Facebook, Instagram)  
+          chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão 
+          files: ["https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"],
+        } 
+      }
+      
        window.plugins.socialsharing.shareWithOptions (options)
     },
 

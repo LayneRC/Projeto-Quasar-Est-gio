@@ -1,7 +1,7 @@
 <template>
   <q-page >
      <div class="q-pa-sm q-gutter-sm">
-      <div v-for="event in eventsUserNext" :key="event.eventID">
+      <div v-for="event in eventsOrderAll" :key="event.eventID">
         <event-card :event = event />
       </div>
     </div>
@@ -22,7 +22,8 @@ export default {
 
   data () {
     return {
-      space: false
+      space: false,
+      eventsOrderAll: {}
     }
   },
 
@@ -39,6 +40,16 @@ export default {
     if(this.eventsUserNext.length > 1){
       this.space = true
     }
+
+    this.eventsOrderAll = this.eventsUserNext.sort(function(a,b) {
+      var dateA = a.createdAt
+      var dateB = b.createdAt
+      console.log(dateA)
+      var dateConvertedA = dateA.toDate()
+      var dateConvertedB = dateB.toDate()
+
+      return dateConvertedB - dateConvertedA
+    })
 
   }
 

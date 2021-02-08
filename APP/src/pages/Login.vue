@@ -1,14 +1,17 @@
 <template>
-  <q-page :class="animationOut" :key="aux" class="q-pa-xl  background-login vertical-middle" >
+  <q-page :class="animationOut" :key="aux" class="q-pa-xl  background-login vertical-middle flex flex-center" >
     <div>
 
     
     <div class="text-center">
       <div class="logo-block">
       <img 
-        src="https://image.flaticon.com/icons/svg/1142/1142731.svg" 
-        style="width: 18vh" 
+        src="https://i.ibb.co/M7KMgfn/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-6-removebg-preview-1.png"
+        style="width: 150px" 
       />
+      <div class="app-font-bold text-white" style="font-size: 1.8em">
+        GBI Eventos
+      </div>
     </div>
 
     <q-tabs
@@ -40,35 +43,13 @@
 
         </q-tab-panels>
 
-        <div v-if="tab == 'login'" class="text-white app-font-light">Esqueceu a senha?</div>
-        <div class="row Flex flex-center q-mt-sm">
-          <q-separator v-if="tab == 'login'" color="white" class="" inset />
-          <div v-if="tab == 'login'" class="text-white ">ou</div>
-          <q-separator v-if="tab == 'login'" color="white" inset />
-        </div>
-        <div class="row q-gutter-sm flex flex-center">
-          <div v-if="tab == 'login'" class="flex flex-center logo-google-login">
-            <div @click="loginGoogle()" class="flex flex-center">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" 
-              style="width: 30px" />
-            </div>
-            
-          </div>
-          <div v-if="tab == 'login'" class="flex flex-center logo-google-login">
-            <div @click="loginFacebook()" class="flex flex-center">
-              <img src="https://i.ibb.co/XYsRCS6/facebook.png" 
-              style="width: 30px" />
-            </div>
-            
-          </div>
-        </div>
         
-
-
-
+        
     </div>
 
     </div>
+
+    
   </q-page>
 </template>
 
@@ -82,7 +63,9 @@ export default {
     return {
       tab: 'login',
       animationOut: '',
-      aux: 0
+      aux: 0,
+      resetPwd: false,
+      email: ''
     }
   },
 
@@ -96,14 +79,23 @@ export default {
   },
 
   methods: {
-    ...mapActions('store', ['googleLoginUser', 'facebookLoginUser']),
+    ...mapActions('store', ['googleLoginUser', 'facebookLoginUser', 'resetPasswordInit']),
     loginGoogle(){
       this.googleLoginUser()
     },
     loginFacebook(){
       this.facebookLoginUser()
-    }
+    },
 
+    isValidEmailAddress(email) {
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+
+    },
+
+   
+
+   
 
     
   }

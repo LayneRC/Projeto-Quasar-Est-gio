@@ -11,11 +11,11 @@
           @click="drawer = !drawer"
         />
 
-        <q-space />
-        <q-toolbar-title class=" text-deep-orange-9 app-font-bold">
-          SECEL
+       <q-spacer/>
+        <q-toolbar-title full-width class="flex flex-center text-deep-orange-9 app-font-bold">
+          GBI Eventos
         </q-toolbar-title>
-        <q-space />
+        <q-spacer/>
 
       </q-toolbar> 
     </q-header>
@@ -35,16 +35,6 @@
 
               <q-item-section class="text-grey-9" @click="$router.push('/myProfile')" >
                 Meu Perfil
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon color="grey-9" name="las la-cog" />
-              </q-item-section>
-
-              <q-item-section class="text-grey-9" @click="$router.push('/settings')">
-                Configurações
               </q-item-section>
             </q-item>
 

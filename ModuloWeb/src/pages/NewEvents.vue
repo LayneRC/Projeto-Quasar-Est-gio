@@ -1,7 +1,7 @@
 <template>
-  <q-page class="window-height"  >
-
-    <q-form ref="NewEventForm" @submit.prevent="submitForm" class="window-height" >
+  <q-page class="bg-grey-1 q-px-md ">
+    
+      <q-form ref="NewEventForm" @submit.prevent="submitForm" class=" q-px-xl q-py-md" >
     <q-stepper
       v-model="step"
       header-nav
@@ -11,7 +11,7 @@
       flat
       contracted
       animated
-      class="window-height"
+      class=""
       
  
        
@@ -22,7 +22,7 @@
         :done="step > 1"
         :header-nav="step > 1"
         title="identificação do evento"
-        class="window-height"
+        class=""
       >
         <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
           1. Identificação do evento
@@ -40,45 +40,44 @@
           :rules="[ val => val && val.trim().length > 0 || 'Entrada é obrigatório']"
         />
 
+        <label for="file" class="text-center"> 
+          <div class="flex flex-center">
+            <div v-if="!eventData.image" class="border-img q-pa-md bg-grey-1 q-mt-xl text-center flex flex-center" style="height: 300px; width: 40%">
+              <div class="text-center">
+                <div>
+                  <q-icon name="add_photo_alternate" size="40px" color="grey-6"/>
+                </div>
+                <div>
+                  Clique aqui para selecionar uma imagem
+                </div>
+              </div>
+            </div>
 
-        <div v-if="!eventData.image" class="border-img q-pa-sm bg-grey-1 q-mt-xl text-center flex flex-center">
-          <div class="text-center">
-            <div>
-              <q-icon name="add_photo_alternate" size="40px" color="grey-6"/>
-            </div>
-            <div>
-              Clique aqui para carregar uma imagem
-            </div>
+            <q-img
+              v-if="eventData.image"
+              :src="eventData.imagePreview"
+              :ratio="16/9"
+              class="border-img q-mt-xl"
+
+            />
           </div>
+        </label>
 
-          <q-menu touch-position>
-            <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup @click="getImageCamera">
-                <q-item-section>Camera</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup @click="captureImageFromGallery">
-                <q-item-section>Galeria</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </div>
-
-        <q-img
-          v-if="eventData.image"
-          :src="eventData.image"
-          :ratio="16/9"
-          class="border-img q-mt-xl"
-
-        />
-
-        <div class="q-mb-xl q-mt-sm app-font-light text-justify" style="font-size: 2vh">
+       
+        <div class="q-mb-xl q-mt-sm app-font-light text-center" style="font-size: 2vh">
           Caso não tenha uma imagem para o seu evento, uma imagem padrão será atribuída!
         </div>
 
+        <input class="inputFile" type="file" name="file" id="file" @change="previewImage" accept="image/*" >
+        <div class="flex flex-center">
+          
+         
+        </div>
         
 
 
-        <q-page-sticky position="bottom-right fixed" :offset="[5, 5]">
+
+        <q-page-sticky position="bottom-right fixed" :offset="[60, 10]">
 
           <q-circular-progress
             
@@ -115,7 +114,7 @@
             * Campos obrigatórios
           </div>
         </div>
-        <div class="q-pa-lg" style="max-width: 300px">
+        <div class="q-pa-lg q-mb-xl" style="max-width: 400px; margin-bottom:90px">
           <div class="app-font-bold text-grey-10">
             Início *
           </div>
@@ -162,7 +161,7 @@
         </div>
         
 
-        <q-page-sticky position="bottom-right" :offset="[5, 5]">
+        <q-page-sticky position="bottom-right" :offset="[60, 10]">
 
           <q-circular-progress
             
@@ -182,9 +181,9 @@
 
         </q-page-sticky>
 
-        <q-page-sticky position="bottom-left" :offset="[20, 40]">
+        <q-page-sticky position="bottom-left" :offset="[90, 40]">
 
-          <div clickable @click="() => {step = 1; value=0, checkValidate = false}" class="app-font-bold text-deep-orange-9">Voltar</div>
+          <div clickable @click="() => {step = 1; value=0, checkValidate = false}" class="app-font-bold text-deep-orange-9 text-subtitle1">Voltar</div>
 
 
         </q-page-sticky>
@@ -231,7 +230,7 @@
 
         
 
-        <q-page-sticky position="bottom-right" :offset="[5, 5]">
+        <q-page-sticky position="bottom-right" :offset="[60, 10]">
 
           <q-circular-progress
          
@@ -250,9 +249,9 @@
 
         </q-page-sticky>
 
-         <q-page-sticky position="bottom-left" :offset="[20, 40]">
+         <q-page-sticky position="bottom-left" :offset="[90, 40]">
 
-          <div clickable @click="() => {step = 2; value=20; checkValidate = false}" class="app-font-bold text-deep-orange-9">Voltar</div>
+          <div clickable @click="() => {step = 2; value=20; checkValidate = false}" class="app-font-bold text-deep-orange-9 text-subtitle1">Voltar</div>
 
 
         </q-page-sticky>
@@ -269,12 +268,12 @@
         <div class="app-font-bold text-deep-orange-9" style="font-size:3vh">
           4. Descrição do evento
         </div>
-        <q-editor v-model="eventData.description" min-height="15rem" class="q-mt-md" toolbar-text-color="grey-9"
+        <q-editor v-model="eventData.description" min-height="15rem" class="q-mt-md" toolbar-text-color="grey-9" style="margin-bottom:150px"
           :rules="[ val => val && val.length < 20 || 'Número máximo de caracteres']"
         />
         
 
-        <q-page-sticky position="bottom-right" :offset="[5, 5]">
+        <q-page-sticky position="bottom-right" :offset="[60, 10]">
 
           <q-circular-progress
             
@@ -292,9 +291,9 @@
           </q-circular-progress>
 
         </q-page-sticky>
-         <q-page-sticky position="bottom-left" :offset="[20, 40]">
+         <q-page-sticky position="bottom-left" :offset="[90, 40]">
 
-          <div clickable @click="() => {step = 3; value=40; checkValidate = false}" class="app-font-bold text-deep-orange-9">Voltar</div>
+          <div clickable @click="() => {step = 3; value=40; checkValidate = false}" class="app-font-bold text-deep-orange-9 text-subtitle1">Voltar</div>
 
 
         </q-page-sticky>
@@ -316,14 +315,14 @@
         <q-input v-model="eventData.nameResponsible" ref="refNameOrg" label="Nome do organizador *" color="grey-7"
           :rules="[ val => val && val.trim().length > 0 || 'Nome do organizador é obrigatório']"
         />
-        <q-input v-model="eventData.whatsapp" ref="refWhats" type="tel" label="WhatsApp *" color="grey-7" class="q-mt-md" mask="(##) ##### - ####" hint="Esta informação não ficará pública."
+        <q-input v-model="eventData.whatsapp" ref="refWhats" type="tel" label="WhatsApp *" color="grey-7" class="q-mt-md" mask="(##) ##### - ####" hint="Esta informação não ficará pública." style="margin-bottom: 20%"
           :rules="[ val => val && val.trim().length > 0 || 'Whatsapp é obrigatório, Caso não tenha whatsapp, informe um número para contato.',
                     val => val && val.trim().length == 17 || 'Número inválido']"
         />
 
 
 
-        <q-page-sticky position="bottom-right" :offset="[5, 5]">
+        <q-page-sticky position="bottom-right" :offset="[60, 10]">
 
           <q-circular-progress
             
@@ -343,9 +342,9 @@
 
         </q-page-sticky>
 
-         <q-page-sticky position="bottom-left" :offset="[20, 40]">
+         <q-page-sticky position="bottom-left" :offset="[90, 40]">
 
-          <div clickable @click="() => {step = 4; value=60; checkValidate = false}" class="app-font-bold text-deep-orange-9">Voltar</div>
+          <div clickable @click="() => {step = 4; value=60; checkValidate = false}" class="app-font-bold text-deep-orange-9 text-subtitle1">Voltar</div>
 
 
         </q-page-sticky>
@@ -353,6 +352,9 @@
       </q-step>
     </q-stepper>
     </q-form>
+
+
+  
   </q-page>
 </template>
 
@@ -361,9 +363,8 @@ import { mapActions } from 'vuex'
 import moment from "moment"
 import { Notify } from 'quasar'
 
-
 export default {
-  name: 'PageExample',
+  name: 'PageIndex',
 
   data () {
     return {
@@ -396,6 +397,7 @@ export default {
         modelCategorie: '',  
         modelEntrance: '',
         image: null,
+        imagePreview: '/statics/placeholder.png',
         dateStart: '',
         time: '',
         dateEnd: '',
@@ -417,40 +419,15 @@ export default {
     
   },
 
-  methods: {
-    getImageCamera() {
-      navigator.camera.getPicture(
-        data => { // on success
-          this.eventData.image = `data:image/jpeg;base64,${data}`
-        },
-        () => { // on fail
+   methods: {
+    previewImage(e) {
+      const file = e.target.files[0];
+      console.log(file)
+      this.eventData.image = file
+      this.eventData.imagePreview = URL.createObjectURL(file);
+      console.log(this.eventData.imagePreview)
+      console.log(this.eventData)
 
-        },
-        {
-          quality: 20, allowEdit: true,
-          correctOrientation: true,
-          destinationType: Camera.DestinationType.DATA_URL,
-          sourceType: Camera.PictureSourceType.CAMERA
-        }
-      )
-
-    },
-
-    captureImageFromGallery () {
-      navigator.camera.getPicture(
-        data => { // on success
-          this.eventData.image = `data:image/jpeg;base64,${data}`
-        },
-        () => { // on fail
-
-        },
-        {
-          quality: 20, allowEdit: true,
-          correctOrientation: true,
-          destinationType: Camera.DestinationType.DATA_URL,
-          sourceType: Camera.PictureSourceType.PHOTOLIBRARY
-        }
-      )
     },
 
     closeModelDate() {
@@ -506,8 +483,7 @@ export default {
       }
     },
 
-    ...mapActions('store', [ 'createEvents']),
-
+     ...mapActions('store', [ 'createEvents']),
       
     submitForm() {
 
@@ -516,8 +492,9 @@ export default {
       }else{
         this.eventData.adressOption = 'Online'
       }
-                  
+
       this.createEvents(this.eventData)
+                  
       
     }
        
@@ -819,9 +796,6 @@ export default {
 
 
   }
-
-  
-  
 }
 </script>
 
@@ -830,12 +804,14 @@ export default {
 .border-img {
   border-style: dashed; 
   border-color: rgb(201, 195, 195);
-  height: 30vh
+  height: 300px;
+  width: 40%;
+}
+
+.inputFile {
+  visibility: hidden;
 }
 
 
 
 </style>
-
-
-

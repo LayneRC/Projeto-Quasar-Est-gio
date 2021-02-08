@@ -11,7 +11,7 @@
               :ratio="1.2"
               :src="event.eventImg"
               >
-              <div class="absolute-bottom text-subtitle2 text-center">
+              <div class="divName absolute-bottom text-subtitle2 text-justify text-center">
                 {{ event.eventName}}
               </div>
             </q-img>   
@@ -19,7 +19,7 @@
               :ratio="1.2"
               src="https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"
               >
-              <div class="absolute-bottom text-subtitle2 text-center">
+              <div class="absolute-bottom text-subtitle2 text-center divName">
                 {{ event.eventName}}
               </div>
             </q-img>   
@@ -106,14 +106,23 @@ export default {
     },
 
     share(){
-      var texto = "*" + this.event.eventName + "*" + "\n" + "\n" + this.event.eventDateStart + "\n" + "20:00" + 
+      var texto = "*" + this.event.eventName + "*" + "\n" + "\n" + this.event.eventDateStart + "\n" + this.event.eventTime + 
                   "\n" + "\n" + this.event.eventDescription
 
-      var  options  = { 
-        message : texto.split(' ').join('%20'), //  não compatível com alguns aplicativos (Facebook, Instagram)  
-        chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão  
-        files: [this.event.eventImg],
-      } ;
+      if(this.event.eventImg != ''){
+        var  options  = { 
+          message : texto, //  não compatível com alguns aplicativos (Facebook, Instagram)  
+          chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão 
+          files: [this.event.eventImg],
+        } 
+      }else{
+        var  options  = { 
+          message : texto, //  não compatível com alguns aplicativos (Facebook, Instagram)  
+          chooserTitle : ' Compartilhar evento ' , //  Android apenas, você pode substituir o título da planilha de compartilhamento padrão 
+          files: ["https://i.ibb.co/smfDnVS/Vermelho-rvore-de-Natal-Arte-de-Natal-Cart-o-5.png"],
+        } 
+      }
+      
        window.plugins.socialsharing.shareWithOptions (options)
     },
 
@@ -180,6 +189,16 @@ export default {
              rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px,   rgb(255, 255, 255) 0px 0px 4px;  
   -webkit-font-smoothing: antialiased;
   
+}
+
+.divName{
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 2;
+  max-height: 52px;
 }
 
 </style>
